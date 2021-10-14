@@ -10,7 +10,6 @@ class Player:
         self.position = position
         self.velocity = pygame.math.Vector2(0.0, 0.0)
         self.direction = 0.0
-        self.collision_position = None
         self.gun = Gun(self)
         self.health = INITIAL_HEALTH
 
@@ -29,21 +28,13 @@ class Player:
     def tick(self, delta):
         if not self.is_dead():
             self.__update_position(delta)
-
         self.gun.tick(delta)
 
     def __update_position(self, delta):
         self.position += self.velocity * delta
 
     def collide(self):
-        if self.collision_position == None:
-            self.collision_position = self.position
-            
-        self.position = self.collision_position
-        self.velocity = -self.velocity
-
-    def uncollide(self):
-        self.collision_position = None
+        self.velocity = - self.velocity
 
     def draw(self, screen):
         screen_rect = self.screen_rect()

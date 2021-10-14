@@ -68,15 +68,11 @@ def main():
 
                 if map.collides_with(player):
                     player.collide()
-                else:
-                    player.uncollide()
 
                 for other_player in list(set(players) - set([player])):
-                    if other_player.collides_with(player):
+                    if not other_player.is_dead() and other_player.collides_with(player):
                         player.collide()
-                    else:
-                        player.uncollide()
-
+                    
             player.tick(delta)
             player.draw(screen)
 
