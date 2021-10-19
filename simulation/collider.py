@@ -2,8 +2,9 @@ import pygame
 from pygame.math import Vector2
 
 class Collider:
-  def __init__(self, map):
+  def __init__(self, map, players):
     self.map = map
+    self.players = players
 
   def move(self, player):
     dx = player.velocity.x
@@ -19,20 +20,25 @@ class Collider:
     player.position.x += dx
     player.position.y += dy
 
+    for obstacle in self.map.obstacles:
+      self.__adjust_for_collision(player, obstacle, dx, dy)
+
+    for other_player in self.players:
+      if player != other_player: # can't collide with myself
+        self.__adjust_for_collision(player, other_player.bounding_box(), dx, dy)
+
+  def __adjust_for_collision(self, player, obstacle, dx, dy):
     player_radius = player.radius()
 
-    # If you collide with a wall, move out based on velocity
-    for obstacle in self.map.obstacles:
-      player_position_before = Vector2(player.position)
-      if self.__does_collide(player.bounding_box(), obstacle):
-        if dx > 0: # Moving right; Hit the left side of the wall
-          player.position.x = obstacle.left() - player_radius
-        if dx < 0: # Moving left; Hit the right side of the wall
-          player.position.x = obstacle.right() + player_radius
-        if dy > 0: # Moving down; Hit the top side of the wall
-          player.position.y = obstacle.top() - player_radius
-        if dy < 0: # Moving up; Hit the bottom side of the wall
-          player.position.y = obstacle.bottom() + player_radius
+    if self.__does_collide(player.bounding_box(), obstacle):
+      if dx > 0: # Moving right; Hit the left side of the obstacle
+        player.position.x = obstacle.left() - player_radius
+      if dx < 0: # Moving left; Hit the right side of the obstacle
+        player.position.x = obstacle.right() + player_radius
+      if dy > 0: # Moving down; Hit the top side of the obstacle
+        player.position.y = obstacle.top() - player_radius
+      if dy < 0: # Moving up; Hit the bottom side of the obstacle
+        player.position.y = obstacle.bottom() + player_radius
 
   def __does_collide(self, player_obstacle, map_obstacle):
     return (
