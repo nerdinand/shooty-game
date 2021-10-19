@@ -30,6 +30,8 @@ class Gui:
     if self.key_target_player is None:
       return
     directions = self.key_mapper.map()
+    if KeyMapper.QUIT in directions:
+      return
     direction_vector = self.direction_mapper.map(directions)
     self.key_target_player.update_move_direction(direction_vector)
 
