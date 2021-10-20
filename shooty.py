@@ -31,18 +31,18 @@ def run_with_gui(simulation):
     if gui.is_render_necessary():
       gui.render(simulation)
 
-    print_statistics(start_time, simulation.tick_count)
+    print_statistics(start_time, simulation)
 
 def run_without_gui(simulation):
   start_time = time.time()
   
   while not simulation.is_over():
     simulation.tick()
-    print_statistics(start_time, simulation.tick_count)
+    print_statistics(start_time, simulation)
 
-def print_statistics(start_time, tick_count):
+def print_statistics(start_time, simulation):
   current_time = time.time()
-  print(f'Ticks: {tick_count}/{Simulation.MAX_TICKS} TPS: {round(tick_count / ((current_time - start_time)))}        ', end="\r")
+  print(f'Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} TPS: {round(simulation.tick_count / ((current_time - start_time)))} Players: {simulation.alive_players_count()}        ', end="\r")
 
 
 if __name__ == '__main__':

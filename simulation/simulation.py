@@ -34,11 +34,14 @@ class Simulation:
   def is_over(self):
     return self.__is_time_over() or self.__are_players_dead()
 
+  def alive_players_count(self):
+    return sum(map(lambda p: not p.is_dead, self.players))
+
   def __is_time_over(self):
     return self.tick_count >= Simulation.MAX_TICKS
 
   def __are_players_dead(self):
-    return sum(map(lambda p: not p.is_dead, self.players)) <= 1
+    return self.alive_players_count() <= 1
 
 def main():
   pass
