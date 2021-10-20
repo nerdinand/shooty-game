@@ -16,5 +16,8 @@ class Projectile:
     v.from_polar((Projectile.VELOCITY, self.direction))
     self.position += v
 
-    if collider.projectile_collided(self):
+    if collider.apply_collision_effect(self):
       self.is_dead = True
+
+  def damage(self):
+    return self.gun.damage

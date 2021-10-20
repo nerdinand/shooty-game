@@ -1,26 +1,44 @@
 from pygame.math import Vector2
 
+from .collision import Collision
+
 class ProjectileCollider:
   def __init__(self, simulation):
     self.simulation = simulation
 
-  def projectile_collided(self, projectile):
-    line_start = projectile.last_position
-    line_end = projectile.position
+  def apply_collision_effect(self, projectile):
+    collisions = self.__projectile_collisions(projectile)
+    if len(collisions) == 0:
+      return False
 
+    first_collision = sorted(collisions, key=lambda collision: collision.distance_from(projectile.last_position))[0]
+    first_collision.apply_effect()
+    return True
+
+  def __projectile_collisions(self, projectile):
+    collisions = []
     for player in self.simulation.players:
       if player == projectile.gun.player: # can't shoot myself
         continue
-      for (p2, p3) in player.bounding_box().all_sides:
-        if self.__do_intersect(line_start, line_end, p2, p3):
-          return True
-
+      collisions += self.__find_collisions(projectile, player)
+      
     for obstacle in self.simulation.map.obstacles:
-      for (p2, p3) in obstacle.all_sides:
-        if self.__do_intersect(line_start, line_end, p2, p3):
-          return True
+      collisions += self.__find_collisions(projectile, obstacle)
+      
+    return collisions
 
-  def __do_intersect(self, p0, p1, p2, p3):
+  def __find_collisions(self, projectile, obstacle):
+    collisions = []
+    line_start = projectile.last_position
+    line_end = projectile.position
+    for (p2, p3) in obstacle.bounding_box().all_sides:
+      intersection = self.__intersection(line_start, line_end, p2, p3)
+      if intersection != None:
+        collisions.append(Collision(projectile, obstacle, intersection))
+
+    return collisions
+
+  def __intersection(self, p0, p1, p2, p3):
     s1 = p1 - p0
     s2 = p3 - p2
     divisor = s1.cross(s2)

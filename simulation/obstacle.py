@@ -7,6 +7,12 @@ class Obstacle:
     self.height = height
     self.all_sides = self.__all_sides()
 
+  def apply_damage(self, amount): # TODO find cleaner solution
+    pass
+
+  def bounding_box(self): # TODO find cleaner solution
+    return self
+
   def top(self):
     return self.left_top.y
 

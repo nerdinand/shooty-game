@@ -3,10 +3,11 @@ from pygame.math import Vector2
 from .projectile import Projectile
 
 class Gun:
-  def __init__(self, player, cooldown_ticks, bullet_count):
+  def __init__(self, player, cooldown_ticks, bullet_count, damage):
     self.player = player
     self.cooldown_ticks = cooldown_ticks
     self.bullet_count = bullet_count
+    self.damage = damage
     self.tick_count = 0
     self.projectiles = []
 

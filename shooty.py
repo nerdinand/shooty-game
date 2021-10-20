@@ -29,17 +29,20 @@ def run_with_gui(simulation):
     if gui.is_render_necessary():
       gui.render(simulation)
 
-    current_time = time.time()
-    print(f'Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} TPS: {round(simulation.tick_count / ((current_time - start_time)))}        ', end="\r")
+    print_statistics(start_time, simulation.tick_count)
   print()
 
 def run_without_gui(simulation):
   start_time = time.time()
   while not simulation.over():
     simulation.tick()
-    current_time = time.time()
-    print(f'Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} TPS: {round(simulation.tick_count / ((current_time - start_time)))}        ', end="\r")
+    print_statistics(start_time, simulation.tick_count)
   print()
+
+def print_statistics(start_time, tick_count):
+  current_time = time.time()
+  print(f'Ticks: {tick_count}/{Simulation.MAX_TICKS} TPS: {round(tick_count / ((current_time - start_time)))}        ', end="\r")
+
 
 if __name__ == '__main__':
   # main(with_gui=False)

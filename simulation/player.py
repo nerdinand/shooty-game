@@ -45,6 +45,11 @@ class Player:
     left = self.position.y - half_extent
     return Obstacle(top, left, self.extent(), self.extent())
 
+  def apply_damage(self, amount):
+    self.health -= amount
+    if self.health <= 0:
+      self.is_dead = True
+
   def __update_velocity(self):
     if self.move_direction == Vector2(0.0, 0.0):
       self.velocity *= Player.PLAYER_ACCELERATION_DAMPENING
