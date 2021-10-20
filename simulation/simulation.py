@@ -21,7 +21,7 @@ class Simulation:
     map_factory = MapFactory()
     self.map = map_factory.simple_map()
     self.tick_count = 0
-    self.collider = Collider(self.map, self.players)
+    self.collider = Collider(self)
 
   def tick(self):
     self.tick_count += 1

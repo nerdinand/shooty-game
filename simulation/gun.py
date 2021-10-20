@@ -9,13 +9,13 @@ class Gun:
     self.tick_count = 0
     self.projectiles = []
 
-  def tick(self):
+  def tick(self, collider):
     self.tick_count -= 1
     self.shoot() # TODO: just for testing
     for projectile in self.projectiles:
-      projectile.tick()
-      if projectile.is_dead():
-        self.projectiles.remove(Projectile)
+      projectile.tick(collider)
+      if projectile.is_dead:
+        self.projectiles.remove(projectile)
 
   def shoot(self):
     if self.__can_shoot():

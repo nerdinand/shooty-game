@@ -42,5 +42,5 @@ def run_without_gui(simulation):
   print()
 
 if __name__ == '__main__':
-  main(with_gui=False)
-  # main(with_gui=True)
+  # main(with_gui=False)
+  main(with_gui=True)

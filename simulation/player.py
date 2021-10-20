@@ -36,7 +36,7 @@ class Player:
     if not self.is_dead():
       self.__update_velocity()
       collider.move(self)
-      self.gun.tick()
+      self.gun.tick(collider)
 
   def bounding_box(self):
     half_extent = self.extent() / 2.0
