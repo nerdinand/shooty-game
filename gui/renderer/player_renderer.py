@@ -6,6 +6,7 @@ from .colors import Colors
 from simulation import PlayerType
 from .gun_renderer import GunRenderer
 from .utils import Utils
+from .font_renderer import FontRenderer
 
 class PlayerRenderer:
   PLAYER_COLORS = {
@@ -21,6 +22,8 @@ class PlayerRenderer:
     color = PlayerRenderer.PLAYER_COLORS[player.player_type]
 
     pygame.draw.ellipse(screen, color, screen_rect, width=1)
+    FontRenderer.render(screen, str(player.health), (screen_rect.right + 2, screen_rect.top))
+    FontRenderer.render(screen, str(player.gun.bullet_count), (screen_rect.right + 2, screen_rect.top + 10))
 
     if player.is_dead:
       pygame.draw.line(screen, color, (screen_rect.left, screen_rect.top), (screen_rect.right, screen_rect.bottom))

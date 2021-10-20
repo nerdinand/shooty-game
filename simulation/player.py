@@ -12,14 +12,17 @@ class Player:
   MAX_VELOCITY = 1e-4
   MAX_VELOCITY_SQUARED = MAX_VELOCITY * MAX_VELOCITY
 
-  def __init__(self, player_type, position):
+  MAX_HEALTH = 100
+
+  def __init__(self, player_type, position, gun_class):
     self.player_type = player_type
     self.position = position
     self.move_direction = Vector2(0, 0)
     self.velocity = Vector2(0.0, 0.0)
     self.look_direction = 0.0
-    self.gun = Gun(self)
+    self.gun = gun_class(self)
     self.is_dead = False
+    self.health = Player.MAX_HEALTH
 
   def extent(self):
     return Player.EXTENT
