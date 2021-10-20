@@ -12,13 +12,15 @@ def main(with_gui=True):
   else:
     run_without_gui(simulation)
 
+  print()
+
 def run_with_gui(simulation):
   gui = Gui(key_target_player=simulation.human)
   gui.initialize()
 
   start_time = time.time()
 
-  while not simulation.over() and not gui.should_quit():
+  while not simulation.is_over() and not gui.should_quit():
     simulation.tick()
 
     gui.tick()
@@ -30,14 +32,13 @@ def run_with_gui(simulation):
       gui.render(simulation)
 
     print_statistics(start_time, simulation.tick_count)
-  print()
 
 def run_without_gui(simulation):
   start_time = time.time()
-  while not simulation.over():
+  
+  while not simulation.is_over():
     simulation.tick()
     print_statistics(start_time, simulation.tick_count)
-  print()
 
 def print_statistics(start_time, tick_count):
   current_time = time.time()

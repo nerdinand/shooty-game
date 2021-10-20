@@ -31,7 +31,7 @@ class Simulation:
       player.tick(self.player_collider, self.projectile_collider)
     self.map.tick()
 
-  def over(self):
+  def is_over(self):
     return self.__is_time_over() or self.__are_players_dead()
 
   def __is_time_over(self):

@@ -31,13 +31,14 @@ class Player:
     return self.extent() / 2.0
 
   def update_look_direction(self, look_direction):
-    self.look_direction = look_direction
+    if not self.is_dead:
+      self.look_direction = look_direction
 
   def tick(self, player_collider, projectile_collider):
     if not self.is_dead:
       self.__update_velocity()
       player_collider.move(self)
-      self.gun.tick(projectile_collider)
+    self.gun.tick(projectile_collider)
 
   def bounding_box(self):
     half_extent = self.extent() / 2.0

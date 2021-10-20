@@ -18,7 +18,7 @@ class ProjectileCollider:
   def __projectile_collisions(self, projectile):
     collisions = []
     for player in self.simulation.players:
-      if player == projectile.gun.player: # can't shoot myself
+      if player == projectile.gun.player or player.is_dead: # can't shoot myself or dead players
         continue
       collisions += self.__find_collisions(projectile, player)
       
