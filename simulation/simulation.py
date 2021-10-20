@@ -2,12 +2,12 @@ from .player_factory import PlayerFactory
 from .map_factory import MapFactory
 from .collider import Collider
 
-MAX_TICKS = ( 10 # ticks per frame
+class Simulation:
+  MAX_TICKS = ( 10 # ticks per frame
             * 60 # FPS
             * 2 # minutes
             * 60 ) # seconds per minute
 
-class Simulation:
   def __init__(self):
     player_factory = PlayerFactory()
     self.human = player_factory.human()
@@ -30,7 +30,7 @@ class Simulation:
     self.map.tick()
 
   def over(self):
-    return self.tick_count >= MAX_TICKS
+    return self.tick_count >= Simulation.MAX_TICKS
 
 def main():
   pass
