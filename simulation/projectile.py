@@ -3,7 +3,8 @@ from pygame.math import Vector2
 class Projectile:
   VELOCITY = 1e-3
 
-  def __init__(self, position, direction):
+  def __init__(self, gun, position, direction):
+    self.gun = gun
     self.position = position
     self.direction = direction
     self.is_dead = False
@@ -17,4 +18,3 @@ class Projectile:
 
     if collider.projectile_collided(self):
       self.is_dead = True
-

@@ -19,6 +19,7 @@ class Player:
     self.velocity = Vector2(0.0, 0.0)
     self.look_direction = 0.0
     self.gun = Gun(self)
+    self.is_dead = False
 
   def extent(self):
     return Player.EXTENT
@@ -26,17 +27,14 @@ class Player:
   def radius(self):
     return self.extent() / 2.0
 
-  def is_dead(self):
-    return False
-
   def update_look_direction(self, look_direction):
     self.look_direction = look_direction
 
-  def tick(self, collider):
-    if not self.is_dead():
+  def tick(self, player_collider, projectile_collider):
+    if not self.is_dead:
       self.__update_velocity()
-      collider.move(self)
-      self.gun.tick(collider)
+      player_collider.move(self)
+      self.gun.tick(projectile_collider)
 
   def bounding_box(self):
     half_extent = self.extent() / 2.0

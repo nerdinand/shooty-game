@@ -9,5 +9,5 @@ class Human(Player):
   def update_move_direction(self, move_direction):
     self.move_direction = move_direction
 
-  def tick(self, collider):
-    super().tick(collider)
+  def tick(self, player_collider, projectile_collider):
+    super().tick(player_collider, projectile_collider)

@@ -1,6 +1,7 @@
 from .player_factory import PlayerFactory
 from .map_factory import MapFactory
-from .collider import Collider
+from .player_collider import PlayerCollider
+from .projectile_collider import ProjectileCollider
 
 class Simulation:
   MAX_TICKS = ( 10 # ticks per frame
@@ -21,12 +22,13 @@ class Simulation:
     map_factory = MapFactory()
     self.map = map_factory.simple_map()
     self.tick_count = 0
-    self.collider = Collider(self)
+    self.player_collider = PlayerCollider(self)
+    self.projectile_collider = ProjectileCollider(self)
 
   def tick(self):
     self.tick_count += 1
     for player in self.players:
-      player.tick(self.collider)
+      player.tick(self.player_collider, self.projectile_collider)
     self.map.tick()
 
   def over(self):

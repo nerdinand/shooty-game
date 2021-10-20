@@ -1,34 +1,9 @@
 import pygame
 from pygame.math import Vector2
 
-class Collider:
+class PlayerCollider:
   def __init__(self, simulation):
     self.simulation = simulation
-
-  def projectile_collided(self, projectile):
-    line_start = projectile.last_position
-    line_end = projectile.position
-
-    for obstacle in self.simulation.map.obstacles:
-      for (p2, p3) in obstacle.all_sides():
-        if self.__do_intersect(line_start, line_end, p2, p3):
-          return True
-
-  def __do_intersect(self, p0, p1, p2, p3):
-    s1 = p1 - p0
-    s2 = p3 - p2
-    divisor = (-s2.x * s1.y + s1.x * s2.y)
-
-    if divisor == 0:
-      return None
-
-    s = (-s1.y * (p0.x - p2.x) + s1.x * (p0.y - p2.y)) / divisor
-    t = ( s2.x * (p0.y - p2.y) + s2.y * (p0.x - p2.x)) / divisor
-
-    if s >= 0 and s <= 1 and t >= 0 and t <= 1:
-      return Vector2(p0.x + (t * s1.x), p0.y + (t * s1.y))
-    else:
-      return None
 
   def move(self, player):
     dx = player.velocity.x
@@ -48,8 +23,9 @@ class Collider:
       self.__adjust_for_collision(player, obstacle, dx, dy)
 
     for other_player in self.simulation.players:
-      if player != other_player: # can't collide with myself
-        self.__adjust_for_collision(player, other_player.bounding_box(), dx, dy)
+      if player == other_player or other_player.is_dead: # can't collide with myself or with dead players
+        continue
+      self.__adjust_for_collision(player, other_player.bounding_box(), dx, dy)
 
   def __adjust_for_collision(self, player, obstacle, dx, dy):
     player_radius = player.radius()

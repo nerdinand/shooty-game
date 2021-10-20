@@ -22,7 +22,7 @@ class PlayerRenderer:
 
     pygame.draw.ellipse(screen, color, screen_rect, width=1)
 
-    if player.is_dead():
+    if player.is_dead:
       pygame.draw.line(screen, color, (screen_rect.left, screen_rect.top), (screen_rect.right, screen_rect.bottom))
       pygame.draw.line(screen, color, (screen_rect.left, screen_rect.bottom), (screen_rect.right, screen_rect.top))
 

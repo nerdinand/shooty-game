@@ -8,7 +8,7 @@ class Bot(Player):
   def __init__(self, position=Vector2(0.5, 0.5)):
     super().__init__(PlayerType.BOT, position)
 
-  def tick(self, collider):
+  def tick(self, player_collider, projectile_collider):
     self.move_direction += MathUtil.random_vector2(min=-1.0, max=1.0)
     self.look_direction += MathUtil.random_direction_change()
-    super().tick(collider)
+    super().tick(player_collider, projectile_collider)
