@@ -2,7 +2,9 @@ import pygame
 
 from .colors import Colors
 
+
 class FontRenderer:
+  @staticmethod
   def initialize():
     FontRenderer.font = pygame.font.Font(pygame.font.get_default_font(), 12)
 

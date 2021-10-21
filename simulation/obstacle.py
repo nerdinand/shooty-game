@@ -1,5 +1,6 @@
 from pygame.math import Vector2
 
+
 class Obstacle:
   def __init__(self, left, top, width, height):
     self.left_top = Vector2(left, top)
@@ -7,10 +8,10 @@ class Obstacle:
     self.height = height
     self.all_sides = self.__all_sides()
 
-  def apply_damage(self, amount): # TODO find cleaner solution
+  def apply_damage(self, amount):  # TODO: find cleaner solution
     pass
 
-  def bounding_box(self): # TODO find cleaner solution
+  def bounding_box(self):  # TODO: find cleaner solution
     return self
 
   def top(self):
@@ -47,7 +48,13 @@ class Obstacle:
     return (self.__left_bottom(), self.__right_bottom())
 
   def __all_sides(self):
-    return [self.__left_side(), self.__right_side(), self.__top_side(), self.__bottom_side()]
+    return [
+      self.__left_side(),
+      self.__right_side(),
+      self.__top_side(),
+      self.__bottom_side()
+    ]
 
   def __str__(self):
-    return f"(left_top: {self.left_top}, width: {self.width}, height: {self.height})"
+    return f"(left_top: {self.left_top}, \
+width: {self.width}, height: {self.height})"

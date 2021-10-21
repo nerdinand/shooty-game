@@ -1,6 +1,7 @@
 from .map_renderer import MapRenderer
 from .player_renderer import PlayerRenderer
 
+
 class SimulationRenderer:
   def __init__(self):
     self.map_renderer = MapRenderer()

@@ -3,6 +3,7 @@ from pygame.math import Vector2
 
 from .obstacle import Obstacle
 
+
 class Player:
   EXTENT = 0.03
 

@@ -1,6 +1,7 @@
 import pygame
 from pygame.math import Vector2
 
+
 class PlayerCollider:
   def __init__(self, simulation):
     self.simulation = simulation
@@ -23,7 +24,8 @@ class PlayerCollider:
       self.__adjust_for_collision(player, obstacle, dx, dy)
 
     for other_player in self.simulation.players:
-      if player == other_player or other_player.is_dead: # can't collide with myself or with dead players
+      # can't collide with myself or with dead players
+      if player == other_player or other_player.is_dead:
         continue
       self.__adjust_for_collision(player, other_player.bounding_box(), dx, dy)
 
@@ -31,13 +33,13 @@ class PlayerCollider:
     player_radius = player.radius()
 
     if self.__does_collide(player.bounding_box(), obstacle):
-      if dx > 0: # Moving right; Hit the left side of the obstacle
+      if dx > 0:  # Moving right; Hit the left side of the obstacle
         player.position.x = obstacle.left() - player_radius
-      if dx < 0: # Moving left; Hit the right side of the obstacle
+      if dx < 0:  # Moving left; Hit the right side of the obstacle
         player.position.x = obstacle.right() + player_radius
-      if dy > 0: # Moving down; Hit the top side of the obstacle
+      if dy > 0:  # Moving down; Hit the top side of the obstacle
         player.position.y = obstacle.top() - player_radius
-      if dy < 0: # Moving up; Hit the bottom side of the obstacle
+      if dy < 0:  # Moving up; Hit the bottom side of the obstacle
         player.position.y = obstacle.bottom() + player_radius
 
   def __does_collide(self, player_obstacle, map_obstacle):

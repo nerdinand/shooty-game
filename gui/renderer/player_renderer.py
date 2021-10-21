@@ -8,9 +8,10 @@ from .gun_renderer import GunRenderer
 from .utils import Utils
 from .font_renderer import FontRenderer
 
+
 class PlayerRenderer:
   RELOAD_INDICATOR = "*"
-  
+
   PLAYER_COLORS = {
     PlayerType.HUMAN: Colors.HUMAN_COLOR,
     PlayerType.BOT: Colors.BOT_COLOR
@@ -32,8 +33,12 @@ class PlayerRenderer:
     FontRenderer.render(screen, bullet_indicator, (screen_rect.right + 2, screen_rect.top + 10))
 
     if player.is_dead:
-      pygame.draw.line(screen, color, (screen_rect.left, screen_rect.top), (screen_rect.right, screen_rect.bottom))
-      pygame.draw.line(screen, color, (screen_rect.left, screen_rect.bottom), (screen_rect.right, screen_rect.top))
+      pygame.draw.line(
+        screen, color, (screen_rect.left, screen_rect.top), (screen_rect.right, screen_rect.bottom)
+      )
+      pygame.draw.line(
+        screen, color, (screen_rect.left, screen_rect.bottom), (screen_rect.right, screen_rect.top)
+      )
 
     self.gun_renderer.render(screen, player)
 

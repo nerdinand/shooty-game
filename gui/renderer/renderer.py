@@ -5,6 +5,7 @@ from .colors import Colors
 from .simulation_renderer import SimulationRenderer
 from .font_renderer import FontRenderer
 
+
 class Renderer:
   def __init__(self, resolution):
     self.screen_rect = Rect(0, 0, resolution[0], resolution[1])

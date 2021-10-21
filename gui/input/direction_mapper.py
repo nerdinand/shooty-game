@@ -2,11 +2,12 @@ import pygame
 from pygame.math import Vector2
 from .key_mapper import KeyMapper
 
+
 class DirectionMapper:
   DIRECTIONS = {
-    KeyMapper.UP:     Vector2(0, -1), 
-    KeyMapper.LEFT:   Vector2(-1, 0), 
-    KeyMapper.DOWN:   Vector2(0, 1), 
+    KeyMapper.UP:     Vector2(0, -1),
+    KeyMapper.LEFT:   Vector2(-1, 0),
+    KeyMapper.DOWN:   Vector2(0, 1),
     KeyMapper.RIGHT:  Vector2(1, 0)
   }
 

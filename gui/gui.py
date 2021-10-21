@@ -3,8 +3,14 @@ import pygame
 from .input import KeyMapper, DirectionMapper, MouseHandler
 from .renderer import Renderer
 
+
 class Gui:
-  def __init__(self, render_every_tick_count = 10, key_target_player = None, resolution = (800, 600)):
+  def __init__(
+    self,
+    render_every_tick_count=10,
+    key_target_player=None,
+    resolution=(800, 600)
+  ):
     self.tick_count = 0
     self.render_every_tick_count = render_every_tick_count
     self.key_target_player = key_target_player
@@ -14,10 +20,10 @@ class Gui:
     self.mouse_handler = MouseHandler(self.renderer.screen_rect)
 
   def initialize(self):
-    pygame.init() # TODO: only initialise what's necessary
+    pygame.init()  # TODO: only initialise what's necessary
 
     self.renderer.initialize()
-    self.clock =  pygame.time.Clock()
+    self.clock = pygame.time.Clock()
 
   def tick(self):
     self.tick_count += 1

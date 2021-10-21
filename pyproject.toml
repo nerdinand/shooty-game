@@ -9,6 +9,8 @@ python = "^3.9"
 pygame = "^2.0.2"
 
 [tool.poetry.dev-dependencies]
+mypy = "^0.910"
+pycodestyle = "^2.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

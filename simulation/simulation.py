@@ -3,11 +3,12 @@ from .map_factory import MapFactory
 from .player_collider import PlayerCollider
 from .projectile_collider import ProjectileCollider
 
+
 class Simulation:
-  MAX_TICKS = ( 10 # ticks per frame
-            * 60 # FPS
-            * 2 # minutes
-            * 60 ) # seconds per minute
+  MAX_TICKS = (10  # ticks per frame
+               * 60  # FPS
+               * 2  # minutes
+               * 60)  # seconds per minute
 
   def __init__(self):
     player_factory = PlayerFactory()
@@ -42,9 +43,3 @@ class Simulation:
 
   def __are_players_dead(self):
     return self.alive_players_count() <= 1 and len(self.players) > 1
-
-def main():
-  pass
-
-if __name__ == '__main__':
-  main()

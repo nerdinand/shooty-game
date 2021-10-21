@@ -1,5 +1,6 @@
 from pygame import Color
 
+
 class Colors:
   BACKGROUND_COLOR = Color(0, 43, 54)
   TEXT_COLOR = Color(255, 255, 255)

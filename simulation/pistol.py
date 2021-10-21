@@ -1,10 +1,11 @@
 from .gun import Gun
 from .spray_pattern import SprayPattern
 
+
 class Pistol(Gun):
   def __init__(self, player):
     super().__init__(
-      player, 
+      player,
       cooldown_ticks=300,
       reload_ticks=500,
       magazine_size=10,

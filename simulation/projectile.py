@@ -1,5 +1,6 @@
 from pygame.math import Vector2
 
+
 class Projectile:
   VELOCITY = 1e-3
 

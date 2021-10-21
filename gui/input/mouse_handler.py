@@ -1,6 +1,7 @@
 import pygame
 from pygame.math import Vector2
 
+
 class MouseHandler:
   def __init__(self, screen_rect):
     self.screen_rect = screen_rect
@@ -17,7 +18,9 @@ class MouseHandler:
     return self.__position_to_direction(player_position, mouse_position)
 
   def __position_to_direction(self, player_position, mouse_position):
-    return (self.__to_game_position(mouse_position) - player_position).as_polar()[1]
+    return (
+      self.__to_game_position(mouse_position) - player_position
+    ).as_polar()[1]
 
   def __to_game_position(self, screen_position):
     return Vector2(screen_position).elementwise() / \

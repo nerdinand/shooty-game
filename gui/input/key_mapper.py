@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 
+
 class KeyMapper:
   QUIT = 'QUIT'
   UP = 'UP'
@@ -10,11 +11,11 @@ class KeyMapper:
   RELOAD = 'RELOAD'
 
   KEY_MAP = {
-    K_w: UP, 
-    K_a: LEFT, 
-    K_s: DOWN, 
-    K_d: RIGHT,
-    K_r: RELOAD
+    K_w: UP,     # type: ignore
+    K_a: LEFT,   # type: ignore
+    K_s: DOWN,   # type: ignore
+    K_d: RIGHT,  # type: ignore
+    K_r: RELOAD  # type: ignore
   }
 
   def map(self):
@@ -27,6 +28,6 @@ class KeyMapper:
   def __quit_event(self):
     for event in pygame.event.get():
       if event.type == QUIT or \
-        (event.type == KEYDOWN and event.key == K_ESCAPE):
+          (event.type == KEYDOWN and event.key == K_ESCAPE):
           return True
     return False

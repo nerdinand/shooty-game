@@ -3,7 +3,7 @@ class Collision:
     self.projectile = projectile
     self.body = body
     self.intersection = intersection
-  
+
   def distance_from(self, vector):
     return self.intersection.distance_to(vector)
 

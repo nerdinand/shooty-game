@@ -3,6 +3,7 @@ from pygame.locals import Rect
 
 from .colors import Colors
 
+
 class MapRenderer:
   def render(self, screen, map):
     for screen_obstacle in self.__screen_obstacles(screen.get_size(), map.obstacles):
@@ -15,4 +16,9 @@ class MapRenderer:
     left_top_transformed = obstacle.left_top.elementwise() * screen_size
     width_transformed = obstacle.width * screen_size[0]
     height_transformed = obstacle.height * screen_size[1]
-    return Rect(left_top_transformed.x, left_top_transformed.y, width_transformed, height_transformed)
+    return Rect(
+      left_top_transformed.x,
+      left_top_transformed.y,
+      width_transformed,
+      height_transformed
+    )
