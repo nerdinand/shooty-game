@@ -7,12 +7,14 @@ class KeyMapper:
   LEFT = 'LEFT'
   DOWN = 'DOWN'
   RIGHT = 'RIGHT'
+  RELOAD = 'RELOAD'
 
-  DIRECTION_KEYS = {
+  KEY_MAP = {
     K_w: UP, 
     K_a: LEFT, 
     K_s: DOWN, 
-    K_d: RIGHT
+    K_d: RIGHT,
+    K_r: RELOAD
   }
 
   def map(self):
@@ -20,7 +22,7 @@ class KeyMapper:
       return [KeyMapper.QUIT]
 
     keystate = pygame.key.get_pressed()
-    return [v for k, v in KeyMapper.DIRECTION_KEYS.items() if keystate[k]]
+    return [v for k, v in KeyMapper.KEY_MAP.items() if keystate[k]]
 
   def __quit_event(self):
     for event in pygame.event.get():

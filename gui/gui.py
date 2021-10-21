@@ -29,10 +29,12 @@ class Gui:
   def handle_key_events(self):
     if self.key_target_player is None:
       return
-    directions = self.key_mapper.map()
-    if KeyMapper.QUIT in directions:
+    key_events = self.key_mapper.map()
+    if KeyMapper.QUIT in key_events:
       return
-    direction_vector = self.direction_mapper.map(directions)
+    if KeyMapper.RELOAD in key_events:
+      self.key_target_player.gun.start_reload()
+    direction_vector = self.direction_mapper.map(key_events)
     self.key_target_player.update_move_direction(direction_vector)
 
   def handle_mouse_events(self):

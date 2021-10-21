@@ -5,8 +5,9 @@ class Pistol(Gun):
   def __init__(self, player):
     super().__init__(
       player, 
-      cooldown_ticks=300, 
-      bullet_count=10, 
+      cooldown_ticks=300,
+      reload_ticks=500,
+      magazine_size=10,
       damage=75,
       spray_pattern=SprayPattern([
         0,

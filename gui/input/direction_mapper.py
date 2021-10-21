@@ -10,10 +10,11 @@ class DirectionMapper:
     KeyMapper.RIGHT:  Vector2(1, 0)
   }
 
-  def map(self, directions):
+  def map(self, key_events):
     direction_vector = Vector2()
-    for direction in directions:
-      direction_vector += DirectionMapper.DIRECTIONS[direction]
+    for key_event in key_events:
+      if key_event in DirectionMapper.DIRECTIONS.keys():
+        direction_vector += DirectionMapper.DIRECTIONS[key_event]
 
     if direction_vector.length_squared() != 0.0:
       direction_vector.normalize_ip()
