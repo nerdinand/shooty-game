@@ -9,6 +9,8 @@ from .utils import Utils
 from .font_renderer import FontRenderer
 
 class PlayerRenderer:
+  RELOAD_INDICATOR = "*"
+  
   PLAYER_COLORS = {
     PlayerType.HUMAN: Colors.HUMAN_COLOR,
     PlayerType.BOT: Colors.BOT_COLOR
@@ -23,7 +25,11 @@ class PlayerRenderer:
 
     pygame.draw.ellipse(screen, color, screen_rect, width=1)
     FontRenderer.render(screen, str(player.health), (screen_rect.right + 2, screen_rect.top))
-    FontRenderer.render(screen, str(player.gun.bullet_count), (screen_rect.right + 2, screen_rect.top + 10))
+    if player.gun.is_reloading:
+      bullet_indicator = PlayerRenderer.RELOAD_INDICATOR
+    else:
+      bullet_indicator = str(player.gun.bullet_count)
+    FontRenderer.render(screen, bullet_indicator, (screen_rect.right + 2, screen_rect.top + 10))
 
     if player.is_dead:
       pygame.draw.line(screen, color, (screen_rect.left, screen_rect.top), (screen_rect.right, screen_rect.bottom))

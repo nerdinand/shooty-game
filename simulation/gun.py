@@ -58,4 +58,4 @@ class Gun:
         self.reload_tick_count = self.reload_ticks
 
   def __can_shoot(self):
-    return self.tick_count <= 0 and self.bullet_count > 0 and not self.is_reloading
+    return not self.player.is_dead and self.tick_count <= 0 and self.bullet_count > 0 and not self.is_reloading
