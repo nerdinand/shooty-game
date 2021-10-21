@@ -4,11 +4,10 @@ import random
 from .player import Player
 from .player_type import PlayerType
 from .math_util import MathUtil
-from .rifle import Rifle
 
 class Bot(Player):
-  def __init__(self, position=Vector2(0.5, 0.5)):
-    super().__init__(PlayerType.BOT, position, Rifle)
+  def __init__(self, gun, position=Vector2(0.5, 0.5)):
+    super().__init__(PlayerType.BOT, position, gun)
 
   def tick(self, player_collider, projectile_collider):
     if not self.is_dead:

@@ -41,7 +41,7 @@ class Simulation:
     return self.tick_count >= Simulation.MAX_TICKS
 
   def __are_players_dead(self):
-    return self.alive_players_count() <= 1
+    return self.alive_players_count() <= 1 and len(self.players) > 1
 
 def main():
   pass
