@@ -10,7 +10,7 @@ class Simulation:
                * 2  # minutes
                * 60)  # seconds per minute
 
-  def __init__(self):
+  def __init__(self) -> None:
     player_factory = PlayerFactory()
     self.human = player_factory.human()
     self.players = [
@@ -26,20 +26,20 @@ class Simulation:
     self.player_collider = PlayerCollider(self)
     self.projectile_collider = ProjectileCollider(self)
 
-  def tick(self):
+  def tick(self) -> None:
     self.tick_count += 1
     for player in self.players:
       player.tick(self.player_collider, self.projectile_collider)
     self.map.tick()
 
-  def is_over(self):
+  def is_over(self) -> bool:
     return self.__is_time_over() or self.__are_players_dead()
 
-  def alive_players_count(self):
+  def alive_players_count(self) -> int:
     return sum(map(lambda p: not p.is_dead, self.players))
 
-  def __is_time_over(self):
+  def __is_time_over(self) -> bool:
     return self.tick_count >= Simulation.MAX_TICKS
 
-  def __are_players_dead(self):
+  def __are_players_dead(self) -> bool:
     return self.alive_players_count() <= 1 and len(self.players) > 1

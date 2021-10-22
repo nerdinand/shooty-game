@@ -1,5 +1,8 @@
+from typing import List
+
 import pygame
 from pygame.math import Vector2
+
 from .key_mapper import KeyMapper
 
 
@@ -11,7 +14,7 @@ class DirectionMapper:
     KeyMapper.RIGHT:  Vector2(1, 0)
   }
 
-  def map(self, key_events):
+  def map(self, key_events: List[str]) -> Vector2:
     direction_vector = Vector2()
     for key_event in key_events:
       if key_event in DirectionMapper.DIRECTIONS.keys():

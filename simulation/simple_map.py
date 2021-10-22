@@ -3,7 +3,7 @@ from .obstacle import Obstacle
 
 
 class SimpleMap(Map):
-  def __init__(self):
+  def __init__(self) -> None:
     super().__init__()
 
     small_box_size = 0.05

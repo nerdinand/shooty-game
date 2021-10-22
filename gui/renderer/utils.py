@@ -1,3 +1,9 @@
+from typing import Tuple
+
+from pygame.math import Vector2
+
+
 class Utils:
-  def to_screen_position(screen_size, position):
-    return position.elementwise() * screen_size
+  @staticmethod
+  def to_screen_position(screen_size: Tuple[int, int], position: Vector2) -> Vector2:
+    return position.elementwise() * screen_size  # type: ignore[operator]

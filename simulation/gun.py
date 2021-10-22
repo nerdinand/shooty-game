@@ -1,10 +1,24 @@
+from __future__ import annotations  # to allow for forward type references
+from typing import List, TYPE_CHECKING
+
 from pygame.math import Vector2
 
 from .projectile import Projectile
+from .projectile_collider import ProjectileCollider
+if TYPE_CHECKING:
+  from .player import Player
 
 
 class Gun:
-  def __init__(self, player, cooldown_ticks, magazine_size, damage, spray_pattern, reload_ticks):
+  def __init__(
+    self,
+    player: Player,
+    cooldown_ticks: int,
+    magazine_size: int,
+    damage: int,
+    spray_pattern: List[float],
+    reload_ticks: int
+  ):
     self.player = player
     self.cooldown_ticks = cooldown_ticks
     self.magazine_size = magazine_size
@@ -13,12 +27,12 @@ class Gun:
     self.reload_ticks = reload_ticks
     self.tick_count = 0
     self.spray_sequence = 0
-    self.projectiles = []
+    self.projectiles: List[Projectile] = []
     self.reload_tick_count = reload_ticks
     self.bullet_count = magazine_size
     self.is_reloading = False
 
-  def tick(self, projectile_collider):
+  def tick(self, projectile_collider: ProjectileCollider) -> None:
     self.tick_count -= 1
 
     self.__reload_tick()
@@ -28,7 +42,7 @@ class Gun:
       if projectile.is_dead:
         self.projectiles.remove(projectile)
 
-  def shoot(self):
+  def shoot(self) -> None:
     if self.__can_shoot():
       if self.tick_count == 0:  # spraying
         self.spray_sequence += 1
@@ -39,18 +53,18 @@ class Gun:
         Projectile(
           self,
           Vector2(self.player.position),
-          self.player.look_direction + self.spray_pattern.offsets[self.spray_sequence]
+          self.player.look_direction + self.spray_pattern[self.spray_sequence]
         )
       )
       self.tick_count = self.cooldown_ticks
       self.bullet_count -= 1
 
-  def start_reload(self):
+  def start_reload(self) -> None:
     if self.is_reloading:
       return
     self.is_reloading = True
 
-  def __reload_tick(self):
+  def __reload_tick(self) -> None:
     if self.is_reloading:
       self.reload_tick_count -= 1
       if self.reload_tick_count == 0:
@@ -58,7 +72,7 @@ class Gun:
         self.bullet_count = self.magazine_size
         self.reload_tick_count = self.reload_ticks
 
-  def __can_shoot(self):
+  def __can_shoot(self) -> bool:
     return not self.player.is_dead \
       and self.tick_count <= 0 \
       and self.bullet_count > 0 \

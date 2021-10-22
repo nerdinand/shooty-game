@@ -4,7 +4,7 @@ from simulation import Simulation
 from gui import Gui
 
 
-def main(with_gui=True):
+def main(with_gui: bool = True) -> None:
   simulation = Simulation()
 
   if with_gui:
@@ -15,7 +15,7 @@ def main(with_gui=True):
   print()
 
 
-def run_with_gui(simulation):
+def run_with_gui(simulation: Simulation) -> None:
   gui = Gui(key_target_player=simulation.human)
   gui.initialize()
 
@@ -35,7 +35,7 @@ def run_with_gui(simulation):
     print_statistics(start_time, simulation)
 
 
-def run_without_gui(simulation):
+def run_without_gui(simulation: Simulation) -> None:
   start_time = time.time()
 
   while not simulation.is_over():
@@ -43,7 +43,7 @@ def run_without_gui(simulation):
     print_statistics(start_time, simulation)
 
 
-def print_statistics(start_time, simulation):
+def print_statistics(start_time: float, simulation: Simulation) -> None:
   current_time = time.time()
   print(f'Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} \
 TPS: {round(simulation.tick_count / ((current_time - start_time)))} \
@@ -51,5 +51,5 @@ Players: {simulation.alive_players_count()}        ', end="\r")
 
 
 if __name__ == '__main__':
-  # main(with_gui=False)
-  main(with_gui=True)
+  main(with_gui=False)
+  # main(with_gui=True)

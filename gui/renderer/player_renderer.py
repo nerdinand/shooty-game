@@ -1,9 +1,11 @@
+from typing import Tuple
+
 import pygame
 from pygame.locals import Rect
 from pygame.math import Vector2
 
 from .colors import Colors
-from simulation import PlayerType
+from simulation import PlayerType, Player
 from .gun_renderer import GunRenderer
 from .utils import Utils
 from .font_renderer import FontRenderer
@@ -17,10 +19,10 @@ class PlayerRenderer:
     PlayerType.BOT: Colors.BOT_COLOR
   }
 
-  def __init__(self):
+  def __init__(self) -> None:
     self.gun_renderer = GunRenderer()
 
-  def render(self, screen, player):
+  def render(self, screen: pygame.surface.Surface, player: Player) -> None:
     screen_rect = self.__to_screen_rect(screen.get_size(), player)
     color = PlayerRenderer.PLAYER_COLORS[player.player_type]
 
@@ -42,7 +44,7 @@ class PlayerRenderer:
 
     self.gun_renderer.render(screen, player)
 
-  def __to_screen_rect(self, screen_size, player):
+  def __to_screen_rect(self, screen_size: Tuple[int, int], player: Player) -> Rect:
     player_screen_extent = Vector2(screen_size) * player.extent()
     left_top = Utils.to_screen_position(screen_size, player.position) - (player_screen_extent / 2.0)
     return Rect(left_top.x, left_top.y, player_screen_extent.x, player_screen_extent.y)

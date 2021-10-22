@@ -1,15 +1,18 @@
+from typing import Optional, Tuple
+
 import pygame
 
 from .input import KeyMapper, DirectionMapper, MouseHandler
 from .renderer import Renderer
+from simulation import Simulation, Human
 
 
 class Gui:
   def __init__(
     self,
-    render_every_tick_count=10,
-    key_target_player=None,
-    resolution=(800, 600)
+    render_every_tick_count: int = 10,
+    key_target_player: Optional[Human] = None,
+    resolution: Tuple[int, int] = (800, 600)
   ):
     self.tick_count = 0
     self.render_every_tick_count = render_every_tick_count
@@ -19,20 +22,20 @@ class Gui:
     self.renderer = Renderer(resolution)
     self.mouse_handler = MouseHandler(self.renderer.screen_rect)
 
-  def initialize(self):
+  def initialize(self) -> None:
     pygame.init()  # TODO: only initialise what's necessary
 
     self.renderer.initialize()
     self.clock = pygame.time.Clock()
 
-  def tick(self):
+  def tick(self) -> None:
     self.tick_count += 1
 
-  def render(self, simulation):
+  def render(self, simulation: Simulation) -> None:
     self.renderer.render(simulation)
     self.tick_count = 0
 
-  def handle_key_events(self):
+  def handle_key_events(self) -> None:
     if self.key_target_player is None:
       return
     key_events = self.key_mapper.map()
@@ -43,13 +46,13 @@ class Gui:
     direction_vector = self.direction_mapper.map(key_events)
     self.key_target_player.update_move_direction(direction_vector)
 
-  def handle_mouse_events(self):
+  def handle_mouse_events(self) -> None:
     if self.key_target_player is None:
       return
     self.mouse_handler.handle_mouse_events(self.key_target_player)
 
-  def should_quit(self):
+  def should_quit(self) -> bool:
     return KeyMapper.QUIT in self.key_mapper.map()
 
-  def is_render_necessary(self):
+  def is_render_necessary(self) -> bool:
     return self.tick_count == self.render_every_tick_count
