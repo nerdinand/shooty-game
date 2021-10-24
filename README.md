@@ -20,7 +20,9 @@ poetry run python shooty.py
 
 If run with UI activated, this is what you should see:
 
-<Insert image here>
+![Screenshot of the Shooty GUI](doc/shooty-gui.png)
+
+You can move the blue player with WASD, aim and shoot with the mouse, R is reload.
 
 ## To Do
 

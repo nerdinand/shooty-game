@@ -51,5 +51,5 @@ Players: {simulation.alive_players_count()}        ', end="\r")
 
 
 if __name__ == '__main__':
-  main(with_gui=False)
-  # main(with_gui=True)
+  # main(with_gui=False)
+  main(with_gui=True)
