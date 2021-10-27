@@ -54,15 +54,18 @@ class PlayerRenderer:
 
   def __render_fov_angles(self, screen: pygame.surface.Surface, player: Player) -> None:
     for angle in [player.get_left_fov_angle(), player.get_right_fov_angle()]:
-      screen_position = Utils.to_screen_position(
-        screen.get_size(), player.position
+      ray_start_point = player.position
+      v = Vector2()
+      v.from_polar((2.0, angle))
+      ray_end_point = ray_start_point + v
+
+      ray_start_point = Utils.to_screen_position(
+        screen.get_size(), ray_start_point
+      )
+      ray_end_point = Utils.to_screen_position(
+        screen.get_size(), ray_end_point
       )
 
-      v = pygame.math.Vector2()
-      v.from_polar((1000, angle))
-
       pygame.draw.line(
-        screen, Colors.FOV_BORDER,
-        screen_position,
-        screen_position + v
+        screen, Colors.FOV_BORDER, ray_start_point, ray_end_point
       )

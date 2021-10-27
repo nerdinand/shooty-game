@@ -34,7 +34,9 @@ class Visibility:
     ray_end_point = ray_start_point + v
 
     intersections = []
-    for obstacle in simulation.map.obstacles:
+    for obstacle in (simulation.map.obstacles + simulation.players):  # type: ignore[operator]
+      if obstacle == player:
+        continue
       intersections += IntersectionUtil.find_intersections(ray_start_point, ray_end_point, obstacle)
 
     if len(intersections) == 0:
