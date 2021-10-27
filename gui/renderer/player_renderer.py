@@ -26,6 +26,9 @@ class PlayerRenderer:
     screen_rect = self.__to_screen_rect(screen.get_size(), player)
     color = PlayerRenderer.PLAYER_COLORS[player.player_type]
 
+    if player.player_type == PlayerType.HUMAN:
+      self.__render_fov_angles(screen, player)
+
     pygame.draw.ellipse(screen, color, screen_rect, width=1)
     FontRenderer.render(screen, str(player.health), (screen_rect.right + 2, screen_rect.top))
     if player.gun.is_reloading:
@@ -48,3 +51,18 @@ class PlayerRenderer:
     player_screen_extent = Vector2(screen_size) * player.extent()
     left_top = Utils.to_screen_position(screen_size, player.position) - (player_screen_extent / 2.0)
     return Rect(left_top.x, left_top.y, player_screen_extent.x, player_screen_extent.y)
+
+  def __render_fov_angles(self, screen: pygame.surface.Surface, player: Player) -> None:
+    for angle in [player.get_left_fov_angle(), player.get_right_fov_angle()]:
+      screen_position = Utils.to_screen_position(
+        screen.get_size(), player.position
+      )
+
+      v = pygame.math.Vector2()
+      v.from_polar((1000, angle))
+
+      pygame.draw.line(
+        screen, Colors.FOV_BORDER,
+        screen_position,
+        screen_position + v
+      )

@@ -40,15 +40,15 @@ class ProjectileCollider:
     return collisions
 
   def __find_collisions(
-    self, projectile: Projectile, rectanglable: Rectanglable
+    self, projectile: Projectile, game_object: Rectanglable
   ) -> List[Collision]:
     collisions = []
     line_start = projectile.last_position
     line_end = projectile.position
-    for (p2, p3) in rectanglable.get_rectangle().all_sides:
+    for (p2, p3) in game_object.get_rectangle().all_sides:
       intersection = self.__intersection(line_start, line_end, p2, p3)
       if intersection is not None:
-        collisions.append(Collision(projectile, rectanglable, intersection))
+        collisions.append(Collision(projectile, game_object, intersection))
 
     return collisions
 

@@ -9,3 +9,4 @@ class Colors:
   BOT_COLOR = Color(220, 50, 47)
   GUN_COLOR = Color(101, 123, 131)
   PROJECTILES_COLOR = Color(211, 54, 130)
+  FOV_BORDER = Color(133, 153, 0)

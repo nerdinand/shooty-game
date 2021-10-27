@@ -12,8 +12,8 @@ from .projectile_collider import ProjectileCollider
 
 
 class Bot(Player):
-  def __init__(self, gun: Type, position: Vector2 = Vector2(0.5, 0.5)):
-    super().__init__(PlayerType.BOT, position, gun)
+  def __init__(self, name: str, gun: Type, position: Vector2 = Vector2(0.5, 0.5)):
+    super().__init__(PlayerType.BOT, name, position, gun)
 
   def tick(self, player_collider: PlayerCollider, projectile_collider: ProjectileCollider) -> None:
     if not self.is_dead:

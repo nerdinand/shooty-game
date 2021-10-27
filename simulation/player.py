@@ -20,15 +20,27 @@ class Player:
 
   MAX_HEALTH = 100
 
-  def __init__(self, player_type: str, position: Vector2, gun_class: Type):
+  FOV_ANGLE = 60
+
+  def __init__(self, player_type: str, name: str, position: Vector2, gun_class: Type):
     self.player_type = player_type
+    self.name = name
     self.position = position
+    self.gun = gun_class(self)
     self.move_direction = Vector2(0, 0)
     self.velocity = Vector2(0.0, 0.0)
     self.look_direction = 0.0
-    self.gun = gun_class(self)
     self.is_dead = False
     self.health = Player.MAX_HEALTH
+
+  def get_name(self) -> str:
+    return self.name
+
+  def get_left_fov_angle(self) -> float:
+    return (self.look_direction - Player.FOV_ANGLE / 2)
+
+  def get_right_fov_angle(self) -> float:
+    return (self.look_direction + Player.FOV_ANGLE / 2)
 
   def get_rectangle(self) -> Rectangle:
     half_extent = self.extent() / 2.0
