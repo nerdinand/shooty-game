@@ -7,3 +7,5 @@ from .map import Map
 from .rectangle import Rectangle
 from .rectanglable import Rectanglable
 from .projectile import Projectile
+from .visibility import Visibility
+from .bot import Bot
