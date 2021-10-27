@@ -13,9 +13,9 @@ class SimulationRenderer:
     self.visibility_renderer = VisibilityRenderer()
 
   def render(self, screen: pygame.surface.Surface, simulation: Simulation) -> None:
-    if simulation.human is None:
-      self.map_renderer.render(screen, simulation.map)
-    else:
+    self.map_renderer.render(screen, simulation.map)
+
+    if simulation.human is not None:
       self.visibility_renderer.render(screen, simulation)
 
     for player in simulation.players:
