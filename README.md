@@ -1,4 +1,6 @@
 # shooty-game
+![Python build workflow](https://github.com/nerdinand/shooty-game/actions/workflows/python.yml/badge.svg)
+
 Game/Simulation that's supposed to become a 2D-analog of Counter Strike as a target for Deep Reinforcement Learning.
 
 ## Setup
