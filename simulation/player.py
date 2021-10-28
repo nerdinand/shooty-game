@@ -69,6 +69,9 @@ class Player:
     if self.health <= 0:
       self.is_dead = True
 
+  def is_human(self) -> bool:
+    return self.player_type == PlayerType.HUMAN
+
   def __update_velocity(self) -> None:
     if self.move_direction == Vector2(0.0, 0.0):
       self.velocity *= Player.PLAYER_ACCELERATION_DAMPENING

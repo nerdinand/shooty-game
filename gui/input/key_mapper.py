@@ -11,13 +11,17 @@ class KeyMapper:
   DOWN = 'DOWN'
   RIGHT = 'RIGHT'
   RELOAD = 'RELOAD'
+  TOGGLE_SHOW_MAP = 'TOGGLE_SHOW_MAP'
+  TOGGLE_SHOW_BOTS = 'TOGGLE_SHOW_BOTS'
 
   KEY_MAP = {
-    K_w: UP,      # type: ignore[name-defined]
-    K_a: LEFT,    # type: ignore[name-defined]
-    K_s: DOWN,    # type: ignore[name-defined]
-    K_d: RIGHT,   # type: ignore[name-defined]
-    K_r: RELOAD   # type: ignore[name-defined]
+    K_w: UP,                # type: ignore[name-defined]
+    K_a: LEFT,              # type: ignore[name-defined]
+    K_s: DOWN,              # type: ignore[name-defined]
+    K_d: RIGHT,             # type: ignore[name-defined]
+    K_r: RELOAD,            # type: ignore[name-defined]
+    K_m: TOGGLE_SHOW_MAP,   # type: ignore[name-defined]
+    K_b: TOGGLE_SHOW_BOTS   # type: ignore[name-defined]
   }
 
   def map(self) -> List[str]:

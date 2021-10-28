@@ -43,6 +43,10 @@ class Gui:
       return
     if KeyMapper.RELOAD in key_events:
       self.key_target_player.gun.start_reload()
+    if KeyMapper.TOGGLE_SHOW_MAP in key_events:
+      self.renderer.render_settings.show_map = not self.renderer.render_settings.show_map
+    if KeyMapper.TOGGLE_SHOW_BOTS in key_events:
+      self.renderer.render_settings.show_bots = not self.renderer.render_settings.show_bots
     direction_vector = self.direction_mapper.map(key_events)
     self.key_target_player.update_move_direction(direction_vector)
 
