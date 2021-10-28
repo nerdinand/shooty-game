@@ -27,5 +27,5 @@ class Projectile:
     if collider.apply_collision_effect(self):
       self.is_dead = True
 
-  def damage(self) -> int:
-    return self.gun.damage
+  def maximum_damage(self) -> int:
+    return self.gun.maximum_damage

@@ -7,7 +7,7 @@ from .colors import Colors
 from simulation import Obstacle
 from simulation import Rectangle
 from simulation import Map
-from simulation import Rectanglable
+from simulation import Entity
 
 
 class MapRenderer:
@@ -18,12 +18,12 @@ class MapRenderer:
         pygame.draw.rect(screen, Colors.OBSTACLES_COLOR, screen_obstacle)
 
   def __screen_obstacles(
-    self, screen_size: Tuple[int, int], rectanglables: Sequence[Rectanglable]
+    self, screen_size: Tuple[int, int], entitys: Sequence[Entity]
   ) -> Sequence[Rect]:
-    return [self.__to_screen_rect(screen_size, rectanglable) for rectanglable in rectanglables]
+    return [self.__to_screen_rect(screen_size, entity) for entity in entitys]
 
-  def __to_screen_rect(self, screen_size: Tuple[int, int], rectanglable: Rectanglable) -> Rect:
-    rectangle = rectanglable.get_rectangle()
+  def __to_screen_rect(self, screen_size: Tuple[int, int], entity: Entity) -> Rect:
+    rectangle = entity.get_rectangle()
     left_top_transformed = rectangle.left_top.elementwise() * screen_size  # type: ignore[operator]
     width_transformed = rectangle.width * screen_size[0]
     height_transformed = rectangle.height * screen_size[1]

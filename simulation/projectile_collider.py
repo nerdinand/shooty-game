@@ -4,7 +4,7 @@ from typing import List, TYPE_CHECKING
 if TYPE_CHECKING:
   from .projectile import Projectile
   from .simulation import Simulation
-from .rectanglable import Rectanglable
+from .entity import Entity
 from .collision import Collision
 from .intersection_util import IntersectionUtil
 
@@ -39,7 +39,7 @@ class ProjectileCollider:
     return collisions
 
   def __find_collisions(
-    self, projectile: Projectile, game_object: Rectanglable
+    self, projectile: Projectile, game_object: Entity
   ) -> List[Collision]:
     line_start = projectile.last_position
     line_end = projectile.position

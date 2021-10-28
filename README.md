@@ -28,7 +28,6 @@ You can move the blue player with WASD, aim and shoot with the mouse, R is reloa
 
 ## To Do
 
-* [ ] Visibility checking for players: Only show obstacles and opponents in the field of view
 * [ ] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
 
 ## License

@@ -2,20 +2,20 @@ from typing import Optional
 
 from pygame.math import Vector2
 
-from .rectanglable import Rectanglable
+from .entity import Entity
 from .intersection import Intersection
 
 
 class IntersectionUtil:
   @staticmethod
   def find_intersections(
-    p0: Vector2, p1: Vector2, rectanglable: Rectanglable
+    p0: Vector2, p1: Vector2, entity: Entity
   ) -> list[Intersection]:
     intersections = []
-    for (p2, p3) in rectanglable.get_rectangle().all_sides:
+    for (p2, p3) in entity.get_rectangle().all_sides:
       intersection_point = IntersectionUtil.find_intersection(p0, p1, p2, p3)
       if intersection_point is not None:
-        intersections.append(Intersection(intersection_point, rectanglable))
+        intersections.append(Intersection(intersection_point, entity))
     return intersections
 
   @staticmethod

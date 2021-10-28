@@ -7,6 +7,7 @@ from .player_type import PlayerType
 from .player_collider import PlayerCollider
 from .projectile_collider import ProjectileCollider
 from .rectangle import Rectangle
+from .collision import Collision
 
 
 class Player:
@@ -17,6 +18,8 @@ class Player:
 
   MAX_VELOCITY = 1e-4
   MAX_VELOCITY_SQUARED = MAX_VELOCITY * MAX_VELOCITY
+  MIN_VELOCITY_THRESHOLD = 0.00001
+  MIN_VELOCITY_THRESHOLD_SQUARED = MIN_VELOCITY_THRESHOLD * MIN_VELOCITY_THRESHOLD
 
   MAX_HEALTH = 100
 
@@ -31,7 +34,10 @@ class Player:
     self.velocity = Vector2(0.0, 0.0)
     self.look_direction = 0.0
     self.is_dead = False
+    self.is_moving = False
     self.health = Player.MAX_HEALTH
+    self.extent = Player.EXTENT
+    self.radius = self.extent / 2.0
 
   def get_name(self) -> str:
     return self.name
@@ -43,16 +49,10 @@ class Player:
     return (self.look_direction + Player.FOV_ANGLE / 2)
 
   def get_rectangle(self) -> Rectangle:
-    half_extent = self.extent() / 2.0
+    half_extent = self.extent / 2.0
     top = self.position.x - half_extent
     left = self.position.y - half_extent
-    return Rectangle(top, left, self.extent(), self.extent())
-
-  def extent(self) -> float:
-    return Player.EXTENT
-
-  def radius(self) -> float:
-    return self.extent() / 2.0
+    return Rectangle(top, left, self.extent, self.extent)
 
   def update_look_direction(self, look_direction: float) -> None:
     if not self.is_dead:
@@ -64,8 +64,10 @@ class Player:
       player_collider.move(self)
     self.gun.tick(projectile_collider)
 
-  def apply_damage(self, amount: int) -> None:
-    self.health -= amount
+  def hit(self, collision: Collision) -> None:
+    factor = self.radius / collision.distance_from(self.position)
+    damage = int(collision.projectile.maximum_damage() * (factor ** 2))
+    self.health -= damage
     if self.health <= 0:
       self.is_dead = True
 
@@ -73,10 +75,15 @@ class Player:
     return self.player_type == PlayerType.HUMAN
 
   def __update_velocity(self) -> None:
+    self.is_moving = True
     if self.move_direction == Vector2(0.0, 0.0):
       self.velocity *= Player.PLAYER_ACCELERATION_DAMPENING
     else:
       self.velocity += self.move_direction * Player.PLAYER_ACCELERATION
 
-    if self.velocity.length_squared() > Player.MAX_VELOCITY_SQUARED:
+    length_squared = self.velocity.length_squared()
+    if length_squared > Player.MAX_VELOCITY_SQUARED:
       self.velocity.scale_to_length(Player.MAX_VELOCITY)
+    elif length_squared < Player.MIN_VELOCITY_THRESHOLD_SQUARED:
+      self.velocity = Vector2(0.0, 0.0)
+      self.is_moving = False

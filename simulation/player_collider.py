@@ -40,7 +40,7 @@ class PlayerCollider:
   def __adjust_for_collision(
     self, player: Player, rectangle: Rectangle, dx: float, dy: float
   ) -> None:
-    player_radius = player.radius()
+    player_radius = player.radius
 
     if self.__does_collide(player.get_rectangle(), rectangle):
       if dx > 0:  # Moving right; Hit the left side of the obstacle

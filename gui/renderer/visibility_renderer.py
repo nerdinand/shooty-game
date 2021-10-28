@@ -23,7 +23,7 @@ class VisibilityRenderer:
       )
       pygame.draw.circle(
         screen,
-        VisibilityRenderer.COLOR_MAP[visible_point.rectanglable.__class__],
+        VisibilityRenderer.COLOR_MAP[visible_point.entity.__class__],
         screen_position,
         1
       )

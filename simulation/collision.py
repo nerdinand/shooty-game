@@ -13,4 +13,4 @@ class Collision:
     return self.intersection.position.distance_to(vector)
 
   def apply_effect(self) -> None:
-    self.intersection.rectanglable.apply_damage(self.projectile.damage())
+    self.intersection.entity.hit(self)

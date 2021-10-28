@@ -19,4 +19,4 @@ class PlayerFactory:
     return bot
 
   def human(self) -> Human:
-    return Human('Human', gun=Pistol)
+    return Human('Human', gun=Rifle)

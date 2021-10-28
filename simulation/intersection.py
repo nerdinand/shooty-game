@@ -1,9 +1,9 @@
 from pygame.math import Vector2
 
-from .rectanglable import Rectanglable
+from .entity import Entity
 
 
 class Intersection:
-  def __init__(self, position: Vector2, rectanglable: Rectanglable):
+  def __init__(self, position: Vector2, entity: Entity):
     self.position = position
-    self.rectanglable = rectanglable
+    self.entity = entity

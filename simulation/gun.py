@@ -10,19 +10,22 @@ if TYPE_CHECKING:
 
 
 class Gun:
+  SPRAY_PATTERN_MODIFIER_STANDING = 2.0
+  SPRAY_PATTERN_MODIFIER_MOVING = 8.0
+
   def __init__(
     self,
     player: Player,
     cooldown_ticks: int,
     magazine_size: int,
-    damage: int,
+    maximum_damage: int,
     spray_pattern: List[float],
     reload_ticks: int
   ):
     self.player = player
     self.cooldown_ticks = cooldown_ticks
     self.magazine_size = magazine_size
-    self.damage = damage
+    self.maximum_damage = maximum_damage
     self.spray_pattern = spray_pattern
     self.reload_ticks = reload_ticks
     self.tick_count = 0
@@ -49,11 +52,18 @@ class Gun:
       else:  # not spraying, reset sequence
         self.spray_sequence = 0
 
+      if self.player.is_moving:
+        modifier = Gun.SPRAY_PATTERN_MODIFIER_MOVING
+      else:
+        modifier = Gun.SPRAY_PATTERN_MODIFIER_STANDING
+
       self.projectiles.append(
         Projectile(
           self,
           Vector2(self.player.position),
-          self.player.look_direction + self.spray_pattern[self.spray_sequence]
+          self.player.look_direction
+          + modifier
+          * self.spray_pattern[self.spray_sequence]
         )
       )
       self.tick_count = self.cooldown_ticks

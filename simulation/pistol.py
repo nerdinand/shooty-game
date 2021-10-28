@@ -9,7 +9,7 @@ class Pistol(Gun):
       cooldown_ticks=300,
       reload_ticks=500,
       magazine_size=10,
-      damage=75,
+      maximum_damage=75,
       spray_pattern=[
         0,
         -0.8292242732279771,

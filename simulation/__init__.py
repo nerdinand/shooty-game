@@ -5,7 +5,7 @@ from .player import Player
 from .obstacle import Obstacle
 from .map import Map
 from .rectangle import Rectangle
-from .rectanglable import Rectanglable
+from .entity import Entity
 from .projectile import Projectile
 from .visibility import Visibility
 from .bot import Bot

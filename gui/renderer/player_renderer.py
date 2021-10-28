@@ -48,7 +48,7 @@ class PlayerRenderer:
     self.gun_renderer.render(screen, player)
 
   def __to_screen_rect(self, screen_size: Tuple[int, int], player: Player) -> Rect:
-    player_screen_extent = Vector2(screen_size) * player.extent()
+    player_screen_extent = Vector2(screen_size) * player.extent
     left_top = Utils.to_screen_position(screen_size, player.position) - (player_screen_extent / 2.0)
     return Rect(left_top.x, left_top.y, player_screen_extent.x, player_screen_extent.y)
 

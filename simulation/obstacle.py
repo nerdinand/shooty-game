@@ -1,4 +1,5 @@
 from .rectangle import Rectangle
+from .collision import Collision
 
 
 class Obstacle:
@@ -15,5 +16,5 @@ class Obstacle:
   def get_name(self) -> str:
     return self.name
 
-  def apply_damage(self, damage: int) -> None:
+  def hit(self, collision: Collision) -> None:
     pass
