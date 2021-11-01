@@ -1,7 +1,6 @@
 from typing import List
 
 import pygame
-from pygame.locals import *
 
 
 class KeyMapper:
@@ -15,27 +14,35 @@ class KeyMapper:
   TOGGLE_SHOW_BOTS = 'TOGGLE_SHOW_BOTS'
 
   KEY_MAP = {
-    K_w: UP,                # type: ignore[name-defined]
-    K_a: LEFT,              # type: ignore[name-defined]
-    K_s: DOWN,              # type: ignore[name-defined]
-    K_d: RIGHT,             # type: ignore[name-defined]
-    K_r: RELOAD,            # type: ignore[name-defined]
-    K_m: TOGGLE_SHOW_MAP,   # type: ignore[name-defined]
-    K_b: TOGGLE_SHOW_BOTS   # type: ignore[name-defined]
+    pygame.K_w: UP,
+    pygame.K_a: LEFT,
+    pygame.K_s: DOWN,
+    pygame.K_d: RIGHT,
+    pygame.K_r: RELOAD,
+  }
+
+  TOGGLE_KEYS = {
+    pygame.K_m: TOGGLE_SHOW_MAP,
+    pygame.K_b: TOGGLE_SHOW_BOTS
   }
 
   def map(self) -> List[str]:
-    if self.__quit_event():
-      return [KeyMapper.QUIT]
+    key_events = []
+
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT or self.__is_key_pressed(event, pygame.K_ESCAPE):
+        return [KeyMapper.QUIT]
+
+      for k, v in KeyMapper.TOGGLE_KEYS.items():
+        if self.__is_key_pressed(event, k):
+          key_events.append(v)
 
     keystate = pygame.key.get_pressed()
-    return [v for k, v in KeyMapper.KEY_MAP.items() if keystate[k]]
+    for k, v in KeyMapper.KEY_MAP.items():
+      if keystate[k]:
+        key_events.append(v)
 
-  def __quit_event(self) -> bool:
-    for event in pygame.event.get():
-      if event.type == QUIT or self.__is_esc_pressed(event):  # type: ignore[name-defined]
-          return True
-    return False
+    return key_events
 
-  def __is_esc_pressed(self, event: pygame.event.Event) -> bool:
-    return event.type == KEYDOWN and event.key == K_ESCAPE  # type: ignore[name-defined]
+  def __is_key_pressed(self, event: pygame.event.Event, key: int) -> bool:
+    return event.type == pygame.KEYDOWN and event.key == key
