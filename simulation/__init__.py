@@ -9,3 +9,5 @@ from .entity import Entity
 from .projectile import Projectile
 from .visibility import Visibility
 from .bot import Bot
+from .player_factory import PlayerFactory
+from .agent import Agent

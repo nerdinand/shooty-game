@@ -19,7 +19,7 @@ class SimulationRenderer:
     if render_settings.show_map:
       self.map_renderer.render(screen, simulation.map)
 
-    if simulation.human is not None:
+    if render_settings.show_visibility and simulation.human is not None:
       self.visibility_renderer.render(screen, simulation)
 
     for player in simulation.players:

@@ -16,6 +16,7 @@ class PlayerRenderer:
 
   PLAYER_COLORS = {
     PlayerType.HUMAN: Colors.HUMAN_COLOR,
+    PlayerType.AGENT: Colors.HUMAN_COLOR,
     PlayerType.BOT: Colors.BOT_COLOR
   }
 
@@ -26,7 +27,7 @@ class PlayerRenderer:
     screen_rect = self.__to_screen_rect(screen.get_size(), player)
     color = PlayerRenderer.PLAYER_COLORS[player.player_type]
 
-    if player.player_type == PlayerType.HUMAN:
+    if player.player_type == PlayerType.HUMAN or player.player_type == PlayerType.AGENT:
       self.__render_fov_angles(screen, player)
 
     pygame.draw.ellipse(screen, color, screen_rect, width=1)

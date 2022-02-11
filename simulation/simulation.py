@@ -5,21 +5,24 @@ from .projectile_collider import ProjectileCollider
 
 
 class Simulation:
-  MAX_TICKS = (10  # ticks per frame
+  MAX_TICKS = int(10  # ticks per frame
                * 60  # FPS
-               * 2  # minutes
+               * 0.5  # minutes
                * 60)  # seconds per minute
 
-  def __init__(self) -> None:
+  def __init__(self, agent=None) -> None:
     player_factory = PlayerFactory()
     self.human = player_factory.human()
     self.players = [
-      self.human,
+      # player_factory.agent()
+      # self.human,
       player_factory.random_bot(),
       player_factory.random_bot(),
       player_factory.random_bot(),
       player_factory.random_bot()
     ]
+    if not agent is None:
+      self.players.append(agent)
     map_factory = MapFactory()
     self.map = map_factory.simple_map()
     self.tick_count = 0

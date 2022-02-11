@@ -1,3 +1,4 @@
+from .agent import Agent
 from .bot import Bot
 from .human import Human
 from .math_util import MathUtil
@@ -20,3 +21,6 @@ class PlayerFactory:
 
   def human(self) -> Human:
     return Human('Human', gun=Rifle)
+
+  def agent(self) -> Agent:
+    return Agent('Agent', gun=Rifle)

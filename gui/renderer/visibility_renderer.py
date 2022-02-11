@@ -1,6 +1,6 @@
 import pygame
 
-from simulation import Simulation, Visibility, Obstacle, Bot, Human
+from simulation import Simulation, Visibility, Obstacle, Bot, Human, Agent
 from .utils import Utils
 from .colors import Colors
 
@@ -9,7 +9,8 @@ class VisibilityRenderer:
   COLOR_MAP = {
     Obstacle: Colors.OBSTACLES_COLOR,
     Bot: Colors.BOT_COLOR,
-    Human: Colors.HUMAN_COLOR
+    Human: Colors.HUMAN_COLOR,
+    Agent: Colors.HUMAN_COLOR
   }
 
   def __init__(self) -> None:
