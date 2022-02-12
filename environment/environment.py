@@ -55,6 +55,8 @@ class Environment(gym.Env):
         if direction_vector.length_squared() != 0.0:
           direction_vector.normalize_ip()
 
+        self.agent.update_move_direction(direction_vector)
+
         if action[4] == 1:
             self.agent.gun.start_reload()
 
@@ -75,8 +77,8 @@ class Environment(gym.Env):
 
         #        72000                      - 5 * 100000
         reward = self.simulation.tick_count - self.simulation.alive_players_count() * 100000
-
-        return self.__get_observation(), reward, done, {}
+        observation = self.__get_observation()
+        return observation, reward, done, {}
 
     def render(self):
         self.gui.tick()
@@ -89,5 +91,5 @@ class Environment(gym.Env):
         visible_points = self.visibility.get_visible_points(self.simulation, self.agent)
         return OrderedDict([
             ('positions', np.array([(p.position.x, p.position.y) for p in visible_points])), 
-            ('types', np.array([(0 if isinstance(p, Obstacle) else 1) for p in visible_points]))
+            ('types', np.array([(0 if isinstance(p.entity, Obstacle) else 1) for p in visible_points]))
         ])

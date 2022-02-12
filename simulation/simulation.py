@@ -21,8 +21,9 @@ class Simulation:
       player_factory.random_bot(),
       player_factory.random_bot()
     ]
-    if not agent is None:
-      self.players.append(agent)
+    self.agent = agent
+    if not self.agent is None:
+      self.players.append(self.agent)
     map_factory = MapFactory()
     self.map = map_factory.simple_map()
     self.tick_count = 0
@@ -36,7 +37,7 @@ class Simulation:
     self.map.tick()
 
   def is_over(self) -> bool:
-    return self.__is_time_over() or self.__are_players_dead()
+    return self.__is_time_over() or self.__are_players_dead() or self.__is_agent_dead()
 
   def alive_players_count(self) -> int:
     return sum(map(lambda p: not p.is_dead, self.players))
@@ -46,3 +47,9 @@ class Simulation:
 
   def __are_players_dead(self) -> bool:
     return self.alive_players_count() <= 1 and len(self.players) > 1
+
+  def __is_agent_dead(self) -> bool:
+    if self.agent is None:
+      return False
+    else:
+      return self.agent.is_dead

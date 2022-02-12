@@ -1,30 +1,17 @@
-import gym
 from stable_baselines3 import PPO
 from environment import Environment
+
+TIMESTEPS = 10000
 
 def main() -> None:
   env = Environment(with_gui=False)
   env.reset()
 
-  model = PPO('MultiInputPolicy', env, verbose=1)
-  model.learn(total_timesteps=10000)
+  model = PPO('MultiInputPolicy', env, verbose=1, tensorboard_log='logs')
 
-  episodes = 10
-
-  env = Environment(with_gui=True)
-  for ep in range(episodes):
-    obs = env.reset()
-    done = False
-    cumulated_reward = 0
-
-    while not done:
-      action, _states = model.predict(obs)
-      obs, reward, done, info = env.step(action)
-      env.render()
-      cumulated_reward += reward
-
-    print(cumulated_reward)
-
+  for i in range(1000):
+    model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name="PPO")
+    model.save(f"models/PPO_{TIMESTEPS * (i+1)}")
 
 if __name__ == '__main__':
   main()
