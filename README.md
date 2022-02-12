@@ -28,7 +28,7 @@ You can move the blue player with WASD, aim and shoot with the mouse, R is reloa
 
 ## To Do
 
-* [ ] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
+* [x] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
 
 ## License
 

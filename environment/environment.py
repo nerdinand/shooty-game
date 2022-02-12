@@ -57,8 +57,8 @@ class Environment(gym.Env):
 
         self.agent.update_move_direction(direction_vector)
 
-        if action[4] == 1:
-            self.agent.gun.start_reload()
+        # if action[4] == 1:
+        #     self.agent.gun.start_reload()
 
         if action[5] == 1:
             self.agent.gun.shoot()
@@ -75,8 +75,10 @@ class Environment(gym.Env):
 
         done = self.simulation.is_over()
 
-        #        72000                      - 5 * 100000
-        reward = self.simulation.tick_count - self.simulation.alive_players_count() * 100000
+        reward = - (self.simulation.alive_players_count() + 1)
+        if self.agent.is_dead:
+            reward = reward - 10
+
         observation = self.__get_observation()
         return observation, reward, done, {}
 
@@ -89,6 +91,7 @@ class Environment(gym.Env):
 
     def __get_observation(self):
         visible_points = self.visibility.get_visible_points(self.simulation, self.agent)
+        assert len(visible_points) == 61
         return OrderedDict([
             ('positions', np.array([(p.position.x, p.position.y) for p in visible_points])), 
             ('types', np.array([(0 if isinstance(p.entity, Obstacle) else 1) for p in visible_points]))
