@@ -1,55 +1,60 @@
-from .player_factory import PlayerFactory
 from .map_factory import MapFactory
 from .player_collider import PlayerCollider
+from .player_factory import PlayerFactory
 from .projectile_collider import ProjectileCollider
 
 
 class Simulation:
-  MAX_TICKS = int(10  # ticks per frame
-               * 60  # FPS
-               * 0.5  # minutes
-               * 60)  # seconds per minute
+    MAX_TICKS = int(
+        10 * 60 * 0.5 * 60  # ticks per frame  # FPS  # minutes
+    )  # seconds per minute
 
-  def __init__(self, agent=None) -> None:
-    player_factory = PlayerFactory()
-    self.human = player_factory.human()
-    self.players = [
-      # player_factory.agent()
-      # self.human,
-      player_factory.random_bot(),
-      player_factory.random_bot(),
-      player_factory.random_bot(),
-      player_factory.random_bot()
-    ]
-    self.agent = agent
-    if not self.agent is None:
-      self.players.append(self.agent)
-    map_factory = MapFactory()
-    self.map = map_factory.simple_map()
-    self.tick_count = 0
-    self.player_collider = PlayerCollider(self)
-    self.projectile_collider = ProjectileCollider(self)
+    def __init__(self, agent=None, with_human=False, bot_count=4) -> None:
+        player_factory = PlayerFactory()
+        self.players = []
+        self.human = None
 
-  def tick(self) -> None:
-    self.tick_count += 1
-    for player in self.players:
-      player.tick(self.player_collider, self.projectile_collider)
-    self.map.tick()
+        for _i in range(bot_count):
+            self.players.append(player_factory.random_bot())
 
-  def is_over(self) -> bool:
-    return self.__is_time_over() or self.__are_players_dead() or self.__is_agent_dead()
+        if with_human:
+            self.human = player_factory.human()
+            self.players.append(self.human)
 
-  def alive_players_count(self) -> int:
-    return sum(map(lambda p: not p.is_dead, self.players))
+        self.agent = agent
+        if not self.agent is None:
+            self.players.append(self.agent)
 
-  def __is_time_over(self) -> bool:
-    return self.tick_count >= Simulation.MAX_TICKS
+        self.map = MapFactory.simple_map()
+        self.tick_count = 0
+        self.player_collider = PlayerCollider(self)
+        self.projectile_collider = ProjectileCollider(self)
 
-  def __are_players_dead(self) -> bool:
-    return self.alive_players_count() <= 1 and len(self.players) > 1
+    def tick(self) -> None:
+        self.tick_count += 1
+        for player in self.players:
+            player.tick(self.player_collider, self.projectile_collider)
+        self.map.tick()
 
-  def __is_agent_dead(self) -> bool:
-    if self.agent is None:
-      return False
-    else:
-      return self.agent.is_dead
+    def is_over(self) -> bool:
+        return (
+            self.__is_time_over() or self.__are_players_dead() or self.__is_agent_dead()
+        )
+
+    def alive_players_count(self) -> int:
+        return sum(map(lambda p: not p.is_dead, self.players))
+
+    def __is_time_over(self) -> bool:
+        return self.tick_count >= Simulation.MAX_TICKS
+
+    def __are_players_dead(self) -> bool:
+        return (
+            self.alive_players_count() <= 1  # pylint: disable=chained-comparison
+            and len(self.players) > 1
+        )
+
+    def __is_agent_dead(self) -> bool:
+        if self.agent is None:
+            return False
+
+        return self.agent.is_dead

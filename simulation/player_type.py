@@ -1,4 +1,4 @@
 class PlayerType:
-  HUMAN = 'HUMAN'
-  BOT = 'BOT'
-  AGENT = 'AGENT'
+    HUMAN = "HUMAN"
+    BOT = "BOT"
+    AGENT = "AGENT"

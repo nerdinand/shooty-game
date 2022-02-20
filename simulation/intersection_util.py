@@ -7,30 +7,38 @@ from .intersection import Intersection
 
 
 class IntersectionUtil:
-  @staticmethod
-  def find_intersections(
-    p0: Vector2, p1: Vector2, entity: Entity
-  ) -> list[Intersection]:
-    intersections = []
-    for (p2, p3) in entity.get_rectangle().all_sides:
-      intersection_point = IntersectionUtil.find_intersection(p0, p1, p2, p3)
-      if intersection_point is not None:
-        intersections.append(Intersection(intersection_point, entity))
-    return intersections
+    @staticmethod
+    def find_intersections(
+        point0: Vector2, point1: Vector2, entity: Entity
+    ) -> list[Intersection]:
+        intersections = []
+        for (point2, point3) in entity.get_rectangle().all_sides:
+            intersection_point = IntersectionUtil.find_intersection(
+                point0, point1, point2, point3
+            )
+            if intersection_point is not None:
+                intersections.append(Intersection(intersection_point, entity))
+        return intersections
 
-  @staticmethod
-  def find_intersection(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2) -> Optional[Vector2]:
-    s1 = p1 - p0
-    s2 = p3 - p2
-    divisor = s1.cross(s2)
+    @staticmethod
+    def find_intersection(
+        point0: Vector2, point1: Vector2, point2: Vector2, point3: Vector2
+    ) -> Optional[Vector2]:
+        s1 = point1 - point0  # pylint: disable=invalid-name
+        s2 = point3 - point2  # pylint: disable=invalid-name
+        divisor = s1.cross(s2)
 
-    if divisor == 0:
-      return None
+        if divisor == 0:
+            return None
 
-    s = (-s1.y * (p0.x - p2.x) + s1.x * (p0.y - p2.y)) / divisor  # type: ignore[operator]
-    t = (s2.x * (p0.y - p2.y) - s2.y * (p0.x - p2.x)) / divisor  # type: ignore[operator]
+        s = (  # pylint: disable=invalid-name
+            -s1.y * (point0.x - point2.x) + s1.x * (point0.y - point2.y)
+        ) / divisor
+        t = (  # pylint: disable=invalid-name
+            s2.x * (point0.y - point2.y) - s2.y * (point0.x - point2.x)
+        ) / divisor
 
-    if s >= 0 and s <= 1 and t >= 0 and t <= 1:
-      return Vector2(p0.x + (t * s1.x), p0.y + (t * s1.y))
-    else:
-      return None
+        if 0 <= s <= 1 and 0 <= t <= 1:
+            return Vector2(point0.x + (t * s1.x), point0.y + (t * s1.y))
+
+        return None

@@ -18,12 +18,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install
-    - name: Running tests
+    - name: Run static code analysis
+      run: |
+        poetry run pylint **/*.py
+    - name: Run type checker
+      run: |
+        poetry run pyre --strict check
+    - name: Run tests
       run: |
         PYTHONPATH=. poetry run pytest
-    - name: Analysing the code with mypy
-      run: |
-        poetry run mypy **/*.py
-    - name: Analysing the code with pycodestyle
-      run: |
-        poetry run pycodestyle **/*.py
