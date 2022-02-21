@@ -68,6 +68,9 @@ poetry run bin/check.sh
 
 * [x] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
 * [ ] Train a model that does something reasonable
+* [ ] Write more tests for simulation part
+* [ ] Parallelise training
+* [ ] Describe training and playback in README
 
 ## License
 
