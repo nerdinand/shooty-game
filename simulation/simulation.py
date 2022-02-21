@@ -4,6 +4,7 @@ from .agent import Agent
 from .human import Human
 from .map import Map
 from .map_factory import MapFactory
+from .math_util import MathUtil
 from .player import Player
 from .player_collider import PlayerCollider
 from .player_factory import PlayerFactory
@@ -17,10 +18,13 @@ class Simulation:
 
     def __init__(
         self,
+        random_seed: Optional[int] = None,
         agent: Optional[Agent] = None,
         with_human: bool = False,
         bot_count: int = 4,
     ) -> None:
+        MathUtil.seed(random_seed)
+
         player_factory = PlayerFactory()
         self.players: list[Player] = []
         self.human: Optional[Human] = None

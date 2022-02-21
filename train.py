@@ -3,7 +3,7 @@ from stable_baselines3 import PPO
 from environment import Environment
 
 TIMESTEPS = 10000
-EXPERIMENT_NUMBER = 3
+EXPERIMENT_NUMBER = 4
 
 
 def main() -> None:

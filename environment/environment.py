@@ -35,8 +35,10 @@ class Environment(gym.Env):
         buttons_space = spaces.MultiBinary(8)
         self.action_space: spaces.multi_binary.MultiBinary = buttons_space
 
-        positions_space = spaces.Box(low=0.0, high=1.0, shape=(61, 2), dtype=np.float32)
-        types_space = spaces.MultiBinary(61)
+        positions_space = spaces.Box(
+            low=0.0, high=1.0, shape=(Visibility.NUMBER_OF_RAYS, 2), dtype=np.float32
+        )
+        types_space = spaces.MultiBinary(Visibility.NUMBER_OF_RAYS)
         self.observation_space = spaces.Dict(
             {"positions": positions_space, "types": types_space}
         )
@@ -110,7 +112,7 @@ class Environment(gym.Env):
 
     def __get_observation(self) -> Observation:
         visible_points = Visibility.get_visible_points(self.simulation, self.agent)
-        if len(visible_points) != 61:
+        if len(visible_points) != Visibility.NUMBER_OF_RAYS:
             print("\a")
             import pdb  # pylint: disable=import-outside-toplevel
 

@@ -1,4 +1,3 @@
-import random
 from typing import Type
 
 from pygame.math import Vector2
@@ -24,7 +23,7 @@ class Bot(Player):
             self.move_direction += MathUtil.random_vector2(minimum=-1.0, maximum=1.0)
             self.look_direction += MathUtil.random_direction_change()
 
-            if random.random() < 0.001:
+            if MathUtil.random_float() < 0.001:
                 self.gun.shoot()
 
         super().tick(player_collider, projectile_collider)
