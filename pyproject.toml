@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "shooty-game"
 version = "0.1.0"
-description = ""
+description = "Game/Simulation which is a 2D-analog of Counter Strike as a target for Deep Reinforcement Learning."
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
