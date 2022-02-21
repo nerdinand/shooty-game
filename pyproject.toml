@@ -1,17 +1,47 @@
 [tool.poetry]
 name = "shooty-game"
 version = "0.1.0"
-description = ""
+description = "Game/Simulation which is a 2D-analog of Counter Strike as a target for Deep Reinforcement Learning."
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pygame = "^2.0.2"
+pygame = "^2.1.2"
+stable-baselines3 = "^1.4.0"
+tensorboard = "^2.8.0"
+click = "^8.0.4"
 
 [tool.poetry.dev-dependencies]
-mypy = "^0.910"
-pycodestyle = "^2.8.0"
-pytest = "^6.2.5"
+pytest = "^7.0.1"
+pyre-check = "^0.9.10"
+black = "^22.1.0"
+reorder-python-imports = "^2.7.1"
+pylint = "^2.12.2"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.MASTER]
+ignore-paths = "tests/*"
+
+[tool.pylint.messages_control]
+disable = [
+    # don't bother with documentation for now
+    "missing-module-docstring",
+    "missing-function-docstring",
+    "missing-class-docstring",
+    
+    # don't hinder me creating small classes!
+    "too-few-public-methods",
+    
+    # reorder-python-imports should know what it's doing
+    "wrong-import-order",
+
+    # can't do much about duplicate imports in two files, I'm afraid...
+    "duplicate-code"
+]
+
+extension-pkg-allow-list=[
+    "pygame"
+]

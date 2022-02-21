@@ -1,55 +1,88 @@
 import time
 
-from simulation import Simulation
+import click
+
 from gui import Gui
+from gui.renderer.render_settings import RenderSettings
+from simulation import Simulation
 
 
-def main(with_gui: bool = True) -> None:
-  simulation = Simulation()
-
-  if with_gui:
-    run_with_gui(simulation)
-  else:
-    run_without_gui(simulation)
-
-  print()
+@click.group()
+def cli() -> None:
+    pass
 
 
-def run_with_gui(simulation: Simulation) -> None:
-  gui = Gui(key_target_player=simulation.human)
-  gui.initialize()
+@cli.command("sim")
+@click.option("--bot-count", default=4, help="How many bots to spawn.")
+def run_simulation(bot_count: int) -> None:
+    simulation = Simulation(bot_count=bot_count)
+    start_time = time.time()
 
-  start_time = time.time()
+    while not simulation.is_over():
+        simulation.tick()
+        print_statistics(start_time, simulation)
 
-  while not simulation.is_over() and not gui.should_quit():
-    simulation.tick()
-
-    gui.tick()
-
-    gui.handle_key_events()
-    gui.handle_mouse_events()
-
-    if gui.is_render_necessary():
-      gui.render(simulation)
-
-    print_statistics(start_time, simulation)
+    print()
 
 
-def run_without_gui(simulation: Simulation) -> None:
-  start_time = time.time()
+@cli.command("gui")
+@click.option(
+    "--with-human",
+    default=False,
+    is_flag=True,
+    help="Run simulation with a human (controllable with keyboard).",
+)
+@click.option("--bot-count", default=4, help="How many bots to spawn.")
+@click.option("--show-bots/--hide-bots", default=True, help="Show bots in GUI.")
+@click.option(
+    "--show-map/--hide-map", default=True, help="Show map (obstacles) in GUI."
+)
+@click.option(
+    "--show-visibility/--hide-visibility",
+    default=False,
+    help="Show visibility (FOV cone and visible points) in GUI.",
+)
+def run_gui(
+    with_human: bool,
+    bot_count: int,
+    show_bots: bool,
+    show_map: bool,
+    show_visibility: bool,
+) -> None:
+    simulation = Simulation(with_human=with_human, bot_count=bot_count)
+    gui = Gui(
+        key_target_player=simulation.human,
+        render_settings=RenderSettings(show_bots, show_map, show_visibility),
+    )
+    gui.initialize()
 
-  while not simulation.is_over():
-    simulation.tick()
-    print_statistics(start_time, simulation)
+    start_time = time.time()
+
+    while not simulation.is_over() and not Gui.should_quit():
+        simulation.tick()
+
+        gui.tick()
+
+        gui.handle_key_events()
+        gui.handle_mouse_events()
+
+        if gui.is_render_necessary():
+            gui.render(simulation)
+
+        print_statistics(start_time, simulation)
+
+    print()
 
 
 def print_statistics(start_time: float, simulation: Simulation) -> None:
-  current_time = time.time()
-  print(f'Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} \
+    current_time = time.time()
+    print(
+        f"Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} \
 TPS: {round(simulation.tick_count / ((current_time - start_time)))} \
-Players: {simulation.alive_players_count()}        ', end="\r")
+Players: {simulation.alive_players_count()}        ",
+        end="\r",
+    )
 
 
-if __name__ == '__main__':
-  # main(with_gui=False)
-  main(with_gui=True)
+if __name__ == "__main__":
+    cli()
