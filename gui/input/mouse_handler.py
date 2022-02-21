@@ -7,7 +7,7 @@ from simulation import Player
 
 
 class MouseHandler:
-    def __init__(self, screen_rect: pygame.rect.Rect):
+    def __init__(self, screen_rect: pygame.rect.Rect) -> None:
         self.screen_rect = screen_rect
 
     def handle_mouse_events(self, player: Player) -> None:

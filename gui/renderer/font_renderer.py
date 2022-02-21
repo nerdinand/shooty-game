@@ -5,7 +5,7 @@ import pygame
 from .colors import Colors
 
 
-class FontRenderer:
+class FontRenderer:  # pyre-ignore[13]
     font: pygame.font.Font
 
     @staticmethod

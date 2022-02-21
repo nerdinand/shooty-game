@@ -3,10 +3,11 @@ from pygame.math import Vector2
 from simulation.collision import Collision
 from simulation.intersection_util import IntersectionUtil
 from simulation.rectangle import Rectangle
+from simulation.entity import Entity
 
 
 class TestIntersectionUtil:
-    class TestEntity:
+    class TestEntity(Entity):
         def get_rectangle(self) -> Rectangle:
             return Rectangle(2.0, 2.0, 2.0, 1.0)
 

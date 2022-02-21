@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class PlayerCollider:
-    def __init__(self, simulation: Simulation):
+    def __init__(self, simulation: Simulation) -> None:
         self.simulation = simulation
 
     def move(self, player: Player) -> None:

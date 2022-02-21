@@ -3,6 +3,8 @@ from .bot import Bot
 from .entity import Entity
 from .entity import EntityType
 from .human import Human
+from .intersection import Intersection
+from .intersection import NoneIntersection
 from .map import Map
 from .obstacle import Obstacle
 from .player import Player

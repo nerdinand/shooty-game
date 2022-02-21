@@ -5,7 +5,7 @@ from stable_baselines3 import PPO
 from environment import Environment
 
 
-def main():
+def main() -> None:
     model = sys.argv[1]
 
     episodes = 10
@@ -19,7 +19,7 @@ def main():
         cumulated_reward = 0
 
         while not done:
-            action, _states = model.predict(observation)
+            action, _states = model.predict(observation)  # pyre-ignore[6]
             observation, reward, done, _info = env.step(action)
             env.render()
             cumulated_reward += reward

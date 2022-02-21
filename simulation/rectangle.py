@@ -5,11 +5,11 @@ from pygame.math import Vector2
 
 
 class Rectangle:
-    def __init__(self, left: float, top: float, width: float, height: float):
+    def __init__(self, left: float, top: float, width: float, height: float) -> None:
         self.left_top = Vector2(left, top)
         self.width = width
         self.height = height
-        self.all_sides = self.__all_sides()
+        self.all_sides: List[Tuple[Vector2, Vector2]] = self.__all_sides()
 
     def top(self) -> float:
         return self.left_top.y

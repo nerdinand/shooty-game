@@ -11,19 +11,20 @@ if TYPE_CHECKING:
 
 
 class EntityType(Enum):
-    NONE, OBSTACLE, PLAYER = range(3)
+    OBSTACLE = 1
+    PLAYER = 1
 
 
 @runtime_checkable
 class Entity(Protocol):
     def get_rectangle(self) -> Rectangle:
-        pass
+        raise NotImplementedError
 
     def hit(self, collision: Collision) -> None:
-        pass
+        raise NotImplementedError
 
     def get_name(self) -> str:
-        pass
+        raise NotImplementedError
 
-    def type(self) -> EntityType:
-        pass
+    def get_entity_type(self) -> EntityType:
+        raise NotImplementedError

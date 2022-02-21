@@ -3,41 +3,48 @@ from typing import Type
 from pygame.math import Vector2
 
 from .collision import Collision
+from .entity import Entity
 from .entity import EntityType
+from .gun import Gun
 from .player_collider import PlayerCollider
 from .player_type import PlayerType
 from .projectile_collider import ProjectileCollider
 from .rectangle import Rectangle
 
 
-class Player:  # pylint: disable=too-many-instance-attributes
+class Player(Entity):  # pylint: disable=too-many-instance-attributes
     EXTENT = 0.03
 
     PLAYER_ACCELERATION = 0.00001
     PLAYER_ACCELERATION_DAMPENING = 0.9
 
     MAX_VELOCITY = 1e-4
-    MAX_VELOCITY_SQUARED = MAX_VELOCITY * MAX_VELOCITY
+    MAX_VELOCITY_SQUARED: float = MAX_VELOCITY * MAX_VELOCITY
     MIN_VELOCITY_THRESHOLD = 0.00001
-    MIN_VELOCITY_THRESHOLD_SQUARED = MIN_VELOCITY_THRESHOLD * MIN_VELOCITY_THRESHOLD
+    MIN_VELOCITY_THRESHOLD_SQUARED: float = (
+        MIN_VELOCITY_THRESHOLD * MIN_VELOCITY_THRESHOLD
+    )
 
     MAX_HEALTH = 100
 
     FOV_ANGLE = 60
 
-    def __init__(self, player_type: str, name: str, position: Vector2, gun_class: Type):
+    def __init__(
+        self, player_type: str, name: str, position: Vector2, gun_class: Type[Gun]
+    ) -> None:
+        super().__init__()
         self.player_type = player_type
         self.name = name
         self.position = position
-        self.gun = gun_class(self)
+        self.gun: Gun = gun_class(self)  # pyre-ignore[20]
         self.move_direction = Vector2(0, 0)
         self.velocity = Vector2(0.0, 0.0)
         self.look_direction = 0.0
         self.is_dead = False
         self.is_moving = False
-        self.health = Player.MAX_HEALTH
-        self.extent = Player.EXTENT
-        self.radius = self.extent / 2.0
+        self.health: int = Player.MAX_HEALTH
+        self.extent: float = Player.EXTENT
+        self.radius: float = self.extent / 2.0
 
     def get_name(self) -> str:
         return self.name
@@ -90,5 +97,5 @@ class Player:  # pylint: disable=too-many-instance-attributes
             self.velocity = Vector2(0.0, 0.0)
             self.is_moving = False
 
-    def type(self) -> EntityType:  # pylint: disable=no-self-use
+    def get_entity_type(self) -> EntityType:  # pylint: disable=no-self-use
         return EntityType.PLAYER

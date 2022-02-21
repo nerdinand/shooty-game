@@ -1,12 +1,14 @@
 from .collision import Collision
+from .entity import Entity
 from .entity import EntityType
 from .rectangle import Rectangle
 
 
-class Obstacle:
-    def __init__(
+class Obstacle(Entity):
+    def __init__(  # pylint: disable=too-many-arguments
         self, name: str, left: float, top: float, width: float, height: float
-    ):  # pylint: disable=too-many-arguments
+    ) -> None:
+        super().__init__()
         self.name = name
         self.left = left
         self.top = top
@@ -22,5 +24,5 @@ class Obstacle:
     def hit(self, collision: Collision) -> None:
         pass
 
-    def type(self) -> EntityType:  # pylint: disable=no-self-use
+    def get_entity_type(self) -> EntityType:
         return EntityType.OBSTACLE

@@ -1,7 +1,7 @@
+import typing
 from collections import OrderedDict
 from typing import Optional
 from typing import Tuple
-import typing
 
 import gym
 import numpy as np
@@ -11,6 +11,8 @@ from pygame.math import Vector2
 
 from gui import Gui
 from simulation import Agent
+from simulation import Intersection
+from simulation import NoneIntersection
 from simulation import PlayerFactory
 from simulation import Simulation
 from simulation import Visibility
@@ -26,8 +28,8 @@ class Environment(gym.Env):
         super().__init__()
 
         self.gui: Optional[Gui] = None
-        self.agent: Optional[Agent] = None
-        self.simulation: Optional[Simulation] = None
+        self.agent: Agent = None  # pyre-ignore[8]
+        self.simulation: Simulation = None  # pyre-ignore[8]
 
         # W, A, S, D, R, Mouse1, look-, look+
         buttons_space = spaces.MultiBinary(8)
@@ -47,7 +49,7 @@ class Environment(gym.Env):
         return self.__get_observation()
 
     def step(
-        self, action: spaces.multi_binary.MultiBinary
+        self, action: npt.NDArray
     ) -> Tuple[OrderedDict[str, npt.NDArray], int, bool, typing.Dict[str, str]]:
         direction_vector = Vector2()
 
@@ -90,16 +92,19 @@ class Environment(gym.Env):
         observation = self.__get_observation()
         return observation, reward, done, {}
 
-    def render(self, mode: str = "human"):
+    def render(self, mode: str = "human") -> None:
         if mode == "human":
-            if self.gui is None:
-                self.gui = Gui(key_target_player=self.simulation.human)
-                self.gui.initialize()
-            self.gui.tick()
-            self.gui.handle_key_events()
-            self.gui.handle_mouse_events()
-            if self.gui.is_render_necessary():
-                self.gui.render(self.simulation)
+            gui = self.gui
+            if gui is None:
+                gui = Gui(key_target_player=self.simulation.human)
+                self.gui = gui
+                gui.initialize()
+
+            gui.tick()
+            gui.handle_key_events()
+            gui.handle_mouse_events()
+            if gui.is_render_necessary():
+                gui.render(self.simulation)
         else:
             super().render(mode=mode)
 
@@ -117,6 +122,18 @@ class Environment(gym.Env):
                     "positions",
                     np.array([(p.position.x, p.position.y) for p in visible_points]),
                 ),
-                ("types", np.array([p.entity.type().value for p in visible_points])),
+                (
+                    "types",
+                    np.array(
+                        [Environment.__map_entity_type(p) for p in visible_points]
+                    ),
+                ),
             ]
         )
+
+    @classmethod
+    def __map_entity_type(cls, intersection: Intersection) -> int:
+        if intersection is NoneIntersection:
+            return -1
+
+        return intersection.entity.get_entity_type().value

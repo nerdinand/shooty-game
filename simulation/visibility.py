@@ -1,9 +1,12 @@
+from typing import cast
 from typing import Optional
 
 from pygame.math import Vector2
 
 from .intersection import Intersection
+from .intersection import NoneIntersection
 from .intersection_util import IntersectionUtil
+from .obstacle import Obstacle
 from .player import Player
 from .simulation import Simulation
 
@@ -24,7 +27,11 @@ class Visibility:
 
         for i in range(Visibility.NUMBER_OF_RAYS):
             ray_angle = left_angle + i * angle_interval
-            visible_points.append(Visibility.__cast_ray(ray_angle, simulation, player))
+            visible_point = Visibility.__cast_ray(ray_angle, simulation, player)
+            if visible_point is not None:
+                visible_points.append(visible_point)
+            else:
+                visible_points.append(NoneIntersection(player))
 
         return visible_points
 
@@ -38,7 +45,10 @@ class Visibility:
         ray_end_point = ray_start_point + vector
 
         intersections = []
-        for obstacle in simulation.map.obstacles + simulation.players:
+        obstacles: list[Obstacle] = simulation.map.obstacles + cast(
+            list[Obstacle], simulation.players
+        )
+        for obstacle in obstacles:
             if obstacle == player:
                 continue
             intersections += IntersectionUtil.find_intersections(

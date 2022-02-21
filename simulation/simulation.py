@@ -1,4 +1,10 @@
+from typing import Optional
+
+from .agent import Agent
+from .human import Human
+from .map import Map
 from .map_factory import MapFactory
+from .player import Player
 from .player_collider import PlayerCollider
 from .player_factory import PlayerFactory
 from .projectile_collider import ProjectileCollider
@@ -9,10 +15,15 @@ class Simulation:
         10 * 60 * 0.5 * 60  # ticks per frame  # FPS  # minutes
     )  # seconds per minute
 
-    def __init__(self, agent=None, with_human=False, bot_count=4) -> None:
+    def __init__(
+        self,
+        agent: Optional[Agent] = None,
+        with_human: bool = False,
+        bot_count: int = 4,
+    ) -> None:
         player_factory = PlayerFactory()
-        self.players = []
-        self.human = None
+        self.players: list[Player] = []
+        self.human: Optional[Human] = None
 
         for _i in range(bot_count):
             self.players.append(player_factory.random_bot())
@@ -25,7 +36,7 @@ class Simulation:
         if not self.agent is None:
             self.players.append(self.agent)
 
-        self.map = MapFactory.simple_map()
+        self.map: Map = MapFactory.simple_map()
         self.tick_count = 0
         self.player_collider = PlayerCollider(self)
         self.projectile_collider = ProjectileCollider(self)

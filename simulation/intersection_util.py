@@ -33,10 +33,10 @@ class IntersectionUtil:
 
         s = (  # pylint: disable=invalid-name
             -s1.y * (point0.x - point2.x) + s1.x * (point0.y - point2.y)
-        ) / divisor
+        ) / divisor  # pyre-ignore[58]
         t = (  # pylint: disable=invalid-name
             s2.x * (point0.y - point2.y) - s2.y * (point0.x - point2.x)
-        ) / divisor
+        ) / divisor  # pyre-ignore[58]
 
         if 0 <= s <= 1 and 0 <= t <= 1:
             return Vector2(point0.x + (t * s1.x), point0.y + (t * s1.y))

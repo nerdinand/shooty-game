@@ -5,7 +5,7 @@ from .projectile import Projectile
 
 
 class Collision:
-    def __init__(self, projectile: Projectile, intersection: Intersection):
+    def __init__(self, projectile: Projectile, intersection: Intersection) -> None:
         self.projectile = projectile
         self.intersection = intersection
 

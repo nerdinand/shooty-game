@@ -1,5 +1,7 @@
 import pygame
 
+from typing import Type, Union
+
 from .colors import Colors
 from .utils import Utils
 from simulation import Agent
@@ -8,10 +10,11 @@ from simulation import Human
 from simulation import Obstacle
 from simulation import Simulation
 from simulation import Visibility
+from simulation import Entity
 
 
 class VisibilityRenderer:
-    COLOR_MAP = {
+    COLOR_MAP: dict[Type[Entity], pygame.Color] = {
         Obstacle: Colors.OBSTACLES_COLOR,
         Bot: Colors.BOT_COLOR,
         Human: Colors.HUMAN_COLOR,
@@ -20,7 +23,12 @@ class VisibilityRenderer:
 
     @classmethod
     def render(cls, screen: pygame.surface.Surface, simulation: Simulation) -> None:
-        visible_points = Visibility.get_visible_points(simulation, simulation.human)
+        human = simulation.human
+
+        if human is None:
+            return
+
+        visible_points = Visibility.get_visible_points(simulation, human)
         for visible_point in visible_points:
             screen_position = Utils.to_screen_position(
                 screen.get_size(), visible_point.position

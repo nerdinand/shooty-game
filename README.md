@@ -1,7 +1,7 @@
 # shooty-game
 ![Python build workflow](https://github.com/nerdinand/shooty-game/actions/workflows/python.yml/badge.svg)
 
-Game/Simulation that's supposed to become a 2D-analog of Counter Strike as a target for Deep Reinforcement Learning.
+Game/Simulation which is a 2D-analog of Counter Strike as a target for Deep Reinforcement Learning.
 
 ## Setup
 
@@ -14,10 +14,40 @@ poetry install
 
 ## Usage
 
-Run like this:
+```
+Usage: shooty.py [OPTIONS] COMMAND [ARGS]...
 
-```shell
-poetry run python shooty.py
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  gui
+  sim
+```
+
+shooty.py has 2 subcommands, `gui` and `sim`.
+
+```
+Usage: shooty.py gui [OPTIONS]
+
+Options:
+  --with-human                    Run simulation with a human (controllable
+                                  with keyboard).
+  --bot-count INTEGER             How many bots to spawn.
+  --show-bots / --hide-bots       Show bots in GUI.
+  --show-map / --hide-map         Show map (obstacles) in GUI.
+  --show-visibility / --hide-visibility
+                                  Show visibility (FOV cone and visible
+                                  points) in GUI.
+  --help                          Show this message and exit.
+```
+
+```
+Usage: shooty.py sim [OPTIONS]
+
+Options:
+  --bot-count INTEGER  How many bots to spawn.
+  --help               Show this message and exit.
 ```
 
 If run with UI activated, this is what you should see:
@@ -26,9 +56,18 @@ If run with UI activated, this is what you should see:
 
 You can move the blue player with WASD, aim and shoot with the mouse, R is reload.
 
+## Development
+
+We use a bunch of utilities to ensure code quality. Run them like this:
+
+```bash
+poetry run bin/check.sh
+```
+
 ## To Do
 
 * [x] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
+* [ ] Train a model that does something reasonable
 
 ## License
 

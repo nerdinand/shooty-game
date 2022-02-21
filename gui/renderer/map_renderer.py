@@ -3,6 +3,7 @@ from typing import Tuple
 
 import pygame
 from pygame.locals import Rect
+from pygame.math import Vector2
 
 from .colors import Colors
 from simulation import Entity
@@ -21,14 +22,18 @@ class MapRenderer:
 
     @classmethod
     def __screen_obstacles(
-        cls, screen_size: Tuple[int, int], entitys: Sequence[Entity]
+        cls, screen_size: Tuple[int, int], entities: Sequence[Entity]
     ) -> Sequence[Rect]:
-        return [MapRenderer.__to_screen_rect(screen_size, entity) for entity in entitys]
+        return [
+            MapRenderer.__to_screen_rect(screen_size, entity) for entity in entities
+        ]
 
     @classmethod
     def __to_screen_rect(cls, screen_size: Tuple[int, int], entity: Entity) -> Rect:
         rectangle = entity.get_rectangle()
-        left_top_transformed = rectangle.left_top.elementwise() * screen_size
+        left_top_transformed: Vector2 = (  # pyre-ignore[9]
+            rectangle.left_top.elementwise() * screen_size  # pyre-ignore[58]
+        )
         width_transformed = rectangle.width * screen_size[0]
         height_transformed = rectangle.height * screen_size[1]
         return Rect(

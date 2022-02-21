@@ -37,7 +37,10 @@ disable = [
     "too-few-public-methods",
     
     # reorder-python-imports should know what it's doing
-    "wrong-import-order"
+    "wrong-import-order",
+
+    # can't do much about duplicate imports in two files, I'm afraid...
+    "duplicate-code"
 ]
 
 extension-pkg-allow-list=[

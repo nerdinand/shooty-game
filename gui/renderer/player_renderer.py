@@ -15,7 +15,7 @@ from simulation import PlayerType
 class PlayerRenderer:
     RELOAD_INDICATOR = "*"
 
-    PLAYER_COLORS = {
+    PLAYER_COLORS: dict[str, pygame.Color] = {
         PlayerType.HUMAN: Colors.HUMAN_COLOR,
         PlayerType.AGENT: Colors.HUMAN_COLOR,
         PlayerType.BOT: Colors.BOT_COLOR,

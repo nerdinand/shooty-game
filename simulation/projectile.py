@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class Projectile:
     VELOCITY = 1e-3
 
-    def __init__(self, gun: Gun, position: Vector2, direction: float):
+    def __init__(self, gun: Gun, position: Vector2, direction: float) -> None:
         self.gun = gun
         self.position = position
         self.direction = direction

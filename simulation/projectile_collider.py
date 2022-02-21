@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class ProjectileCollider:
-    def __init__(self, simulation: Simulation):
+    def __init__(self, simulation: Simulation) -> None:
         self.simulation = simulation
 
     def apply_collision_effect(self, projectile: Projectile) -> bool:

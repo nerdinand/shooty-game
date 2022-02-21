@@ -24,7 +24,7 @@ class Gun:  # pylint: disable=too-many-instance-attributes
         maximum_damage: int,
         spray_pattern: List[float],
         reload_ticks: int,
-    ):
+    ) -> None:
         self.player = player
         self.cooldown_ticks = cooldown_ticks
         self.magazine_size = magazine_size

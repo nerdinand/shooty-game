@@ -3,7 +3,7 @@ from .player import Player
 
 
 class Rifle(Gun):
-    def __init__(self, player: Player):
+    def __init__(self, player: Player) -> None:
         super().__init__(
             player,
             cooldown_ticks=115,

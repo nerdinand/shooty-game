@@ -4,7 +4,7 @@ from .key_mapper import KeyMapper
 
 
 class DirectionMapper:
-    DIRECTIONS = {
+    DIRECTIONS: dict[str, Vector2] = {
         KeyMapper.UP: Vector2(0, -1),
         KeyMapper.LEFT: Vector2(-1, 0),
         KeyMapper.DOWN: Vector2(0, 1),

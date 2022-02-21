@@ -18,8 +18,8 @@ class Gui:
         render_every_tick_count: int = 10,
         key_target_player: Optional[Human] = None,
         resolution: Tuple[int, int] = (800, 600),
-        render_settings=RenderSettings(),
-    ):
+        render_settings: RenderSettings = RenderSettings(),
+    ) -> None:
         self.tick_count = 0
         self.render_every_tick_count = render_every_tick_count
         self.key_target_player = key_target_player
@@ -39,23 +39,16 @@ class Gui:
         self.tick_count = 0
 
     def handle_key_events(self) -> None:
-        if self.key_target_player is None:
+        player = self.key_target_player
+        if player is None:
             return
         key_events = KeyMapper.map()
         if KeyMapper.QUIT in key_events:
             return
         if KeyMapper.RELOAD in key_events:
-            self.key_target_player.gun.start_reload()
-        if KeyMapper.TOGGLE_SHOW_MAP in key_events:
-            self.renderer.render_settings.show_map = (
-                not self.renderer.render_settings.show_map
-            )
-        if KeyMapper.TOGGLE_SHOW_BOTS in key_events:
-            self.renderer.render_settings.show_bots = (
-                not self.renderer.render_settings.show_bots
-            )
+            player.gun.start_reload()
         direction_vector = DirectionMapper.map(key_events)
-        self.key_target_player.update_move_direction(direction_vector)
+        player.update_move_direction(direction_vector)
 
     def handle_mouse_events(self) -> None:
         if self.key_target_player is None:

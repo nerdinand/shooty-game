@@ -11,10 +11,12 @@ from simulation import Simulation
 
 
 class Renderer:
-    def __init__(self, resolution: Tuple[int, int], render_settings: RenderSettings):
+    def __init__(
+        self, resolution: Tuple[int, int], render_settings: RenderSettings
+    ) -> None:
         self.screen_rect = Rect(0, 0, resolution[0], resolution[1])
         self.render_settings = render_settings
-        self.screen = None
+        self.screen: pygame.display.Surface = None  # pyre-ignore[8]
 
     def initialize(self) -> None:
         winstyle = 0  # full screen

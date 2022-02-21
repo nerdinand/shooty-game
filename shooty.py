@@ -8,7 +8,7 @@ from simulation import Simulation
 
 
 @click.group()
-def cli():
+def cli() -> None:
     pass
 
 
@@ -48,7 +48,7 @@ def run_gui(
     show_bots: bool,
     show_map: bool,
     show_visibility: bool,
-):
+) -> None:
     simulation = Simulation(with_human=with_human, bot_count=bot_count)
     gui = Gui(
         key_target_player=simulation.human,
