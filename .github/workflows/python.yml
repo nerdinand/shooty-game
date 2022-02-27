@@ -9,21 +9,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install poetry
         poetry install
-    - name: Run static code analysis
+
+    - name: Run style checker
       run: |
-        poetry run pylint **/*.py
+        ./bin/check-style.sh
+
     - name: Run type checker
       run: |
-        poetry run pyre --strict check
+        ./bin/check-types.sh
+
     - name: Run tests
       run: |
-        PYTHONPATH=. poetry run pytest --cov simulation
+        ./bin/run-tests.sh
+
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: htmlcov/*
