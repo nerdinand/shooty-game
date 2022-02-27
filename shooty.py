@@ -1,11 +1,11 @@
 import time
+from typing import Optional
 
 import click
 
 from gui import Gui
 from gui.renderer.render_settings import RenderSettings
 from simulation import Simulation
-from typing import Optional
 
 
 @click.group()

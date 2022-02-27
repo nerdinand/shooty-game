@@ -1,13 +1,13 @@
 from pygame.math import Vector2
 
 from simulation.collision import Collision
+from simulation.entity import Entity
 from simulation.intersection_util import IntersectionUtil
 from simulation.rectangle import Rectangle
-from simulation.entity import Entity
 
 
 class TestIntersectionUtil:
-    class TestEntity(Entity):
+    class _TestEntity(Entity):
         def get_rectangle(self) -> Rectangle:
             return Rectangle(2.0, 2.0, 2.0, 1.0)
 
@@ -18,7 +18,7 @@ class TestIntersectionUtil:
             return "Test entity"
 
     def test_find_intersections_ray_vertically_down_middle(self) -> None:
-        entity = TestIntersectionUtil.TestEntity()
+        entity = TestIntersectionUtil._TestEntity()
         intersections = IntersectionUtil.find_intersections(
             Vector2(3.0, 0.0), Vector2(3.0, 5.0), entity
         )
@@ -29,7 +29,7 @@ class TestIntersectionUtil:
         assert intersections[1].entity is entity
 
     def test_find_intersections_ray_vertically_down_left_side(self) -> None:
-        entity = TestIntersectionUtil.TestEntity()
+        entity = TestIntersectionUtil._TestEntity()
         intersections = IntersectionUtil.find_intersections(
             Vector2(2.0, 0.0), Vector2(2.0, 5.0), entity
         )
@@ -40,7 +40,7 @@ class TestIntersectionUtil:
         assert intersections[1].entity is entity
 
     def test_find_intersections_ray_horizontally_across_middle(self) -> None:
-        entity = TestIntersectionUtil.TestEntity()
+        entity = TestIntersectionUtil._TestEntity()
         intersections = IntersectionUtil.find_intersections(
             Vector2(0.0, 2.5), Vector2(5.0, 2.5), entity
         )
@@ -51,7 +51,7 @@ class TestIntersectionUtil:
         assert intersections[1].entity is entity
 
     def test_find_intersections_ray_horizontally_across_bottom(self) -> None:
-        entity = TestIntersectionUtil.TestEntity()
+        entity = TestIntersectionUtil._TestEntity()
         intersections = IntersectionUtil.find_intersections(
             Vector2(0.0, 3.0), Vector2(5.0, 3.0), entity
         )

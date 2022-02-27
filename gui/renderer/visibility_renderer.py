@@ -1,16 +1,17 @@
-import pygame
+from typing import Type
+from typing import Union
 
-from typing import Type, Union
+import pygame
 
 from .colors import Colors
 from .utils import Utils
 from simulation import Agent
 from simulation import Bot
+from simulation import Entity
 from simulation import Human
 from simulation import Obstacle
 from simulation import Simulation
 from simulation import Visibility
-from simulation import Entity
 
 
 class VisibilityRenderer:

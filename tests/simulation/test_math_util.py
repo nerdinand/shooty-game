@@ -1,5 +1,6 @@
-from simulation.math_util import MathUtil
 from pygame.math import Vector2
+
+from simulation.math_util import MathUtil
 
 
 class TestMathUtil:
