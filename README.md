@@ -1,5 +1,5 @@
 # shooty-game
-![Python build workflow](https://github.com/nerdinand/shooty-game/actions/workflows/python.yml/badge.svg)
+[![Python](https://github.com/nerdinand/shooty-game/actions/workflows/python.yml/badge.svg)](https://github.com/nerdinand/shooty-game/actions/workflows/python.yml)
 
 Game/Simulation which is a 2D-analog of Counter Strike as a target for Deep Reinforcement Learning.
 
