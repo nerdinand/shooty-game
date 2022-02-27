@@ -26,4 +26,4 @@ jobs:
         poetry run pyre --strict check
     - name: Run tests
       run: |
-        PYTHONPATH=. poetry run pytest
+        PYTHONPATH=. poetry run pytest --cov simulation

@@ -17,6 +17,7 @@ pyre-check = "^0.9.10"
 black = "^22.1.0"
 reorder-python-imports = "^2.7.1"
 pylint = "^2.12.2"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
