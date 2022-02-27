@@ -8,10 +8,16 @@ from pygame.math import Vector2
 from simulation.pistol import Pistol
 from simulation.projectile_collider import ProjectileCollider
 
-from typing import List, Tuple
+from typing import List, Tuple, NamedTuple
 
 
 class TestGun:
+    class Player(NamedTuple):
+        is_moving: bool
+        is_dead: bool
+        position: Vector2
+        look_direction: float
+
     testdata: List[Tuple[bool, List[float]]] = [
         # is_moving, expected_directions
         (False, [0.0, -1.6584485464559542, -1.5149685899647345, 1.4033671465862105]),
@@ -37,11 +43,7 @@ class TestGun:
         assert pistol.bullet_count == 10
 
     def test_dead_player_doesnt_shoot(self) -> None:
-        Player = namedtuple(
-            "Player", ["is_moving", "is_dead", "position", "look_direction"]
-        )
-
-        dead_player = Player(
+        dead_player = TestGun.Player(
             is_moving=False,
             is_dead=True,
             position=Vector2(0.5, 0.5),
@@ -64,11 +66,7 @@ class TestGun:
         # mock projectile collider so no collisions happen (projectiles live forever)
         mock_projectile_collider.apply_collision_effect.return_value = False
 
-        Player = namedtuple(
-            "Player", ["is_moving", "is_dead", "position", "look_direction"]
-        )
-
-        player = Player(
+        player = TestGun.Player(
             is_moving=is_moving,
             is_dead=False,
             position=Vector2(0.5, 0.5),
@@ -114,3 +112,30 @@ class TestGun:
         assert pistol.projectiles[3].gun == pistol
         assert pistol.projectiles[3].position == Vector2(0.5, 0.5)
         assert pistol.projectiles[3].direction == expected_directions[0]
+
+    @unittest.mock.patch("simulation.projectile_collider.ProjectileCollider")
+    def test_shooting_with_colliding_projectiles(
+        self, mock_projectile_collider: unittest.mock.Mock
+    ) -> None:
+        player = TestGun.Player(
+            is_moving=False,
+            is_dead=False,
+            position=Vector2(0.5, 0.5),
+            look_direction=0.0,
+        )
+
+        pistol = Pistol(player=player)  # pyre-ignore[6]
+        pistol.shoot()
+        assert len(pistol.projectiles) == 1
+
+        # mock projectile collider so no collisions happen (projectiles live forever)
+        mock_projectile_collider.apply_collision_effect.return_value = False
+
+        pistol.tick(projectile_collider=mock_projectile_collider)
+        assert len(pistol.projectiles) == 1
+
+        # mock projectile collider so collisions always happen (projectiles die instantly)
+        mock_projectile_collider.apply_collision_effect.return_value = True
+
+        pistol.tick(projectile_collider=mock_projectile_collider)
+        assert len(pistol.projectiles) == 0
