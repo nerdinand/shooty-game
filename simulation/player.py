@@ -90,6 +90,7 @@ class Player(Entity):  # pylint: disable=too-many-instance-attributes
         self.health -= damage
         if self.health <= 0:
             self.is_dead = True
+            self.is_moving = False
 
     def is_human(self) -> bool:
         return self.player_type == PlayerType.HUMAN

@@ -1,3 +1,4 @@
 #!/usr/bin/env -S bash -e
 
-PYTHONPATH=. poetry run pytest --cov simulation --cov-report html --cov-report term
+./bin/run-unit-tests.sh
+./bin/run-integration-tests.sh

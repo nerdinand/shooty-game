@@ -61,3 +61,8 @@ ignore = [
     "D406", # Section name should end with a newline ('Returns', not 'Returns:')
     "D100", # Missing docstring in public module
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: (potentially slow) integration tests that test the whole application",
+]
