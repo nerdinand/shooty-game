@@ -72,6 +72,7 @@ poetry run bin/check.sh
 * [ ] Parallelise training
 * [ ] Describe training and playback in README
 * [ ] Add own position, health and bullets to observation
+* [ ] Document ALL the things!
 
 ## License
 

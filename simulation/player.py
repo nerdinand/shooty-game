@@ -13,6 +13,8 @@ from .rectangle import Rectangle
 
 
 class Player(Entity):  # pylint: disable=too-many-instance-attributes
+    """Represents a player in the Simulation (a type of Entity)."""
+
     EXTENT = 0.03
 
     PLAYER_ACCELERATION = 0.00001
@@ -30,8 +32,17 @@ class Player(Entity):  # pylint: disable=too-many-instance-attributes
     FOV_ANGLE = 60
 
     def __init__(
-        self, player_type: str, name: str, position: Vector2, gun_class: Type[Gun]
+        self,
+        player_type: PlayerType,
+        name: str,
+        position: Vector2,
+        gun_class: Type[Gun],
     ) -> None:
+        """Initialize the Player.
+
+        Args:
+            player_type (str)
+        """
         super().__init__()
         self.player_type = player_type
         self.name = name

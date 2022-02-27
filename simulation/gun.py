@@ -18,12 +18,14 @@ class Gun:  # pylint: disable=too-many-instance-attributes
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        player: Player,
-        cooldown_ticks: int,
-        magazine_size: int,
-        maximum_damage: int,
-        spray_pattern: List[float],
-        reload_ticks: int,
+        player: Player,  # the player holding the gun
+        cooldown_ticks: int,  # cooldown until next shot
+        magazine_size: int,  # how many bullets in magazine
+        maximum_damage: int,  # maximum damage a bullet will do
+        spray_pattern: List[
+            float
+        ],  # the pattern of direction offsets when spraying (continuously shooting)
+        reload_ticks: int,  # how long a reload takes (in ticks)
     ) -> None:
         self.player = player
         self.cooldown_ticks = cooldown_ticks
@@ -31,7 +33,7 @@ class Gun:  # pylint: disable=too-many-instance-attributes
         self.maximum_damage = maximum_damage
         self.spray_pattern = spray_pattern
         self.reload_ticks = reload_ticks
-        self.tick_count = 0
+        self.tick_count = -1
         self.spray_sequence = 0
         self.projectiles: List[Projectile] = []
         self.reload_tick_count = reload_ticks
@@ -50,10 +52,7 @@ class Gun:  # pylint: disable=too-many-instance-attributes
 
     def shoot(self) -> None:
         if self.__can_shoot():
-            if self.tick_count == 0:  # spraying
-                self.spray_sequence += 1
-            else:  # not spraying, reset sequence
-                self.spray_sequence = 0
+            self.__handle_spray_sequence()
 
             if self.player.is_moving:
                 modifier = Gun.SPRAY_PATTERN_MODIFIER_MOVING
@@ -75,6 +74,12 @@ class Gun:  # pylint: disable=too-many-instance-attributes
         if self.is_reloading:
             return
         self.is_reloading = True
+
+    def __handle_spray_sequence(self) -> None:
+        if self.tick_count == 0:  # spraying
+            self.spray_sequence += 1
+        else:  # not spraying, reset sequence
+            self.spray_sequence = 0
 
     def __reload_tick(self) -> None:
         if self.is_reloading:

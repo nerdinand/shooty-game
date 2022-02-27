@@ -1,3 +1,4 @@
+"""Package containing all the code to simulate a shooty-game."""
 from .agent import Agent
 from .bot import Bot
 from .entity import Entity

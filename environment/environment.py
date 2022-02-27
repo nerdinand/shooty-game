@@ -22,9 +22,12 @@ Observation = OrderedDict[str, npt.NDArray]
 
 
 class Environment(gym.Env):
+    """Custom OpenAI gym that wraps the shooty-game simulation."""
+
     metadata = {"render.modes": ["human"]}
 
     def __init__(self) -> None:
+        """Initialize a new Environment, defining the action and observation spaces."""
         super().__init__()
 
         self.gui: Optional[Gui] = None
@@ -46,6 +49,12 @@ class Environment(gym.Env):
         self.player_factory = PlayerFactory()
 
     def reset(self) -> Observation:
+        """Reset the environment.
+
+        Returns:
+            Observation: An initial observation.
+        """
+
         self.agent = self.player_factory.agent()
         self.simulation = Simulation(agent=self.agent)
         return self.__get_observation()
@@ -53,6 +62,38 @@ class Environment(gym.Env):
     def step(
         self, action: npt.NDArray
     ) -> Tuple[OrderedDict[str, npt.NDArray], int, bool, typing.Dict[str, str]]:
+        """Simulate a step in the environment.
+
+        Args:
+            action (npt.NDArray): The action to take in the environment.
+
+        Returns:
+            Tuple: A tuple of: observation, reward, done, info.
+        """
+        self.__take_action(action)
+        self.simulation.tick()
+        done = self.simulation.is_over()
+        reward = self.__calculate_reward()
+        observation = self.__get_observation()
+
+        return observation, reward, done, {}
+
+    def render(self, mode: str = "human") -> None:
+        """Render the environment in a graphical interface."""
+        if mode == "human":
+            gui = self.gui
+            if gui is None:
+                gui = Gui()
+                self.gui = gui
+                gui.initialize()
+
+            gui.tick()
+            if gui.is_render_necessary():
+                gui.render(self.simulation)
+        else:
+            super().render(mode=mode)
+
+    def __take_action(self, action: npt.NDArray) -> None:
         direction_vector = Vector2()
 
         if action[0] == 1:
@@ -82,33 +123,12 @@ class Environment(gym.Env):
             look_direction = look_direction + 1
         self.agent.update_look_direction(look_direction)
 
-        for _ in range(10):
-            self.simulation.tick()
-
-        done = self.simulation.is_over()
-
+    def __calculate_reward(self) -> int:
         reward = -(self.simulation.alive_players_count() + 1)
         if self.agent.is_dead:
             reward = -10000
 
-        observation = self.__get_observation()
-        return observation, reward, done, {}
-
-    def render(self, mode: str = "human") -> None:
-        if mode == "human":
-            gui = self.gui
-            if gui is None:
-                gui = Gui(key_target_player=self.simulation.human)
-                self.gui = gui
-                gui.initialize()
-
-            gui.tick()
-            gui.handle_key_events()
-            gui.handle_mouse_events()
-            if gui.is_render_necessary():
-                gui.render(self.simulation)
-        else:
-            super().render(mode=mode)
+        return reward
 
     def __get_observation(self) -> Observation:
         visible_points = Visibility.get_visible_points(self.simulation, self.agent)
