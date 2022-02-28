@@ -255,4 +255,3 @@ class TestSimulation:
         assert simulation.players[3].health == 6
         assert simulation.players[3].gun.bullet_count == 13
         assert len(simulation.players[3].gun.projectiles) == 0
-

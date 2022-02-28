@@ -12,9 +12,9 @@ from .projectile_collider import ProjectileCollider
 
 class Bot(Player):
     def __init__(
-        self, name: str, gun: Type[Gun], position: Vector2 = Vector2(0.5, 0.5)
+        self, name: str, gun_class: Type[Gun], position: Vector2 = Vector2(0.5, 0.5)
     ) -> None:
-        super().__init__(PlayerType.BOT, name, position, gun)
+        super().__init__(PlayerType.BOT, name, position, gun_class)
 
     def tick(
         self, player_collider: PlayerCollider, projectile_collider: ProjectileCollider

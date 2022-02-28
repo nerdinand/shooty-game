@@ -6,8 +6,8 @@ from typing import runtime_checkable
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .rectangle import Rectangle
-    from .collision import Collision
+    from .rectangle import Rectangle  # pragma: no cover
+    from .collision import Collision  # pragma: no cover
 
 
 class EntityType(Enum):
@@ -18,13 +18,13 @@ class EntityType(Enum):
 @runtime_checkable
 class Entity(Protocol):
     def get_rectangle(self) -> Rectangle:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def hit(self, collision: Collision) -> None:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def get_name(self) -> str:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
     def get_entity_type(self) -> EntityType:
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover

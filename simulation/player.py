@@ -111,3 +111,6 @@ class Player(Entity):  # pylint: disable=too-many-instance-attributes
 
     def get_entity_type(self) -> EntityType:  # pylint: disable=no-self-use
         return EntityType.PLAYER
+
+    def update_move_direction(self, move_direction: Vector2) -> None:
+        self.move_direction = move_direction

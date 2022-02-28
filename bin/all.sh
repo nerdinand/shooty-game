@@ -1,6 +1,4 @@
 #!/usr/bin/env -S bash -e
 
-./bin/reformat.sh
-./bin/check-style.sh
-./bin/check-types.sh
-./bin/run-tests.sh
+./bin/all-minus-integration.sh
+./bin/run-integration-tests.sh

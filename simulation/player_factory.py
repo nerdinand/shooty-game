@@ -12,14 +12,14 @@ class PlayerFactory:
     def random_bot(self) -> Bot:
         bot = Bot(
             f"Bot {self.bot_count}",
-            gun=Rifle,
+            gun_class=Rifle,
             position=MathUtil.random_vector2(minimum=0.1, maximum=0.8),
         )
         self.bot_count += 1
         return bot
 
     def human(self) -> Human:  # pylint: disable=no-self-use
-        return Human("Human", gun=Rifle)
+        return Human("Human", gun_class=Rifle)
 
     def agent(self) -> Agent:  # pylint: disable=no-self-use
-        return Agent("Agent", gun=Rifle)
+        return Agent("Agent", gun_class=Rifle)
