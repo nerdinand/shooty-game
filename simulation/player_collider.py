@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 from .rectangle import Rectangle
 
 if TYPE_CHECKING:
-    from .simulation import Simulation
-    from .player import Player
+    from .simulation import Simulation  # pragma: no cover
+    from .player import Player  # pragma: no cover
 
 
 class PlayerCollider:

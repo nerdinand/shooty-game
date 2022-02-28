@@ -7,7 +7,7 @@ from pygame.math import Vector2
 from .entity import Entity
 
 if TYPE_CHECKING:
-    from .player import Player
+    from .player import Player  # pragma: no cover
 
 
 class Intersection:

@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 from pygame.math import Vector2
 
 if TYPE_CHECKING:
-    from .gun import Gun
-    from .projectile_collider import ProjectileCollider
+    from .gun import Gun  # pragma: no cover
+    from .projectile_collider import ProjectileCollider  # pragma: no cover
 
 
 class Projectile:

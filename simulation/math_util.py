@@ -13,7 +13,7 @@ class MathUtil:
 
     @staticmethod
     def random_vector2(minimum: float = 0.0, maximum: float = 1.0) -> Vector2:
-        my_random = MathUtil.__check_seeded()
+        my_random = MathUtil.__get_random_or_raise()
 
         return Vector2(
             my_random.uniform(minimum, maximum),
@@ -22,14 +22,14 @@ class MathUtil:
 
     @staticmethod
     def random_direction_change() -> float:
-        return MathUtil.__check_seeded().uniform(-10.0, 10.0)
+        return MathUtil.__get_random_or_raise().uniform(-10.0, 10.0)
 
     @staticmethod
     def random_float() -> float:
-        return MathUtil.__check_seeded().random()
+        return MathUtil.__get_random_or_raise().random()
 
     @staticmethod
-    def __check_seeded() -> random.Random:
+    def __get_random_or_raise() -> random.Random:
         my_random = MathUtil.RANDOM
         if my_random is None:
             raise ValueError(

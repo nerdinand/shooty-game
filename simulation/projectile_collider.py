@@ -8,8 +8,8 @@ from .entity import Entity
 from .intersection_util import IntersectionUtil
 
 if TYPE_CHECKING:
-    from .projectile import Projectile
-    from .simulation import Simulation
+    from .projectile import Projectile  # pragma: no cover
+    from .simulation import Simulation  # pragma: no cover
 
 
 class ProjectileCollider:
