@@ -1,3 +1,4 @@
+from typing import cast
 from typing import Optional
 
 from .agent import Agent
@@ -5,6 +6,7 @@ from .human import Human
 from .map import Map
 from .map_factory import MapFactory
 from .math_util import MathUtil
+from .obstacle import Obstacle
 from .player import Player
 from .player_collider import PlayerCollider
 from .player_factory import PlayerFactory
@@ -50,6 +52,9 @@ class Simulation:
         for player in self.players:
             player.tick(self.player_collider, self.projectile_collider)
         self.map.tick()
+
+    def get_obstacles(self) -> list[Obstacle]:
+        return self.map.obstacles + cast(list[Obstacle], self.players)
 
     def is_over(self) -> bool:
         return (

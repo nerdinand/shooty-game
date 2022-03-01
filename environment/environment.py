@@ -131,7 +131,9 @@ class Environment(gym.Env):
         return reward
 
     def __get_observation(self) -> Observation:
-        visible_points = Visibility.get_visible_points(self.simulation, self.agent)
+        visible_points = Visibility.get_visible_points(
+            self.simulation.get_obstacles(), self.agent
+        )
         if len(visible_points) != Visibility.NUMBER_OF_RAYS:
             print("\a")
             import pdb  # pylint: disable=import-outside-toplevel

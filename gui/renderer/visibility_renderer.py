@@ -29,7 +29,9 @@ class VisibilityRenderer:
         if human is None:
             return
 
-        visible_points = Visibility.get_visible_points(simulation, human)
+        visible_points = Visibility.get_visible_points(
+            simulation.get_obstacles(), human
+        )
         for visible_point in visible_points:
             screen_position = Utils.to_screen_position(
                 screen.get_size(), visible_point.position
