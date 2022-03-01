@@ -82,4 +82,6 @@ class PlayerRenderer:
             )
             ray_end_point = Utils.to_screen_position(screen.get_size(), ray_end_point)
 
-            pygame.draw.line(screen, Colors.FOV_BORDER, ray_start_point, ray_end_point)
+            pygame.draw.line(
+                screen, Colors.FOV_BORDER_COLOR, ray_start_point, ray_end_point
+            )

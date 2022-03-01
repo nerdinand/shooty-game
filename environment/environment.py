@@ -131,10 +131,10 @@ class Environment(gym.Env):
         return reward
 
     def __get_observation(self) -> Observation:
-        visible_points = Visibility.get_visible_points(
+        intersections = Visibility.get_intersections(
             self.simulation.get_obstacles(), self.agent
         )
-        if len(visible_points) != Visibility.NUMBER_OF_RAYS:
+        if len(intersections) != Visibility.NUMBER_OF_RAYS:
             print("\a")
             import pdb  # pylint: disable=import-outside-toplevel
 
@@ -144,13 +144,11 @@ class Environment(gym.Env):
             [
                 (
                     "positions",
-                    np.array([(p.position.x, p.position.y) for p in visible_points]),
+                    np.array([(i.position.x, i.position.y) for i in intersections]),
                 ),
                 (
                     "types",
-                    np.array(
-                        [Environment.__map_entity_type(p) for p in visible_points]
-                    ),
+                    np.array([Environment.__map_entity_type(i) for i in intersections]),
                 ),
             ]
         )

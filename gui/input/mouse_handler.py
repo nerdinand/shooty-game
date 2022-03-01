@@ -12,7 +12,7 @@ class MouseHandler:
 
     def handle_mouse_events(self, player: Player) -> None:
         player.update_look_direction(self.look_direction(player.position))
-
+        print(player.look_direction)
         mouse_pressed = pygame.mouse.get_pressed()
         if mouse_pressed[0]:
             player.gun.shoot()

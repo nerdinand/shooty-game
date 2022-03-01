@@ -15,23 +15,23 @@ class Visibility:
     NUMBER_OF_RAYS = 61
 
     @classmethod
-    def get_visible_points(
+    def get_intersections(
         cls, obstacles: list[Obstacle], player: Player
     ) -> list[Intersection]:
         left_angle = player.get_left_fov_angle()
-        visible_points: list[Intersection] = []
+        intersections: list[Intersection] = []
 
         angle_interval = Player.FOV_ANGLE / Visibility.NUMBER_OF_RAYS
 
         for i in range(Visibility.NUMBER_OF_RAYS):
             ray_angle = left_angle + i * angle_interval
-            visible_point = Visibility.__cast_ray(ray_angle, obstacles, player)
-            if visible_point is not None:
-                visible_points.append(visible_point)
+            intersection = Visibility.__cast_ray(ray_angle, obstacles, player)
+            if intersection is not None:
+                intersections.append(intersection)
             else:
-                visible_points.append(NoneIntersection(player))
+                intersections.append(NoneIntersection(player))
 
-        return visible_points
+        return intersections
 
     @classmethod
     def __cast_ray(

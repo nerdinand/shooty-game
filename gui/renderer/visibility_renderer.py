@@ -28,16 +28,14 @@ class VisibilityRenderer:
         if human is None:
             return
 
-        visible_points = Visibility.get_visible_points(
-            simulation.get_obstacles(), human
-        )
-        for visible_point in visible_points:
+        intersections = Visibility.get_intersections(simulation.get_obstacles(), human)
+        for intersection in intersections:
             screen_position = Utils.to_screen_position(
-                screen.get_size(), visible_point.position
+                screen.get_size(), intersection.position
             )
             pygame.draw.circle(
                 screen,
-                VisibilityRenderer.COLOR_MAP[visible_point.obstacle.__class__],
+                VisibilityRenderer.COLOR_MAP[intersection.obstacle.__class__],
                 screen_position,
                 1,
             )

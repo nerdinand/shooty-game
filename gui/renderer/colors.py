@@ -9,5 +9,4 @@ class Colors:
     BOT_COLOR = Color(220, 50, 47)  # red
     GUN_COLOR = Color(101, 123, 131)  # gray
     PROJECTILES_COLOR = Color(211, 54, 130)  # magenta
-    FOV_BORDER = Color(133, 153, 0)  # green
-    VISIBLE_POINTS_COLOR = Color(181, 137, 0)  # yellow
+    FOV_BORDER_COLOR = Color(133, 153, 0)  # green

@@ -15,7 +15,13 @@ class Intersection:
         self.position = position
         self.obstacle = obstacle
 
+    def __str__(self) -> str:
+        return f"Intersection({self.obstacle.name})"
+
 
 class NoneIntersection(Intersection):
     def __init__(self, player: Player) -> None:
         super().__init__(Vector2(), obstacle=player)
+
+    def __str__(self) -> str:
+        return "NoneIntersection"
