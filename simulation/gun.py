@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING
 from pygame.math import Vector2
 
 from .projectile import Projectile
-from .projectile_collider import ProjectileCollider
 
 if TYPE_CHECKING:
     from .player import Player  # pragma: no cover
+    from .projectile_collider import ProjectileCollider  # pragma: no cover
 
 
 class Gun:  # pylint: disable=too-many-instance-attributes

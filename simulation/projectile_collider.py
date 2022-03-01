@@ -6,15 +6,15 @@ from typing import TYPE_CHECKING
 from .collision import Collision
 from .intersection_util import IntersectionUtil
 from .obstacle import Obstacle
+from .player import Player
 
 if TYPE_CHECKING:
     from .projectile import Projectile  # pragma: no cover
-    from .simulation import Simulation  # pragma: no cover
 
 
 class ProjectileCollider:
-    def __init__(self, simulation: Simulation) -> None:
-        self.simulation = simulation
+    def __init__(self, obstacles: list[Obstacle]) -> None:
+        self.obstacles = obstacles
 
     def apply_collision_effect(self, projectile: Projectile) -> bool:
         collisions = self.__projectile_collisions(projectile)
@@ -30,13 +30,13 @@ class ProjectileCollider:
 
     def __projectile_collisions(self, projectile: Projectile) -> List[Collision]:
         collisions = []
-        for player in self.simulation.players:
-            # can't shoot myself or dead players
-            if player == projectile.gun.player or player.is_dead:
-                continue
-            collisions += ProjectileCollider.__find_collisions(projectile, player)
 
-        for obstacle in self.simulation.map.obstacles:
+        for obstacle in self.obstacles:
+            if isinstance(obstacle, Player):
+                player: Player = obstacle
+                # can't shoot myself or dead players
+                if player == projectile.gun.player or player.is_dead:
+                    continue
             collisions += ProjectileCollider.__find_collisions(projectile, obstacle)
 
         return collisions

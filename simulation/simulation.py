@@ -45,7 +45,7 @@ class Simulation:
         self.map: Map = MapFactory.simple_map()
         self.tick_count = 0
         self.player_collider = PlayerCollider(self.get_obstacles())
-        self.projectile_collider = ProjectileCollider(self)
+        self.projectile_collider = ProjectileCollider(self.get_obstacles())
 
     def tick(self) -> None:
         self.tick_count += 1

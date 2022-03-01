@@ -8,6 +8,7 @@ from .utils import Utils
 from simulation import Agent
 from simulation import Bot
 from simulation import Human
+from simulation import Player
 from simulation import Obstacle
 from simulation import Simulation
 from simulation import Visibility
@@ -22,13 +23,10 @@ class VisibilityRenderer:
     }
 
     @classmethod
-    def render(cls, screen: pygame.surface.Surface, simulation: Simulation) -> None:
-        human = simulation.human
-
-        if human is None:
-            return
-
-        intersections = Visibility.get_intersections(simulation.get_obstacles(), human)
+    def render(
+        cls, screen: pygame.surface.Surface, player: Player, obstacles: list[Obstacle]
+    ) -> None:
+        intersections = Visibility.get_intersections(obstacles, player)
         for intersection in intersections:
             screen_position = Utils.to_screen_position(
                 screen.get_size(), intersection.position

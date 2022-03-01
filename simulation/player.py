@@ -9,11 +9,11 @@ from .collision import Collision
 from .gun import Gun
 from .obstacle import Obstacle
 from .player_type import PlayerType
-from .projectile_collider import ProjectileCollider
 from .rectangle import Rectangle
 
 if TYPE_CHECKING:
     from .player_collider import PlayerCollider
+    from .projectile_collider import ProjectileCollider
 
 
 class Player(Obstacle):  # pylint: disable=too-many-instance-attributes
