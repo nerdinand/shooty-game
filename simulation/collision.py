@@ -1,7 +1,13 @@
+from __future__ import annotations  # to allow for forward type references
+
+from typing import TYPE_CHECKING
+
 from pygame.math import Vector2
 
-from .intersection import Intersection
 from .projectile import Projectile
+
+if TYPE_CHECKING:
+    from .intersection import Intersection
 
 
 class Collision:
@@ -13,4 +19,4 @@ class Collision:
         return self.intersection.position.distance_to(vector)
 
     def apply_effect(self) -> None:
-        self.intersection.entity.hit(self)
+        self.intersection.obstacle.hit(self)

@@ -1,28 +1,28 @@
+from typing import Optional
+
 from .collision import Collision
-from .entity import Entity
-from .entity import EntityType
 from .rectangle import Rectangle
 
 
-class Obstacle(Entity):
-    def __init__(  # pylint: disable=too-many-arguments
-        self, name: str, left: float, top: float, width: float, height: float
-    ) -> None:
-        super().__init__()
+class Obstacle:
+    def __init__(self, name: str, rectangle: Optional[Rectangle] = None) -> None:
         self.name = name
-        self.left = left
-        self.top = top
-        self.width = width
-        self.height = height
+        self.rectangle = rectangle
+
+    @classmethod
+    def fixed(  # pylint: disable=too-many-arguments
+        cls, name: str, left: float, top: float, width: float, height: float
+    ) -> "Obstacle":
+        rectangle = Rectangle(left, top, width, height)
+        return cls(name, rectangle)
 
     def get_rectangle(self) -> Rectangle:
-        return Rectangle(self.left, self.top, self.width, self.height)
-
-    def get_name(self) -> str:
-        return self.name
+        if self.rectangle is None:
+            raise ValueError("self.rectangle is not supposed to be None here!")
+        return self.rectangle
 
     def hit(self, collision: Collision) -> None:
         pass
 
-    def get_entity_type(self) -> EntityType:
-        return EntityType.OBSTACLE
+    def get_name(self) -> str:
+        return self.name

@@ -3,17 +3,16 @@ from typing import Type
 from pygame.math import Vector2
 
 from .collision import Collision
-from .entity import Entity
-from .entity import EntityType
 from .gun import Gun
+from .obstacle import Obstacle
 from .player_collider import PlayerCollider
 from .player_type import PlayerType
 from .projectile_collider import ProjectileCollider
 from .rectangle import Rectangle
 
 
-class Player(Entity):  # pylint: disable=too-many-instance-attributes
-    """Represents a player in the Simulation (a type of Entity)."""
+class Player(Obstacle):  # pylint: disable=too-many-instance-attributes
+    """Represents a player in the Simulation (a type of Obstacle)."""
 
     EXTENT = 0.03
 
@@ -43,9 +42,8 @@ class Player(Entity):  # pylint: disable=too-many-instance-attributes
         Args:
             player_type (str)
         """
-        super().__init__()
+        super().__init__(name)
         self.player_type = player_type
-        self.name = name
         self.position = position
         self.gun: Gun = gun_class(self)  # pyre-ignore[20]
         self.move_direction = Vector2(0, 0)
@@ -56,9 +54,6 @@ class Player(Entity):  # pylint: disable=too-many-instance-attributes
         self.health: int = Player.MAX_HEALTH
         self.extent: float = Player.EXTENT
         self.radius: float = self.extent / 2.0
-
-    def get_name(self) -> str:
-        return self.name
 
     def get_left_fov_angle(self) -> float:
         return self.look_direction - Player.FOV_ANGLE / 2
@@ -108,9 +103,6 @@ class Player(Entity):  # pylint: disable=too-many-instance-attributes
         elif length_squared < Player.MIN_VELOCITY_THRESHOLD_SQUARED:
             self.velocity = Vector2(0.0, 0.0)
             self.is_moving = False
-
-    def get_entity_type(self) -> EntityType:  # pylint: disable=no-self-use
-        return EntityType.PLAYER
 
     def update_move_direction(self, move_direction: Vector2) -> None:
         self.move_direction = move_direction

@@ -14,34 +14,38 @@ class SimpleMap(Map):
         bottom_margin = 0.1
 
         self.obstacles.append(
-            Obstacle(
-                "top left box", left_margin, top_margin, small_box_size, small_box_size
+            Obstacle.fixed(
+                name="top left box",
+                left=left_margin,
+                top=top_margin,
+                width=small_box_size,
+                height=small_box_size,
             )
         )
         self.obstacles.append(
-            Obstacle(
-                "bottom left box",
-                left_margin,
-                1 - bottom_margin - big_box_size,
-                small_box_size,
-                big_box_size,
+            Obstacle.fixed(
+                name="bottom left box",
+                left=left_margin,
+                top=1 - bottom_margin - big_box_size,
+                width=small_box_size,
+                height=big_box_size,
             )
         )
         self.obstacles.append(
-            Obstacle(
-                "top right box",
-                1 - right_margin - big_box_size,
-                top_margin,
-                big_box_size,
-                small_box_size,
+            Obstacle.fixed(
+                name="top right box",
+                left=1 - right_margin - big_box_size,
+                top=top_margin,
+                width=big_box_size,
+                height=small_box_size,
             )
         )
         self.obstacles.append(
-            Obstacle(
-                "bottom right box",
-                1 - right_margin - small_box_size,
-                1 - bottom_margin - small_box_size,
-                small_box_size,
-                small_box_size,
+            Obstacle.fixed(
+                name="bottom right box",
+                left=1 - right_margin - small_box_size,
+                top=1 - bottom_margin - small_box_size,
+                width=small_box_size,
+                height=small_box_size,
             )
         )

@@ -4,8 +4,8 @@ from typing import List
 from typing import TYPE_CHECKING
 
 from .collision import Collision
-from .entity import Entity
 from .intersection_util import IntersectionUtil
+from .obstacle import Obstacle
 
 if TYPE_CHECKING:
     from .projectile import Projectile  # pragma: no cover
@@ -43,11 +43,11 @@ class ProjectileCollider:
 
     @classmethod
     def __find_collisions(
-        cls, projectile: Projectile, game_object: Entity
+        cls, projectile: Projectile, obstacle: Obstacle
     ) -> List[Collision]:
         line_start = projectile.last_position
         line_end = projectile.position
         intersections = IntersectionUtil.find_intersections(
-            line_start, line_end, game_object
+            line_start, line_end, obstacle
         )
         return [Collision(projectile, intersection) for intersection in intersections]

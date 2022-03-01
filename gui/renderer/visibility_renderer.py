@@ -7,7 +7,6 @@ from .colors import Colors
 from .utils import Utils
 from simulation import Agent
 from simulation import Bot
-from simulation import Entity
 from simulation import Human
 from simulation import Obstacle
 from simulation import Simulation
@@ -15,7 +14,7 @@ from simulation import Visibility
 
 
 class VisibilityRenderer:
-    COLOR_MAP: dict[Type[Entity], pygame.Color] = {
+    COLOR_MAP: dict[Type[Obstacle], pygame.Color] = {
         Obstacle: Colors.OBSTACLES_COLOR,
         Bot: Colors.BOT_COLOR,
         Human: Colors.HUMAN_COLOR,
@@ -38,7 +37,7 @@ class VisibilityRenderer:
             )
             pygame.draw.circle(
                 screen,
-                VisibilityRenderer.COLOR_MAP[visible_point.entity.__class__],
+                VisibilityRenderer.COLOR_MAP[visible_point.obstacle.__class__],
                 screen_position,
                 1,
             )

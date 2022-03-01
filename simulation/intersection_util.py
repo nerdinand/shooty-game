@@ -2,22 +2,22 @@ from typing import Optional
 
 from pygame.math import Vector2
 
-from .entity import Entity
 from .intersection import Intersection
+from .obstacle import Obstacle
 
 
 class IntersectionUtil:
     @staticmethod
     def find_intersections(
-        point0: Vector2, point1: Vector2, entity: Entity
+        point0: Vector2, point1: Vector2, obstacle: Obstacle
     ) -> list[Intersection]:
         intersections = []
-        for (point2, point3) in entity.get_rectangle().all_sides:
+        for (point2, point3) in obstacle.get_rectangle().all_sides:
             intersection_point = IntersectionUtil.find_intersection(
                 point0, point1, point2, point3
             )
             if intersection_point is not None:
-                intersections.append(Intersection(intersection_point, entity))
+                intersections.append(Intersection(intersection_point, obstacle))
         return intersections
 
     @staticmethod

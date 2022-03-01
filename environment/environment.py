@@ -13,10 +13,10 @@ from gui import Gui
 from simulation import Agent
 from simulation import Intersection
 from simulation import NoneIntersection
+from simulation import Player
 from simulation import PlayerFactory
 from simulation import Simulation
 from simulation import Visibility
-
 
 Observation = OrderedDict[str, npt.NDArray]
 
@@ -159,5 +159,7 @@ class Environment(gym.Env):
     def __map_entity_type(cls, intersection: Intersection) -> int:
         if intersection is NoneIntersection:
             return -1
+        if intersection.obstacle is Player:
+            return 0
 
-        return intersection.entity.get_entity_type().value
+        return 1

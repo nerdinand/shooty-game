@@ -6,8 +6,8 @@ from pygame.locals import Rect
 from pygame.math import Vector2
 
 from .colors import Colors
-from simulation import Entity
 from simulation import Map
+from simulation import Obstacle
 
 
 class MapRenderer:
@@ -22,23 +22,24 @@ class MapRenderer:
 
     @classmethod
     def __screen_obstacles(
-        cls, screen_size: Tuple[int, int], entities: Sequence[Entity]
+        cls, screen_size: Tuple[int, int], obstacles: Sequence[Obstacle]
     ) -> Sequence[Rect]:
         return [
-            MapRenderer.__to_screen_rect(screen_size, entity) for entity in entities
+            MapRenderer.__to_screen_rect(screen_size, obstacle)
+            for obstacle in obstacles
         ]
 
     @classmethod
-    def __to_screen_rect(cls, screen_size: Tuple[int, int], entity: Entity) -> Rect:
-        rectangle = entity.get_rectangle()
-        left_top_transformed: Vector2 = (  # pyre-ignore[9]
+    def __to_screen_rect(cls, screen_size: Tuple[int, int], obstacle: Obstacle) -> Rect:
+        rectangle = obstacle.get_rectangle()
+        left_top_transformed: Tuple[int, ...] = (
             rectangle.left_top.elementwise() * screen_size  # pyre-ignore[58]
         )
         width_transformed = rectangle.width * screen_size[0]
         height_transformed = rectangle.height * screen_size[1]
         return Rect(
-            left_top_transformed.x,
-            left_top_transformed.y,
+            left_top_transformed[0],
+            left_top_transformed[1],
             width_transformed,
             height_transformed,
         )

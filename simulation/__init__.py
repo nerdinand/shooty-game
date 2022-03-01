@@ -1,8 +1,6 @@
 """Package containing all the code to simulate a shooty-game."""
 from .agent import Agent
 from .bot import Bot
-from .entity import Entity
-from .entity import EntityType
 from .human import Human
 from .intersection import Intersection
 from .intersection import NoneIntersection
