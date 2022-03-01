@@ -1,17 +1,11 @@
-from __future__ import annotations  # to allow for forward type references
-
-from typing import TYPE_CHECKING
-
+from .obstacle import Obstacle
+from .player import Player
 from .rectangle import Rectangle
-
-if TYPE_CHECKING:
-    from .simulation import Simulation  # pragma: no cover
-    from .player import Player  # pragma: no cover
 
 
 class PlayerCollider:
-    def __init__(self, simulation: Simulation) -> None:
-        self.simulation = simulation
+    def __init__(self, obstacles: list[Obstacle]) -> None:
+        self.obstacles = obstacles
 
     def move(self, player: Player) -> None:
         dx = player.velocity.x  # pylint: disable=invalid-name
@@ -29,17 +23,15 @@ class PlayerCollider:
         player.position.x += dx
         player.position.y += dy
 
-        for obstacle in self.simulation.map.obstacles:
+        for obstacle in self.obstacles:
+            if isinstance(obstacle, Player):
+                other_player: Player = obstacle
+                # can't collide with myself or with dead players
+                if player == other_player or other_player.is_dead:
+                    continue
+
             PlayerCollider.__adjust_for_collision(
                 player, obstacle.get_rectangle(), dx, dy
-            )
-
-        for other_player in self.simulation.players:
-            # can't collide with myself or with dead players
-            if player == other_player or other_player.is_dead:
-                continue
-            PlayerCollider.__adjust_for_collision(
-                player, other_player.get_rectangle(), dx, dy
             )
 
     @classmethod

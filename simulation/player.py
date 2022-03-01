@@ -1,14 +1,19 @@
+from __future__ import annotations  # to allow for forward type references
+
 from typing import Type
+from typing import TYPE_CHECKING
 
 from pygame.math import Vector2
 
 from .collision import Collision
 from .gun import Gun
 from .obstacle import Obstacle
-from .player_collider import PlayerCollider
 from .player_type import PlayerType
 from .projectile_collider import ProjectileCollider
 from .rectangle import Rectangle
+
+if TYPE_CHECKING:
+    from .player_collider import PlayerCollider
 
 
 class Player(Obstacle):  # pylint: disable=too-many-instance-attributes
