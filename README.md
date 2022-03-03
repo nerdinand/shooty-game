@@ -61,7 +61,7 @@ You can move the blue player with WASD, aim and shoot with the mouse, R is reloa
 We use a bunch of utilities to ensure code quality. Run them like this:
 
 ```bash
-poetry run bin/check.sh
+bin/all.sh
 ```
 
 ## To Do

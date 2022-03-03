@@ -38,12 +38,20 @@ class Environment(gym.Env):
         buttons_space = spaces.MultiBinary(8)
         self.action_space: spaces.multi_binary.MultiBinary = buttons_space
 
-        positions_space = spaces.Box(
+        position_space = spaces.Box(low=0.0, high=1.0, shape=(1, 2), dtype=np.float32)
+        visibility_positions_space = spaces.Box(
             low=0.0, high=1.0, shape=(Visibility.NUMBER_OF_RAYS, 2), dtype=np.float32
         )
-        types_space = spaces.MultiBinary(Visibility.NUMBER_OF_RAYS)
+        visibility_types_space = spaces.MultiBinary(Visibility.NUMBER_OF_RAYS)
         self.observation_space = spaces.Dict(
-            {"positions": positions_space, "types": types_space}
+            {
+                "position": position_space,
+                "health": spaces.Discrete(101), # maximum health (+1 for zero)
+                "bullets": spaces.Discrete(31), # maximum magazine size (+1 for zero)
+                "is_reloading": spaces.Discrete(2),
+                "visibility_positions": visibility_positions_space,
+                "visibility_types": visibility_types_space
+            }
         )
 
         self.player_factory = PlayerFactory()
@@ -110,8 +118,8 @@ class Environment(gym.Env):
 
         self.agent.update_move_direction(direction_vector)
 
-        # if action[4] == 1:
-        #     self.agent.gun.start_reload()
+        if action[4] == 1:
+            self.agent.gun.start_reload()
 
         if action[5] == 1:
             self.agent.gun.shoot()
@@ -143,13 +151,30 @@ class Environment(gym.Env):
         return OrderedDict(
             [
                 (
-                    "positions",
+                    "position",
+                    np.array([[self.agent.position.x, self.agent.position.y]])
+                ),
+                (
+                    "health",
+                    self.agent.health
+                ),
+                (
+                    "bullets",
+                    self.agent.gun.bullet_count
+                ),
+                (
+                    "is_reloading",
+                    1 if self.agent.gun.is_reloading else 0
+                ),
+                (
+                    "visibility_positions",
                     np.array([(i.position.x, i.position.y) for i in intersections]),
                 ),
                 (
-                    "types",
+                    "visibility_types",
                     np.array([Environment.__map_entity_type(i) for i in intersections]),
-                ),
+                )
+
             ]
         )
 
