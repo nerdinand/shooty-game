@@ -5,7 +5,7 @@ from environment import Environment
 import datetime
 
 TIMESTEPS = 10000
-EXPERIMENT_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
+EXPERIMENT_ID: str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
 
 
 def main() -> None:
@@ -14,7 +14,13 @@ def main() -> None:
 
     # default: net_arch = [dict(pi=[64, 64], vf=[64, 64])]
     policy_kwargs = dict(net_arch=[64, 64, 64, 64, 64, 64, 64, 64, 64, 64])
-    model = PPO("MultiInputPolicy", env, policy_kwargs=policy_kwargs, verbose=1, tensorboard_log="logs")
+    model = PPO(
+        "MultiInputPolicy",
+        env,
+        policy_kwargs=policy_kwargs,
+        verbose=1,
+        tensorboard_log="logs",
+    )
 
     for i in range(1000):
         model.learn(

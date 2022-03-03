@@ -2,6 +2,7 @@ import typing
 from collections import OrderedDict
 from typing import Optional
 from typing import Tuple
+from typing import Union
 
 import gym
 import numpy as np
@@ -18,7 +19,7 @@ from simulation import PlayerFactory
 from simulation import Simulation
 from simulation import Visibility
 
-Observation = OrderedDict[str, npt.NDArray]
+Observation = OrderedDict[str, Union[npt.NDArray, int]]
 
 
 class Environment(gym.Env):
@@ -46,11 +47,11 @@ class Environment(gym.Env):
         self.observation_space = spaces.Dict(
             {
                 "position": position_space,
-                "health": spaces.Discrete(101), # maximum health (+1 for zero)
-                "bullets": spaces.Discrete(31), # maximum magazine size (+1 for zero)
+                "health": spaces.Discrete(101),  # maximum health (+1 for zero)
+                "bullets": spaces.Discrete(31),  # maximum magazine size (+1 for zero)
                 "is_reloading": spaces.Discrete(2),
                 "visibility_positions": visibility_positions_space,
-                "visibility_types": visibility_types_space
+                "visibility_types": visibility_types_space,
             }
         )
 
@@ -69,7 +70,7 @@ class Environment(gym.Env):
 
     def step(
         self, action: npt.NDArray
-    ) -> Tuple[OrderedDict[str, npt.NDArray], int, bool, typing.Dict[str, str]]:
+    ) -> Tuple[Observation, int, bool, typing.Dict[str, str]]:
         """Simulate a step in the environment.
 
         Args:
@@ -152,20 +153,11 @@ class Environment(gym.Env):
             [
                 (
                     "position",
-                    np.array([[self.agent.position.x, self.agent.position.y]])
+                    np.array([[self.agent.position.x, self.agent.position.y]]),
                 ),
-                (
-                    "health",
-                    self.agent.health
-                ),
-                (
-                    "bullets",
-                    self.agent.gun.bullet_count
-                ),
-                (
-                    "is_reloading",
-                    1 if self.agent.gun.is_reloading else 0
-                ),
+                ("health", self.agent.health),
+                ("bullets", self.agent.gun.bullet_count),
+                ("is_reloading", 1 if self.agent.gun.is_reloading else 0),
                 (
                     "visibility_positions",
                     np.array([(i.position.x, i.position.y) for i in intersections]),
@@ -173,8 +165,7 @@ class Environment(gym.Env):
                 (
                     "visibility_types",
                     np.array([Environment.__map_entity_type(i) for i in intersections]),
-                )
-
+                ),
             ]
         )
 
