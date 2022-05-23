@@ -13,10 +13,26 @@ if TYPE_CHECKING:
 
 
 class ProjectileCollider:
+    """Calculates collisions between projectiles and obstacles."""
+
     def __init__(self, obstacles: list[Obstacle]) -> None:
+        """Initialize a new ProjectileCollider.
+
+        Arguments:
+            obstacles (list[Obstacle]): The obstacles we want to check for collisions with.
+        """
         self.obstacles = obstacles
 
     def apply_collision_effect(self, projectile: Projectile) -> bool:
+        """Apply a collision effect for a projectile, if applicable.
+
+        Arguments:
+            projectile (Projectile): The projectile to check for collisions
+                with (and apply the effect for).
+
+        Returns:
+            True, if a collision happened, False otherwise.
+        """
         collisions = self.__projectile_collisions(projectile)
         if len(collisions) == 0:
             return False

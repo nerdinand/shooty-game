@@ -44,8 +44,11 @@ class Player(Obstacle):  # pylint: disable=too-many-instance-attributes
     ) -> None:
         """Initialize the Player.
 
-        Args:
-            player_type (str)
+        Arguments:
+            player_type (PlayerType): What kind of player this is.
+            name (str): The name of the player.
+            position (Vector2): The initial position of the player.
+            gun_class (Type[Gun]): The class to use to initialise this players gun with.
         """
         super().__init__(name)
         self.player_type = player_type

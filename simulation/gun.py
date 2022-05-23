@@ -13,20 +13,31 @@ if TYPE_CHECKING:
 
 
 class Gun:  # pylint: disable=too-many-instance-attributes
+    """A gun (held by a player) that can shoot projectiles."""
+
     SPRAY_PATTERN_MODIFIER_STANDING = 2.0
     SPRAY_PATTERN_MODIFIER_MOVING = 8.0
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        player: Player,  # the player holding the gun
-        cooldown_ticks: int,  # cooldown until next shot
-        magazine_size: int,  # how many bullets in magazine
-        maximum_damage: int,  # maximum damage a bullet will do
-        spray_pattern: List[
-            float
-        ],  # the pattern of direction offsets when spraying (continuously shooting)
-        reload_ticks: int,  # how long a reload takes (in ticks)
+        player: Player,
+        cooldown_ticks: int,
+        magazine_size: int,
+        maximum_damage: int,
+        spray_pattern: List[float],
+        reload_ticks: int,
     ) -> None:
+        """Initialize a new Gun.
+
+        Arguments:
+            player (Player): The player holding the gun.
+            cooldown_ticks (int): How many ticks a the gun takes until the next shot.
+            magazine_size (int): How many bullets fit in a magazine.
+            maximum_damage (int): The maximum amount of damage a bullet from this gun will do.
+            spray_pattern (List[float]): The pattern of direction offsets when
+                spraying (continuously shooting).
+            reload_ticks (int): How long a reload takes (in ticks).
+        """
         self.player = player
         self.cooldown_ticks = cooldown_ticks
         self.magazine_size = magazine_size
@@ -41,6 +52,12 @@ class Gun:  # pylint: disable=too-many-instance-attributes
         self.is_reloading = False
 
     def tick(self, projectile_collider: ProjectileCollider) -> None:
+        """Simulate a single "tick" (quantum of time).
+
+        Arguments:
+            projectile_collider (ProjectileCollider): The collider object to calculate collisions
+                between projectiles and obstacles.
+        """
         self.tick_count -= 1
 
         self.__reload_tick()
@@ -51,6 +68,7 @@ class Gun:  # pylint: disable=too-many-instance-attributes
                 self.projectiles.remove(projectile)
 
     def shoot(self) -> None:
+        """Shoot the gun (if you can)."""
         if self.__can_shoot():
             self.__handle_spray_sequence()
 
@@ -71,6 +89,7 @@ class Gun:  # pylint: disable=too-many-instance-attributes
             self.bullet_count -= 1
 
     def start_reload(self) -> None:
+        """Initiate reloading."""
         if self.is_reloading:
             return
         self.is_reloading = True

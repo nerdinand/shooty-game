@@ -8,7 +8,7 @@ from simulation import Simulation
 @pytest.mark.integration
 class TestSimulation:
     def test_simulation(self) -> None:
-        simulation = Simulation(random_seed=42)
+        simulation = Simulation(seed=42)
         assert len(simulation.players) == 4
         assert simulation.players[0].position == Vector2(0.547599, 0.117508)
         assert simulation.players[0].move_direction == Vector2(0, 0)

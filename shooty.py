@@ -10,6 +10,7 @@ from simulation import Simulation
 
 @click.group()
 def cli() -> None:
+    """Run the main click group."""
     pass
 
 
@@ -17,7 +18,8 @@ def cli() -> None:
 @click.option("--bot-count", default=4, help="How many bots to spawn.")
 @click.option("--seed", type=int, help="Random seed for simulation.")
 def run_simulation(bot_count: int, seed: Optional[int] = None) -> None:
-    simulation = Simulation(bot_count=bot_count, random_seed=seed)
+    """Run the simulation."""
+    simulation = Simulation(bot_count=bot_count, seed=seed)
     start_time = time.time()
 
     while not simulation.is_over():
@@ -53,9 +55,8 @@ def run_gui(
     show_visibility: bool,
     seed: Optional[int],
 ) -> None:
-    simulation = Simulation(
-        with_human=with_human, bot_count=bot_count, random_seed=seed
-    )
+    """Run the GUI."""
+    simulation = Simulation(with_human=with_human, bot_count=bot_count, seed=seed)
     gui = Gui(
         key_target_player=simulation.human,
         render_settings=RenderSettings(show_bots, show_map, show_visibility),
@@ -81,6 +82,7 @@ def run_gui(
 
 
 def print_statistics(start_time: float, simulation: Simulation) -> None:
+    """Print statistics about the game."""
     current_time = time.time()
     print(
         f"Ticks: {simulation.tick_count}/{Simulation.MAX_TICKS} \

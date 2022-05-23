@@ -11,6 +11,8 @@ from .projectile_collider import ProjectileCollider
 
 
 class Bot(Player):
+    """A player that behaves really stupidly."""
+
     def __init__(
         self, name: str, gun_class: Type[Gun], position: Vector2 = Vector2(0.5, 0.5)
     ) -> None:

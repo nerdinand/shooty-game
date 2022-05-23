@@ -18,7 +18,7 @@ black = "^22.1.0"
 reorder-python-imports = "^2.7.1"
 pylint = "^2.12.2"
 pytest-cov = "^3.0.0"
-pydocstyle = "^6.1.1"
+pydocstyle = {extras = ["toml"], version = "^6.1.1"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -60,7 +60,9 @@ ignore = [
     "D407", # Missing dashed underline after section ('Returns')
     "D406", # Section name should end with a newline ('Returns', not 'Returns:')
     "D100", # Missing docstring in public module
+    "D104", # Missing docstring in public package
 ]
+match-dir = '[^\.][^test].*'
 
 [tool.pytest.ini_options]
 markers = [

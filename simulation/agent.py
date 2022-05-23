@@ -17,5 +17,5 @@ class Agent(Player):
         gun_class: Type[Gun],
         position: Tuple[float, float] = (0.5, 0.5),
     ) -> None:
-        """Initialize the Agent"""
+        """Initialize the Agent."""
         super().__init__(PlayerType.AGENT, name, Vector2(*position), gun_class)

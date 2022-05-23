@@ -1,5 +1,5 @@
-#!/usr/bin/env -S bash -e
+#!/usr/bin/env -S bash -xe
 
 # TODO: remove || true once everything is documented
-poetry run pydocstyle --count **/*.py || true
+poetry run pydocstyle --count || true
 poetry run pylint **/*.py

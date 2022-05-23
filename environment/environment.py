@@ -9,6 +9,7 @@ import numpy as np
 import numpy.typing as npt
 from gym import spaces
 from pygame.math import Vector2
+from stable_baselines3.common.env_checker import check_env
 
 from gui import Gui
 from simulation import Agent
@@ -34,6 +35,7 @@ class Environment(gym.Env):
         self.gui: Optional[Gui] = None
         self.agent: Agent = None  # pyre-ignore[8]
         self.simulation: Simulation = None  # pyre-ignore[8]
+        self.seed: Optional[int] = None
 
         # W, A, S, D, R, Mouse1, look-, look+
         buttons_space = spaces.MultiBinary(8)
@@ -57,7 +59,7 @@ class Environment(gym.Env):
 
         self.player_factory = PlayerFactory()
 
-    def reset(self) -> Observation:
+    def reset(self, seed: Optional[int] = None) -> Observation:
         """Reset the environment.
 
         Returns:
@@ -65,7 +67,8 @@ class Environment(gym.Env):
         """
 
         self.agent = self.player_factory.agent()
-        self.simulation = Simulation(agent=self.agent)
+        self.simulation = Simulation(agent=self.agent, seed=seed)
+        # print(f"reset env {self.seed}: {self.simulation.tick_count}")
         return self.__get_observation()
 
     def step(
@@ -84,6 +87,8 @@ class Environment(gym.Env):
         done = self.simulation.is_over()
         reward = self.__calculate_reward()
         observation = self.__get_observation()
+
+        # print(f"step env {self.seed} {self.simulation.tick_count}: {reward} {done}")
 
         return observation, reward, done, {}
 
@@ -143,13 +148,8 @@ class Environment(gym.Env):
         intersections = Visibility.get_intersections(
             self.simulation.get_obstacles(), self.agent
         )
-        if len(intersections) != Visibility.NUMBER_OF_RAYS:
-            print("\a")
-            import pdb  # pylint: disable=import-outside-toplevel
 
-            pdb.set_trace()  # pylint: disable=multiple-statements, disable=forgotten-debug-statement
-
-        return OrderedDict(
+        observation = OrderedDict(
             [
                 (
                     "position",
@@ -168,6 +168,7 @@ class Environment(gym.Env):
                 ),
             ]
         )
+        return observation
 
     @classmethod
     def __map_entity_type(cls, intersection: Intersection) -> int:
@@ -177,3 +178,6 @@ class Environment(gym.Env):
             return 0
 
         return 1
+
+
+check_env(Environment())

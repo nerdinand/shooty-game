@@ -6,6 +6,7 @@ from environment import Environment
 
 
 def main() -> None:
+    """Play some episodes using a trained model."""
     model = sys.argv[1]
 
     episodes = 10
