@@ -68,9 +68,9 @@ bin/all.sh
 
 * [x] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
 * [x] Write more tests for simulation part
-* [ ] Add own position, health and bullets to observation
+* [x] Parallelise training
 * [ ] Train a model that does something reasonable
-* [ ] Parallelise training
+* [ ] Add own position, health and bullets to observation
 * [ ] Describe training and playback in README
 * [ ] Document ALL the things!
 

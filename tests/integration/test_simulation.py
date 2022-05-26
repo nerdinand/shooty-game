@@ -205,7 +205,7 @@ class TestSimulation:
         assert simulation.players[1].position == Vector2(0.165, 0.830102)
         assert simulation.players[1].is_dead == True
         assert simulation.players[1].is_moving == False
-        assert simulation.players[1].health == -8
+        assert simulation.players[1].health == 0
         assert simulation.players[1].gun.bullet_count == 20
         assert len(simulation.players[1].gun.projectiles) == 0
 
@@ -238,7 +238,7 @@ class TestSimulation:
         assert simulation.players[1].position == Vector2(0.165, 0.830102)
         assert simulation.players[1].is_dead == True
         assert simulation.players[1].is_moving == False
-        assert simulation.players[1].health == -8
+        assert simulation.players[1].health == 0
         assert simulation.players[1].gun.bullet_count == 20
         assert len(simulation.players[1].gun.projectiles) == 0
 

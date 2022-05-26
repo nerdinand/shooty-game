@@ -2,6 +2,7 @@ from typing import cast
 from typing import Optional
 
 from .agent import Agent
+from .bot import Bot
 from .human import Human
 from .map import Map
 from .map_factory import MapFactory
@@ -13,7 +14,7 @@ from .player_factory import PlayerFactory
 from .projectile_collider import ProjectileCollider
 
 
-class Simulation:
+class Simulation:  # pylint: disable=too-many-instance-attributes
     """The main Simulation class of the game. Can be used without a GUI."""
 
     MAX_TICKS = int(
@@ -39,10 +40,13 @@ class Simulation:
 
         player_factory = PlayerFactory()
         self.players: list[Player] = []
+        self.bots: list[Bot] = []
         self.human: Optional[Human] = None
 
         for _i in range(bot_count):
-            self.players.append(player_factory.random_bot())
+            bot = player_factory.random_bot()
+            self.bots.append(bot)
+            self.players.append(bot)
 
         if with_human:
             self.human = player_factory.human()
@@ -73,6 +77,9 @@ class Simulation:
         return (
             self.__is_time_over() or self.__are_players_dead() or self.__is_agent_dead()
         )
+
+    def dead_bots_count(self) -> int:
+        return sum(map(lambda p: p.is_dead, self.bots))
 
     def alive_players_count(self) -> int:
         """Return how many players are alive in the simulation."""

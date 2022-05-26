@@ -4,6 +4,8 @@ from stable_baselines3 import PPO
 
 from environment import Environment
 
+import random
+
 
 def main() -> None:
     """Play some episodes using a trained model."""
@@ -13,8 +15,8 @@ def main() -> None:
 
     model = PPO.load(model)
 
-    env = Environment()
     for _episode in range(episodes):
+        env = Environment(random_seed=random.randint(0, 1234567890))
         observation = env.reset()
         done = False
         cumulated_reward = 0

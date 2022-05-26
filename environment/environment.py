@@ -28,24 +28,26 @@ class Environment(gym.Env):
 
     metadata = {"render.modes": ["human"]}
 
-    def __init__(self) -> None:
+    def __init__(self, random_seed: Optional[int] = None) -> None:
         """Initialize a new Environment, defining the action and observation spaces."""
         super().__init__()
+
+        if random_seed is not None:
+            self.seed(random_seed)
 
         self.gui: Optional[Gui] = None
         self.agent: Agent = None  # pyre-ignore[8]
         self.simulation: Simulation = None  # pyre-ignore[8]
-        self.seed: Optional[int] = None
 
         # W, A, S, D, R, Mouse1, look-, look+
         buttons_space = spaces.MultiBinary(8)
         self.action_space: spaces.multi_binary.MultiBinary = buttons_space
 
-        position_space = spaces.Box(low=0.0, high=1.0, shape=(1, 2), dtype=np.float32)
+        position_space = spaces.Box(low=0.0, high=1.0, shape=[2], dtype=np.float32)
         visibility_positions_space = spaces.Box(
-            low=0.0, high=1.0, shape=(Visibility.NUMBER_OF_RAYS, 2), dtype=np.float32
+            low=0.0, high=1.0, shape=[Visibility.NUMBER_OF_RAYS * 2], dtype=np.float32
         )
-        visibility_types_space = spaces.MultiBinary(Visibility.NUMBER_OF_RAYS)
+        visibility_types_space = spaces.MultiDiscrete([3] * Visibility.NUMBER_OF_RAYS)
         self.observation_space = spaces.Dict(
             {
                 "position": position_space,
@@ -59,7 +61,10 @@ class Environment(gym.Env):
 
         self.player_factory = PlayerFactory()
 
-    def reset(self, seed: Optional[int] = None) -> Observation:
+    def seed(self, seed: Optional[int] = None) -> None:
+        self.__seed = seed
+
+    def reset(self) -> Observation:
         """Reset the environment.
 
         Returns:
@@ -67,8 +72,8 @@ class Environment(gym.Env):
         """
 
         self.agent = self.player_factory.agent()
-        self.simulation = Simulation(agent=self.agent, seed=seed)
-        # print(f"reset env {self.seed}: {self.simulation.tick_count}")
+        self.simulation = Simulation(agent=self.agent, seed=self.__seed)
+        # print(f"reset env {self.__seed}: {self.simulation.tick_count}")
         return self.__get_observation()
 
     def step(
@@ -88,7 +93,7 @@ class Environment(gym.Env):
         reward = self.__calculate_reward()
         observation = self.__get_observation()
 
-        # print(f"step env {self.seed} {self.simulation.tick_count}: {reward} {done}")
+        # print(f"step env {self.__seed} {self.simulation.tick_count}: {reward} {done}")
 
         return observation, reward, done, {}
 
@@ -138,9 +143,10 @@ class Environment(gym.Env):
         self.agent.update_look_direction(look_direction)
 
     def __calculate_reward(self) -> int:
-        reward = -(self.simulation.alive_players_count() + 1)
-        if self.agent.is_dead:
-            reward = -10000
+        reward = -(sum([b.health for b in self.simulation.bots]))
+        reward += self.simulation.dead_bots_count() * 1000
+        # if self.agent.is_dead:
+        #     reward = -100000
 
         return reward
 
@@ -153,14 +159,19 @@ class Environment(gym.Env):
             [
                 (
                     "position",
-                    np.array([[self.agent.position.x, self.agent.position.y]]),
+                    np.array(
+                        [self.agent.position.x, self.agent.position.y], dtype=np.float32
+                    ),
                 ),
                 ("health", self.agent.health),
                 ("bullets", self.agent.gun.bullet_count),
                 ("is_reloading", 1 if self.agent.gun.is_reloading else 0),
                 (
                     "visibility_positions",
-                    np.array([(i.position.x, i.position.y) for i in intersections]),
+                    np.array(
+                        [(i.position.x, i.position.y) for i in intersections],
+                        dtype=np.float32,
+                    ).flatten(),
                 ),
                 (
                     "visibility_types",
@@ -180,4 +191,4 @@ class Environment(gym.Env):
         return 1
 
 
-check_env(Environment())
+check_env(Environment(random_seed=42))

@@ -92,6 +92,7 @@ class Player(Obstacle):  # pylint: disable=too-many-instance-attributes
         damage = int(collision.projectile.maximum_damage() * (factor**2))
         self.health -= damage
         if self.health <= 0:
+            self.health = 0
             self.is_dead = True
             self.is_moving = False
 
