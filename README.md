@@ -69,6 +69,7 @@ bin/all.sh
 * [x] Write an adapter for [OpenAI Gym](https://gym.openai.com/) to test with a baseline RL algorithm
 * [x] Write more tests for simulation part
 * [x] Parallelise training
+* [ ] Distance visibility observation instead of absolute coordinates
 * [ ] Train a model that does something reasonable
 * [ ] Add own position, health and bullets to observation
 * [ ] Describe training and playback in README
