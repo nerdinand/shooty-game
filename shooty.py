@@ -1,3 +1,4 @@
+import io
 import time
 from typing import Optional
 
@@ -6,12 +7,23 @@ import click
 from gui import Gui
 from gui.renderer.render_settings import RenderSettings
 from simulation import Simulation
+from train import Configuration, Training
 
 
 @click.group()
 def cli() -> None:
     """Run the main click group."""
     pass
+
+
+@cli.command("train")
+@click.option(
+    "--conf", required=True, type=click.File(), help="Training configuration YAML file."
+)
+def train(conf: io.TextIOBase) -> None:
+    configuration = Configuration.from_file(conf)
+    training = Training(configuration)
+    training.train()
 
 
 @cli.command("sim")
