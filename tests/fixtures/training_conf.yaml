@@ -1,0 +1,12 @@
+algorithm: PPO
+timesteps:
+  train_for: 1000
+  save_every: 1000
+
+parallelism: 1
+
+random_seed: 0
+net_arch:
+  # default
+  - pi: [64, 64]
+    vf: [64, 64]

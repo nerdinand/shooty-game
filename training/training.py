@@ -10,7 +10,7 @@ class Training:
     def __init__(self, configuration: Configuration) -> None:
         self.configuration = configuration
 
-    def train(self) -> None:
+    def train(self) -> str:
         """Run training in parallel."""
         subproc_vec_env = make_vec_env(
             Environment,
@@ -21,8 +21,7 @@ class Training:
 
         checkpoint_callback = CheckpointCallback(
             save_freq=self.configuration.timesteps.save_every,
-            save_path="./models/",
-            name_prefix=self.configuration.experiment_id(),
+            save_path=f"./models/{self.configuration.experiment_id()}",
         )
 
         model = self.configuration.algorithm_class()(  # pyre-ignore[20]
@@ -38,3 +37,5 @@ class Training:
             tb_log_name=self.configuration.experiment_id(),
             callback=checkpoint_callback,
         )
+
+        return self.configuration.experiment_id()
