@@ -18,8 +18,8 @@ class PlayerFactory:
         self.bot_count += 1
         return bot
 
-    def human(self) -> Human:  # pylint: disable=no-self-use
+    def human(self) -> Human:
         return Human("Human", gun_class=Rifle)
 
-    def agent(self) -> Agent:  # pylint: disable=no-self-use
+    def agent(self) -> Agent:
         return Agent("Agent", gun_class=Rifle)

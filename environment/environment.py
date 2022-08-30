@@ -143,7 +143,7 @@ class Environment(gym.Env):
         self.agent.update_look_direction(look_direction)
 
     def __calculate_reward(self) -> int:
-        reward = -(sum([b.health for b in self.simulation.bots]))
+        reward = -(sum(b.health for b in self.simulation.bots))
         reward += self.simulation.dead_bots_count() * 1000
         # if self.agent.is_dead:
         #     reward = -100000
