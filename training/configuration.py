@@ -21,6 +21,10 @@ ALGORITHM_CLASS_MAPPING: typing.Dict[str, typing.Type[BaseAlgorithm]] = {
 }
 
 
+def resolve_algorithm_class(algorithm: str) -> typing.Type[BaseAlgorithm]:
+    return ALGORITHM_CLASS_MAPPING[algorithm]
+
+
 @dataclass
 class Configuration:
     algorithm: str
@@ -39,10 +43,8 @@ class Configuration:
         )
         return configuration
 
-    def algorithm_class(
-        self,
-    ) -> typing.Type[BaseAlgorithm]:
-        return ALGORITHM_CLASS_MAPPING[self.algorithm]
+    def algorithm_class(self) -> typing.Type[BaseAlgorithm]:
+        return resolve_algorithm_class(self.algorithm)
 
     def experiment_id(self) -> str:
         return f"{self.algorithm}_{self.experiment_timestamp}"

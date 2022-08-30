@@ -7,7 +7,7 @@ import click
 from gui import Gui
 from gui.renderer.render_settings import RenderSettings
 from simulation import Simulation
-from training import Configuration, Training
+from training import Configuration, Training, Player
 
 
 @click.group()
@@ -18,12 +18,28 @@ def cli() -> None:
 
 @cli.command("train")
 @click.option(
-    "--conf", required=True, type=click.File(), help="Training configuration YAML file."
+    "--training-conf",
+    required=True,
+    type=click.File(),
+    help="Training configuration YAML file.",
 )
-def train(conf: io.TextIOBase) -> None:
-    configuration = Configuration.from_file(conf)
+def train(training_conf: io.TextIOBase) -> None:
+    """Train a model."""
+    configuration = Configuration.from_file(training_conf)
     training = Training(configuration)
     training.train()
+
+
+@cli.command("play")
+@click.option(
+    "--model",
+    required=True,
+    type=click.Path(exists=True),
+    help="The model to play with.",
+)
+def play(model: str) -> None:
+    """Play using a trained model."""
+    Player(model_path=model, number_of_episodes=10).play()
 
 
 @cli.command("sim")
