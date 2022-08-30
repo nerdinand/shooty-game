@@ -9,7 +9,6 @@ import numpy as np
 import numpy.typing as npt
 from gym import spaces
 from pygame.math import Vector2
-from stable_baselines3.common.env_checker import check_env
 
 from gui import Gui
 from simulation import Agent
@@ -189,6 +188,3 @@ class Environment(gym.Env):
             return 0
 
         return 1
-
-
-check_env(Environment(random_seed=42))
