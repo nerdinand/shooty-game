@@ -1,7 +1,7 @@
 from pygame.math import Vector2
 
 from simulation.agent import Agent
-from simulation.bot import Bot
+from simulation.simple_bot import SimpleBot
 from simulation.pistol import Pistol
 from simulation.obstacle import Obstacle
 from simulation.projectile_collider import ProjectileCollider
@@ -14,8 +14,10 @@ class TestProjectileCollider:
         obstacle = Obstacle.fixed(
             name="Obstacle 1", left=0.0, top=0.0, width=0.1, height=0.1
         )
-        bot = Bot(name="Bot Wade", gun_class=Pistol, position=Vector2(0.4, 0.2))
-        dead_bot = Bot(name="Bot Dead", gun_class=Pistol, position=Vector2(0.1, 0.3))
+        bot = SimpleBot(name="Bot Wade", gun_class=Pistol, position=Vector2(0.4, 0.2))
+        dead_bot = SimpleBot(
+            name="Bot Dead", gun_class=Pistol, position=Vector2(0.1, 0.3)
+        )
         dead_bot.is_dead = True
         obstacles = [player, obstacle, bot, dead_bot]
 

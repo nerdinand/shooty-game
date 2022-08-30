@@ -3,7 +3,7 @@ timesteps:
   train_for: 100_000_000
   save_every: 50_000
 
-parallelism: 6
+parallelism: 1
 
 random_seed: 0
 net_arch:

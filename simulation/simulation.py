@@ -3,6 +3,7 @@ from typing import Optional
 
 from .agent import Agent
 from .bot import Bot
+from .configuration import Configuration
 from .human import Human
 from .map import Map
 from .map_factory import MapFactory
@@ -22,33 +23,22 @@ class Simulation:  # pylint: disable=too-many-instance-attributes
     )  # seconds per minute
 
     def __init__(
-        self,
-        seed: Optional[int] = None,
-        agent: Optional[Agent] = None,
-        with_human: bool = False,
-        bot_count: int = 4,
+        self, configuration: Configuration, agent: Optional[Agent] = None
     ) -> None:
-        """Initialize a new Simulation.
-
-        Arguments:
-           seed (optional, int): Seed for the random number generator.
-           agent (optional, Agent): An AI Agent that interacts with the simulation.
-           with_human (optional, bool): Whether to spawn a human player or not.
-           bot_count (optional, int): The number of bots to spawn in the simulation.
-        """
-        MathUtil.seed(seed)
+        """Initialize a new Simulation."""
+        MathUtil.seed(configuration.random_seed)
 
         player_factory = PlayerFactory()
         self.players: list[Player] = []
         self.bots: list[Bot] = []
         self.human: Optional[Human] = None
 
-        for _i in range(bot_count):
-            bot = player_factory.random_bot()
+        for bot_configuration in configuration.bots:
+            bot = player_factory.bot(bot_configuration)
             self.bots.append(bot)
             self.players.append(bot)
 
-        if with_human:
+        if configuration.with_human:
             self.human = player_factory.human()
             self.players.append(self.human)
 
@@ -56,7 +46,7 @@ class Simulation:  # pylint: disable=too-many-instance-attributes
         if not self.agent is None:
             self.players.append(self.agent)
 
-        self.map: Map = MapFactory.simple_map()
+        self.map: Map = MapFactory.map(configuration.map)
         self.tick_count = 0
         self.player_collider = PlayerCollider(self.get_obstacles())
         self.projectile_collider = ProjectileCollider(self.get_obstacles())

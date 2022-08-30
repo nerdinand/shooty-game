@@ -1,0 +1,5 @@
+map: SimplestMap  # possible values: SimpleMap, SimplestMap
+with_human: false  # whether to run simulation with a human (controllable with keyboard)
+bots:
+  - kind: StaticBot
+random_seed: 0

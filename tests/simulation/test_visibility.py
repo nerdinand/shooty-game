@@ -3,7 +3,7 @@ import unittest
 from pygame.math import Vector2
 
 from simulation.agent import Agent
-from simulation.bot import Bot
+from simulation.simple_bot import SimpleBot
 from simulation.pistol import Pistol
 from simulation.obstacle import Obstacle
 from simulation.visibility import Visibility
@@ -17,7 +17,7 @@ class TestVisibility:
         obstacle = Obstacle.fixed(
             name="Obstacle 1", left=0.0, top=0.0, width=0.1, height=0.1
         )
-        bot = Bot(name="Bot Boris", gun_class=Pistol, position=Vector2(0.3, 0.2))
+        bot = SimpleBot(name="Bot Boris", gun_class=Pistol, position=Vector2(0.3, 0.2))
         obstacles = [obstacle, bot, player]
 
         intersections = Visibility.get_intersections(obstacles, player)

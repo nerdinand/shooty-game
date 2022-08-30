@@ -6,8 +6,10 @@ import click
 
 from gui import Gui
 from gui.renderer.render_settings import RenderSettings
+import simulation
 from simulation import Simulation
-from training import Configuration, Training, Player
+import training
+from training import Training, Player
 
 
 @click.group()
@@ -23,11 +25,18 @@ def cli() -> None:
     type=click.File(),
     help="Training configuration YAML file.",
 )
-def train(training_conf: io.TextIOBase) -> None:
+@click.option(
+    "--simulation-conf",
+    required=True,
+    type=click.File(),
+    help="Simulation configuration YAML file.",
+)
+def train(training_conf: io.TextIOBase, simulation_conf: io.TextIOBase) -> None:
     """Train a model."""
-    configuration = Configuration.from_file(training_conf)
-    training = Training(configuration)
-    training.train()
+    training_configuration = training.Configuration.from_file(training_configuration)
+    simulation_configuration = simulation.Configuration.from_file(simulation_conf)
+    t = Training(training_configuration, simulation_configuration)
+    t.train()
 
 
 @cli.command("play")
@@ -37,34 +46,50 @@ def train(training_conf: io.TextIOBase) -> None:
     type=click.Path(exists=True),
     help="The model to play with.",
 )
-def play(model: str) -> None:
+@click.option(
+    "--simulation-conf",
+    required=True,
+    type=click.File(),
+    help="Simulation configuration YAML file.",
+)
+def play(model: str, simulation_conf: io.TextIOBase) -> None:
     """Play using a trained model."""
-    Player(model_path=model, number_of_episodes=10).play()
+    simulation_configuration = simulation.Configuration.from_file(simulation_conf)
+    Player(
+        model_path=model,
+        number_of_episodes=10,
+        simulation_configuration=simulation_configuration,
+    ).play()
 
 
 @cli.command("sim")
-@click.option("--bot-count", default=4, help="How many bots to spawn.")
-@click.option("--seed", type=int, help="Random seed for simulation.")
-def run_simulation(bot_count: int, seed: Optional[int] = None) -> None:
-    """Run the simulation."""
-    simulation = Simulation(bot_count=bot_count, seed=seed)
+@click.option(
+    "--simulation-conf",
+    required=True,
+    type=click.File(),
+    help="Simulation configuration YAML file.",
+)
+def run_simulation(simulation_conf: io.TextIOBase) -> None:
+    """Run a simulation."""
+    configuration = simulation.configuration.Configuration.from_file(simulation_conf)
+    sim = Simulation(configuration)
+
     start_time = time.time()
 
-    while not simulation.is_over():
-        simulation.tick()
-        print_statistics(start_time, simulation)
+    while not sim.is_over():
+        sim.tick()
+        print_statistics(start_time, sim)
 
     print()
 
 
 @cli.command("gui")
 @click.option(
-    "--with-human",
-    default=False,
-    is_flag=True,
-    help="Run simulation with a human (controllable with keyboard).",
+    "--simulation-conf",
+    required=True,
+    type=click.File(),
+    help="Simulation configuration YAML file.",
 )
-@click.option("--bot-count", default=4, help="How many bots to spawn.")
 @click.option("--show-bots/--hide-bots", default=True, help="Show bots in GUI.")
 @click.option(
     "--show-map/--hide-map", default=True, help="Show map (obstacles) in GUI."
@@ -76,25 +101,25 @@ def run_simulation(bot_count: int, seed: Optional[int] = None) -> None:
 )
 @click.option("--seed", type=int, help="Random seed for simulation.")
 def run_gui(
-    with_human: bool,
-    bot_count: int,
+    simulation_conf: io.TextIOBase,
     show_bots: bool,
     show_map: bool,
     show_visibility: bool,
     seed: Optional[int],
 ) -> None:
     """Run the GUI."""
-    simulation = Simulation(with_human=with_human, bot_count=bot_count, seed=seed)
+    configuration = simulation.configuration.Configuration.from_file(simulation_conf)
+    sim = Simulation(configuration)
     gui = Gui(
-        key_target_player=simulation.human,
+        key_target_player=sim.human,
         render_settings=RenderSettings(show_bots, show_map, show_visibility),
     )
     gui.initialize()
 
     start_time = time.time()
 
-    while not simulation.is_over() and not Gui.should_quit():
-        simulation.tick()
+    while not sim.is_over() and not Gui.should_quit():
+        sim.tick()
 
         gui.tick()
 
@@ -102,9 +127,9 @@ def run_gui(
         gui.handle_mouse_events()
 
         if gui.is_render_necessary():
-            gui.render(simulation)
+            gui.render(sim)
 
-        print_statistics(start_time, simulation)
+        print_statistics(start_time, sim)
 
     print()
 

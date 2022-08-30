@@ -2,17 +2,25 @@ from shutil import rmtree
 from os.path import exists
 import pytest
 
-from training import Training, Configuration
+from training import Training
+from training import Configuration as TrainingConfiguration
+from simulation import Configuration as SimulationConfiguration
 
 
 @pytest.mark.integration
 class TestTraining:
-    def training_configuration(self) -> Configuration:
+    def training_configuration(self) -> TrainingConfiguration:
         conf_file = open("tests/fixtures/training_conf.yaml")
-        return Configuration.from_file(conf_file)
+        return TrainingConfiguration.from_file(conf_file)
+
+    def simulation_configuration(self) -> SimulationConfiguration:
+        conf_file = open("tests/fixtures/simulation_conf.yaml")
+        return SimulationConfiguration.from_file(conf_file)
 
     def test_training(self) -> None:
-        training = Training(self.training_configuration())
+        training = Training(
+            self.training_configuration(), self.simulation_configuration()
+        )
         experiment_id = training.train()
 
         model_path = f"models/{experiment_id}/"

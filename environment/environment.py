@@ -12,6 +12,7 @@ from pygame.math import Vector2
 
 from gui import Gui
 from simulation import Agent
+from simulation import Configuration
 from simulation import Intersection
 from simulation import NoneIntersection
 from simulation import Player
@@ -22,17 +23,23 @@ from simulation import Visibility
 Observation = OrderedDict[str, Union[npt.NDArray, int]]
 
 
-class Environment(gym.Env):
+class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
     """Custom OpenAI gym that wraps the shooty-game simulation."""
 
     metadata = {"render.modes": ["human"]}
 
-    def __init__(self, random_seed: Optional[int] = None) -> None:
+    def __init__(
+        self, configuration: Configuration, random_seed: Optional[int] = None
+    ) -> None:
         """Initialize a new Environment, defining the action and observation spaces."""
         super().__init__()
 
-        if random_seed is not None:
+        if random_seed is None:
+            self.seed(configuration.random_seed)
+        else:
             self.seed(random_seed)
+
+        self.configuration = configuration
 
         self.gui: Optional[Gui] = None
         self.agent: Agent = None  # pyre-ignore[8]
@@ -61,7 +68,7 @@ class Environment(gym.Env):
         self.player_factory = PlayerFactory()
 
     def seed(self, seed: Optional[int] = None) -> None:
-        self.__seed = seed
+        self.__seed = seed  # pylint: disable=unused-private-member
 
     def reset(self) -> Observation:
         """Reset the environment.
@@ -71,7 +78,7 @@ class Environment(gym.Env):
         """
 
         self.agent = self.player_factory.agent()
-        self.simulation = Simulation(agent=self.agent, seed=self.__seed)
+        self.simulation = Simulation(self.configuration, agent=self.agent)
         # print(f"reset env {self.__seed}: {self.simulation.tick_count}")
         return self.__get_observation()
 

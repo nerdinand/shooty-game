@@ -2,12 +2,12 @@ import unittest
 
 from pygame.math import Vector2
 
-from simulation.bot import Bot
+from simulation.simple_bot import SimpleBot
 from simulation.pistol import Pistol
 from simulation.math_util import MathUtil
 
 
-class TestBot:
+class TestSimpleBot:
     @unittest.mock.patch("simulation.projectile_collider.ProjectileCollider")
     @unittest.mock.patch("simulation.player_collider.PlayerCollider")
     def test_tick(
@@ -17,7 +17,7 @@ class TestBot:
     ) -> None:
         MathUtil.seed(42)
 
-        bot = Bot(name="Bot Fergus", gun_class=Pistol)
+        bot = SimpleBot(name="Bot Fergus", gun_class=Pistol)
 
         assert bot.position == Vector2(0.5, 0.5)
         assert bot.move_direction == Vector2(0, 0)

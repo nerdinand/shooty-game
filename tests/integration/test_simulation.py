@@ -3,12 +3,17 @@ import pytest
 from pygame.math import Vector2
 
 from simulation import Simulation
+from simulation import Configuration
 
 
 @pytest.mark.integration
 class TestSimulation:
+    def simulation_configuration(self) -> Configuration:
+        conf_file = open("tests/fixtures/simulation_conf.yaml")
+        return Configuration.from_file(conf_file)
+
     def test_simulation(self) -> None:
-        simulation = Simulation(seed=42)
+        simulation = Simulation(self.simulation_configuration())
         assert len(simulation.players) == 4
         assert simulation.players[0].position == Vector2(0.547599, 0.117508)
         assert simulation.players[0].move_direction == Vector2(0, 0)
