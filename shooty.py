@@ -7,7 +7,7 @@ import click
 from gui import Gui
 from gui.renderer.render_settings import RenderSettings
 from simulation import Simulation
-from train import Configuration, Training
+from training import Configuration, Training
 
 
 @click.group()
