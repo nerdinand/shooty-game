@@ -84,7 +84,9 @@ class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
         """
 
         self.agent = self.player_factory.agent()
-        self.simulation = Simulation(self.simulation_configuration, agent=self.agent)
+        self.simulation = Simulation(
+            self.simulation_configuration, agent=self.agent, seed=self.__seed
+        )
         # print(f"reset env {self.__seed}: {self.simulation.tick_count}")
         return self.__get_observation()
 

@@ -23,10 +23,17 @@ class Simulation:  # pylint: disable=too-many-instance-attributes
     )  # seconds per minute
 
     def __init__(
-        self, configuration: Configuration, agent: Optional[Agent] = None
+        self,
+        configuration: Configuration,
+        agent: Optional[Agent] = None,
+        seed: Optional[int] = None,
     ) -> None:
         """Initialize a new Simulation."""
-        MathUtil.seed(configuration.random_seed)
+
+        if seed is None:
+            MathUtil.seed(configuration.random_seed)
+        else:
+            MathUtil.seed(seed)
 
         player_factory = PlayerFactory()
         self.players: list[Player] = []
