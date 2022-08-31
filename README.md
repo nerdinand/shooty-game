@@ -5,7 +5,7 @@ Game/Simulation which is a 2D-analog of Counter Strike as a target for Deep Rein
 
 ## Setup
 
-This uses [Poetry](https://python-poetry.org/) as a dependency manager. Python 3.9+ is supported. To install the dependencies just run:
+This uses [Poetry](https://python-poetry.org/) as a dependency manager. Python 3.10+ is supported. To install the dependencies just run:
 
 ```shell
 pip install poetry

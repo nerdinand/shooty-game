@@ -5,7 +5,7 @@ description = "Game/Simulation which is a 2D-analog of Counter Strike as a targe
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 pygame = "^2.1.2"
 stable-baselines3 = "^1.5.0"
 tensorboard = "^2.8.0"

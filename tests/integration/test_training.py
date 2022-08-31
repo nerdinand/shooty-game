@@ -5,6 +5,7 @@ import pytest
 from training import Training
 from training import Configuration as TrainingConfiguration
 from simulation import Configuration as SimulationConfiguration
+from environment import Configuration as EnvironmentConfiguration
 
 
 @pytest.mark.integration
@@ -17,9 +18,15 @@ class TestTraining:
         conf_file = open("tests/fixtures/simulation_conf.yaml")
         return SimulationConfiguration.from_file(conf_file)
 
+    def environment_configuration(self) -> EnvironmentConfiguration:
+        conf_file = open("tests/fixtures/environment_conf.yaml")
+        return EnvironmentConfiguration.from_file(conf_file)
+
     def test_training(self) -> None:
         training = Training(
-            self.training_configuration(), self.simulation_configuration()
+            training_configuration=self.training_configuration(),
+            simulation_configuration=self.simulation_configuration(),
+            environment_configuration=self.environment_configuration(),
         )
         experiment_id = training.train()
 

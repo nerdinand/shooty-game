@@ -10,9 +10,11 @@ import numpy.typing as npt
 from gym import spaces
 from pygame.math import Vector2
 
+from .buttons import *  # pylint: disable=wildcard-import
+from .configuration import Configuration as EnvironmentConfiguration
 from gui import Gui
 from simulation import Agent
-from simulation import Configuration
+from simulation import Configuration as SimulationConfiguration
 from simulation import Intersection
 from simulation import NoneIntersection
 from simulation import Player
@@ -20,34 +22,38 @@ from simulation import PlayerFactory
 from simulation import Simulation
 from simulation import Visibility
 
-Observation = OrderedDict[str, Union[npt.NDArray, int]]
-
 
 class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
     """Custom OpenAI gym that wraps the shooty-game simulation."""
 
+    Observation: typing.TypeAlias = OrderedDict[  # pyre-ignore[11]
+        str, Union[npt.NDArray, int]
+    ]
+
     metadata = {"render.modes": ["human"]}
 
     def __init__(
-        self, configuration: Configuration, random_seed: Optional[int] = None
+        self,
+        simulation_configuration: SimulationConfiguration,
+        environment_configuration: EnvironmentConfiguration,
+        random_seed: Optional[int] = None,
     ) -> None:
         """Initialize a new Environment, defining the action and observation spaces."""
         super().__init__()
 
         if random_seed is None:
-            self.seed(configuration.random_seed)
+            self.seed(simulation_configuration.random_seed)
         else:
             self.seed(random_seed)
 
-        self.configuration = configuration
+        self.simulation_configuration = simulation_configuration
 
         self.gui: Optional[Gui] = None
         self.agent: Agent = None  # pyre-ignore[8]
         self.simulation: Simulation = None  # pyre-ignore[8]
 
-        # W, A, S, D, R, Mouse1, look-, look+
-        buttons_space = spaces.MultiBinary(8)
-        self.action_space: spaces.multi_binary.MultiBinary = buttons_space
+        self.buttons = Buttons(allow_reload=environment_configuration.allow_reload)
+        self.action_space: spaces.multi_binary.MultiBinary = self.buttons.space()
 
         position_space = spaces.Box(low=0.0, high=1.0, shape=[2], dtype=np.float32)
         visibility_positions_space = spaces.Box(
@@ -70,7 +76,7 @@ class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
     def seed(self, seed: Optional[int] = None) -> None:
         self.__seed = seed  # pylint: disable=unused-private-member
 
-    def reset(self) -> Observation:
+    def reset(self) -> Observation:  # pyre-ignore[11]
         """Reset the environment.
 
         Returns:
@@ -78,7 +84,7 @@ class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
         """
 
         self.agent = self.player_factory.agent()
-        self.simulation = Simulation(self.configuration, agent=self.agent)
+        self.simulation = Simulation(self.simulation_configuration, agent=self.agent)
         # print(f"reset env {self.__seed}: {self.simulation.tick_count}")
         return self.__get_observation()
 
@@ -121,13 +127,13 @@ class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
     def __take_action(self, action: npt.NDArray) -> None:
         direction_vector = Vector2()
 
-        if action[0] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_FORWARD):
             direction_vector += Vector2(0, -1)
-        if action[1] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_LEFT):
             direction_vector += Vector2(-1, 0)
-        if action[2] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_BACKWARD):
             direction_vector += Vector2(0, 1)
-        if action[3] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_RIGHT):
             direction_vector += Vector2(1, 0)
 
         if direction_vector.length_squared() != 0.0:
@@ -135,16 +141,16 @@ class Environment(gym.Env):  # pylint: disable=too-many-instance-attributes
 
         self.agent.update_move_direction(direction_vector)
 
-        if action[4] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_RELOAD):
             self.agent.gun.start_reload()
 
-        if action[5] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_SHOOT):
             self.agent.gun.shoot()
 
         look_direction = self.agent.look_direction
-        if action[6] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_LOOK_LEFT):
             look_direction = look_direction - 1
-        if action[7] == 1:
+        if self.buttons.is_button_pushed(action, BUTTON_LOOK_RIGHT):
             look_direction = look_direction + 1
         self.agent.update_look_direction(look_direction)
 

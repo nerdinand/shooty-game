@@ -10,6 +10,7 @@ import simulation
 from simulation import Simulation
 import training
 from training import Training, Player
+import environment
 
 
 @click.group()
@@ -31,11 +32,24 @@ def cli() -> None:
     type=click.File(),
     help="Simulation configuration YAML file.",
 )
-def train(training_conf: io.TextIOBase, simulation_conf: io.TextIOBase) -> None:
+@click.option(
+    "--environment-conf",
+    required=True,
+    type=click.File(),
+    help="Environment configuration YAML file.",
+)
+def train(
+    training_conf: io.TextIOBase,
+    simulation_conf: io.TextIOBase,
+    environment_conf: io.TextIOBase,
+) -> None:
     """Train a model."""
-    training_configuration = training.Configuration.from_file(training_configuration)
+    training_configuration = training.Configuration.from_file(training_conf)
     simulation_configuration = simulation.Configuration.from_file(simulation_conf)
-    t = Training(training_configuration, simulation_configuration)
+    environment_configuration = environment.Configuration.from_file(environment_conf)
+    t = Training(
+        training_configuration, simulation_configuration, environment_configuration
+    )
     t.train()
 
 
@@ -52,13 +66,23 @@ def train(training_conf: io.TextIOBase, simulation_conf: io.TextIOBase) -> None:
     type=click.File(),
     help="Simulation configuration YAML file.",
 )
-def play(model: str, simulation_conf: io.TextIOBase) -> None:
+@click.option(
+    "--environment-conf",
+    required=True,
+    type=click.File(),
+    help="Environment configuration YAML file.",
+)
+def play(
+    model: str, simulation_conf: io.TextIOBase, environment_conf: io.TextIOBase
+) -> None:
     """Play using a trained model."""
     simulation_configuration = simulation.Configuration.from_file(simulation_conf)
+    environment_configuration = environment.Configuration.from_file(environment_conf)
     Player(
         model_path=model,
         number_of_episodes=10,
         simulation_configuration=simulation_configuration,
+        environment_configuration=environment_configuration,
     ).play()
 
 

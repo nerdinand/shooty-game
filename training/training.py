@@ -3,6 +3,7 @@ from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import SubprocVecEnv
 
 from .configuration import Configuration as TrainingConfiguration
+from environment import Configuration as EnvironmentConfiguration
 from environment import Environment
 from simulation import Configuration as SimulationConfiguration
 
@@ -12,9 +13,11 @@ class Training:
         self,
         training_configuration: TrainingConfiguration,
         simulation_configuration: SimulationConfiguration,
+        environment_configuration: EnvironmentConfiguration,
     ) -> None:
         self.training_configuration = training_configuration
         self.simulation_configuration = simulation_configuration
+        self.environment_configuration = environment_configuration
 
     def train(self) -> str:
         """Run training in parallel."""
@@ -23,7 +26,10 @@ class Training:
             n_envs=self.training_configuration.parallelism,
             seed=self.training_configuration.random_seed,
             vec_env_cls=SubprocVecEnv,
-            env_kwargs={"configuration": self.simulation_configuration},
+            env_kwargs={
+                "simulation_configuration": self.simulation_configuration,
+                "environment_configuration": self.environment_configuration,
+            },
         )
 
         checkpoint_callback = CheckpointCallback(
